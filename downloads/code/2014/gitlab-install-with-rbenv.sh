@@ -73,31 +73,89 @@ redis-server ${HOME}/.redis/conf &
 
 
 ### Ruby ### ###################################################################
-# From uberspace.
+if [ -d ${HOME}/.rbenv ]; then
+	echo "The directory ~/.rbenv already exists. So we do nothing."
+	pause 'Press [Enter] key to continue... or Ctl+C to abort installation.'
+else
+	# Git checkout.
+    	git clone https://github.com/sstephenson/rbenv.git ${HOME}/.rbenv
+
+	# Update.
+	#cd ${HOME}/.rbenv
+	#git pull
+
+# Activate rbenv.
 cat << '__EOF__' >> ${HOME}/.bash_profile
 
-### Ruby ###
-export PATH=/package/host/localhost/ruby-2.1.1/bin:$PATH
-export PATH=$HOME/.gem/ruby/2.1.0/bin:$PATH
+### rbenv ###
+export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="$HOME/.rbenv/shims:$PATH"
+eval "$(rbenv init -)"
 __EOF__
 
+# Don't forget bashrc.
 cat << '__EOF__' >> ${HOME}/.bashrc
 
-### Ruby ###
-export PATH=/package/host/localhost/ruby-2.1.1/bin:$PATH
-export PATH=$HOME/.gem/ruby/2.1.0/bin:$PATH
+### rbenv ###
+export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="$HOME/.rbenv/shims:$PATH"
+eval "$(rbenv init -)"
 __EOF__
+	
+	# Activate profile changes.
+	. ${HOME}/.bash_profile
+	
+	# Check rbenv.
+	type rbenv
+	
+	# Install ruby-build - The `rbenv install` command.
+	git clone https://github.com/sstephenson/ruby-build.git ${HOME}/.rbenv/plugins/ruby-build
+	# Install rbenv-gem-rehash - The auto `rbenv rehash` when installing new gems.
+	git clone https://github.com/sstephenson/rbenv-gem-rehash.git ${HOME}/.rbenv/plugins/rbenv-gem-rehash
+	
+	# List available installations.
+	#rbenv install --list
+	
+	# Install ruby (need some time).
+	rbenv install 2.1.2
+	rbenv install 1.9.3-p547
 
-# To install all gems into user account. 
-echo "gem: --user-install --no-rdoc --no-ri" > ${HOME}/.gemrc
+	# Set global ruby version.
+	rbenv global 2.1.2
+	# Rehash rbenv. This write changes into ~/.rbenv/shims. 
+	# Important if gems provide some new bins.
+	# Or the environment changes.
+	rbenv rehash
 
-. ${HOME}/.bash_profile
+	# Hooks rbenv into the shell. 
+	# Already happend after `. ~/.bash_profile`.
+	# Use `rbenv init -` to see more informations.
+	#rbenv init
+	
+	# Print rbenv used ruby version.
+	echo "rbenv version:"
+	rbenv version
+	
+	# Install options for gem.
+	# Old: echo "gem: --user-install --no-rdoc --no-ri" > ~/.gemrc
+	# Do not use the `--user-install` option! This will install gems into `~/.gem` dir and not into the rbenv 	version specific folder!
+	echo "gem: --no-rdoc --no-ri" > ${HOME}/.gemrc
 
+	# Install bundler for both installed versions.
+	# For 1.9.3
+	rbenv shell 1.9.3-p547
+	gem install bundler
+	# For 2.1.2
+	rbenv shell 2.1.2
+	gem install bundler
+	# Leave rbenv shell
+	rbenv shell --unset
+fi
 
 ### Gitlab Shell ### ###########################################################
 git clone https://gitlab.com/gitlab-org/gitlab-shell.git ${WORKSPACE}/gitlab-shell
 cd ${WORKSPACE}/gitlab-shell
-#rbenv local 2.1.2
+rbenv local 2.1.2
 git fetch origin && git reset --hard $(git describe v1.9.6 || git describe origin/v1.9.6)
 
 cat > ${WORKSPACE}/gitlab-shell/config.yml <<__EOF__
@@ -132,15 +190,18 @@ log_level: INFO
 audit_usernames: false
 __EOF__
 
-#?
-#bundle install --deployment --without development test
+# Change ${WORKSPACE}/gitlab-shell/hooks/update
+#        #!/usr/bin/env ruby  ->  #!${HOME}/.rbenv/shims/ruby
+# Old: sed -i -e "s=\/usr\/bin\/env ruby=${HOME}\/.rbenv\/shims\/ruby=g" ${WORKSPACE}/gitlab-shell/hooks/update
+sed -i -e "s=\/usr\/bin\/env ruby=$(which ruby)=g" ${WORKSPACE}/gitlab-shell/hooks/update
+
 ./bin/install
 
 
 ### GitLab ### #################################################################
 git clone https://gitlab.com/gitlab-org/gitlab-ce.git -b 7-1-stable ${WORKSPACE}/gitlab
 cd ${WORKSPACE}/gitlab
-#rbenv local 2.1.2
+rbenv local 2.1.2
 
 # Some folders
 mkdir -p log

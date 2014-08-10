@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
+################################################################################
+function pause(){
+   read -p "$*"
+}
+################################################################################
+
 
 TESTVARIABLE="Some string in a variable."
 TESTCOMMAND='hostname'
-################################################################################
 
 # ADD
 # Add something to a file, if not existing, file will be createt
@@ -32,8 +37,7 @@ $TESTCOMMAND
 __EOF__
 
 
-################################################################################
-
+#####################################
 # WRITE
 # Replace something to a file, if not existing, file will be createt
 # Replace $VARIABLES by its content.
@@ -92,7 +96,7 @@ $TESTCOMMAND
 __EOF__
 
 
-################################################################################
+###################################
 # WRITE
 # Replace something to a file, if not existing, file will be createt
 # No respect to $VARIABLES.
@@ -120,3 +124,4 @@ $TESTCOMMAND
 `$TESTCOMMAND`
 __EOF__
 
+################################################################################

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: howto | Leitstelle]]></title>
   <link href="http://leitstelle.github.io/blog/categories/howto/atom.xml" rel="self"/>
   <link href="http://leitstelle.github.io/"/>
-  <updated>2014-08-10T20:01:20+02:00</updated>
+  <updated>2014-08-10T22:01:16+02:00</updated>
   <id>http://leitstelle.github.io/</id>
   <author>
     <name><![CDATA[Frank Zisko]]></name>
@@ -24,9 +24,11 @@
 
 <h2>tl;dr</h2>
 
-<p>Use the (Fire-And-Forget) FAF-Script. But caution: This script expect a not configured setup. In case of doubt this will do add an new config to an existing one (just Python and Ruby), unconfigure your system (just Python and Ruby), or burn your existing database (just Gitlab) &hellip;. but nothing more.</p>
+<p>Use the (Fire-And-Forget) FAF-Script. But caution: This script expect a not configured setup. In case of doubt this will add a new config to an existing one (just Python and Ruby), unconfigure your system (just Python and Ruby), or burn your existing database (just Gitlab) &hellip;. but nothing more.</p>
 
 <p>Read the script bevor you run it, please! (Or run it on an empty account. ☺ )</p>
+
+<h3>Gitlab with Uberspace Ruby</h3>
 
 <pre><code>wget -O ${HOME}/gitlab-install.sh https://leitstelle.github.io/downloads/code/2014/gitlab-install.sh
 cd ${HOME}
@@ -34,12 +36,20 @@ chmod u+x gitlab-install.sh
 gitlab-install.sh
 </code></pre>
 
+<h3>Gitlab with rbenv Ruby</h3>
+
+<pre><code>wget -O ${HOME}/gitlab-install.sh https://leitstelle.github.io/downloads/code/2014/gitlab-install-with-rbenv.sh
+cd ${HOME}
+chmod u+x gitlab-install.sh
+gitlab-install.sh
+</code></pre>
+
 <h2>Info</h2>
 
-<pre><code>Uberspace-Username -&gt; ${USER}, &lt;ubername&gt; or user
-Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or host
-~/workspace/$projectname # Space for projects.
-~/workspace/repositories # Git repo directory.
+<pre><code>Uberspace-Username       -&gt; ${USER}, &lt;ubername&gt; or user
+Uberspace-Severname      -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or host
+~/workspace/$projectname -&gt; Space for projects. (gitlab, gitlab-shell, gitlab-satellites)
+~/workspace/repositories -&gt; Git repo directory.
 </code></pre>
 
 <h2>Installation</h2>
@@ -614,63 +624,6 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or 
 <span class='line-number'>567</span>
 <span class='line-number'>568</span>
 <span class='line-number'>569</span>
-<span class='line-number'>570</span>
-<span class='line-number'>571</span>
-<span class='line-number'>572</span>
-<span class='line-number'>573</span>
-<span class='line-number'>574</span>
-<span class='line-number'>575</span>
-<span class='line-number'>576</span>
-<span class='line-number'>577</span>
-<span class='line-number'>578</span>
-<span class='line-number'>579</span>
-<span class='line-number'>580</span>
-<span class='line-number'>581</span>
-<span class='line-number'>582</span>
-<span class='line-number'>583</span>
-<span class='line-number'>584</span>
-<span class='line-number'>585</span>
-<span class='line-number'>586</span>
-<span class='line-number'>587</span>
-<span class='line-number'>588</span>
-<span class='line-number'>589</span>
-<span class='line-number'>590</span>
-<span class='line-number'>591</span>
-<span class='line-number'>592</span>
-<span class='line-number'>593</span>
-<span class='line-number'>594</span>
-<span class='line-number'>595</span>
-<span class='line-number'>596</span>
-<span class='line-number'>597</span>
-<span class='line-number'>598</span>
-<span class='line-number'>599</span>
-<span class='line-number'>600</span>
-<span class='line-number'>601</span>
-<span class='line-number'>602</span>
-<span class='line-number'>603</span>
-<span class='line-number'>604</span>
-<span class='line-number'>605</span>
-<span class='line-number'>606</span>
-<span class='line-number'>607</span>
-<span class='line-number'>608</span>
-<span class='line-number'>609</span>
-<span class='line-number'>610</span>
-<span class='line-number'>611</span>
-<span class='line-number'>612</span>
-<span class='line-number'>613</span>
-<span class='line-number'>614</span>
-<span class='line-number'>615</span>
-<span class='line-number'>616</span>
-<span class='line-number'>617</span>
-<span class='line-number'>618</span>
-<span class='line-number'>619</span>
-<span class='line-number'>620</span>
-<span class='line-number'>621</span>
-<span class='line-number'>622</span>
-<span class='line-number'>623</span>
-<span class='line-number'>624</span>
-<span class='line-number'>625</span>
-<span class='line-number'>626</span>
 </pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/usr/bin/env bash</span>
 </span><span class='line'>
 </span><span class='line'><span class="c"># Init. Use it: pause &#39;Press [Enter] key to continue...&#39;</span>
@@ -698,8 +651,8 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or 
 </span><span class='line'><span class="c"># Git 2.0.4</span>
 </span><span class='line'><span class="c"># Redis 2.8.13</span>
 </span><span class='line'><span class="c"># Python 2.7.3</span>
-</span><span class='line'><span class="c"># Ruby 2.1.2</span>
-</span><span class='line'><span class="c">#   via rbenv 0.4.0</span>
+</span><span class='line'><span class="c"># Ruby 2.1.2 via rbenv 0.4.0</span>
+</span><span class='line'><span class="c"># Ruby 2.1.1 via uberspace</span>
 </span><span class='line'>
 </span><span class='line'>
 </span><span class='line'><span class="c">### Python ### #################################################################</span>
@@ -746,89 +699,31 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or 
 </span><span class='line'>
 </span><span class='line'>
 </span><span class='line'><span class="c">### Ruby ### ###################################################################</span>
-</span><span class='line'><span class="k">if</span> <span class="o">[</span> -d <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;The directory ~/.rbenv already exists. So we do nothing.&quot;</span>
-</span><span class='line'>	pause <span class="s1">&#39;Press [Enter] key to continue... or Ctl+C to abort installation.&#39;</span>
-</span><span class='line'><span class="k">else</span>
-</span><span class='line'>	<span class="c"># Git checkout.</span>
-</span><span class='line'>    	git clone https://github.com/sstephenson/rbenv.git <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv
-</span><span class='line'>
-</span><span class='line'>	<span class="c"># Update.</span>
-</span><span class='line'>	<span class="c">#cd ${HOME}/.rbenv</span>
-</span><span class='line'>	<span class="c">#git pull</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># Activate rbenv.</span>
+</span><span class='line'><span class="c"># From uberspace.</span>
 </span><span class='line'>cat <span class="s">&lt;&lt; &#39;__EOF__&#39; &gt;&gt; ${HOME}/.bash_profile</span>
 </span><span class='line'>
-</span><span class='line'><span class="s">### rbenv ###</span>
-</span><span class='line'><span class="s">export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;</span>
-</span><span class='line'><span class="s">export PATH=&quot;$HOME/.rbenv/shims:$PATH&quot;</span>
-</span><span class='line'><span class="s">eval &quot;$(rbenv init -)&quot;</span>
+</span><span class='line'><span class="s">### Ruby ###</span>
+</span><span class='line'><span class="s">export PATH=/package/host/localhost/ruby-2.1.1/bin:$PATH</span>
+</span><span class='line'><span class="s">export PATH=$HOME/.gem/ruby/2.1.0/bin:$PATH</span>
 </span><span class='line'><span class="s">__EOF__</span>
 </span><span class='line'>
-</span><span class='line'><span class="c"># Don&#39;t forget bashrc.</span>
 </span><span class='line'>cat <span class="s">&lt;&lt; &#39;__EOF__&#39; &gt;&gt; ${HOME}/.bashrc</span>
 </span><span class='line'>
-</span><span class='line'><span class="s">### rbenv ###</span>
-</span><span class='line'><span class="s">export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;</span>
-</span><span class='line'><span class="s">export PATH=&quot;$HOME/.rbenv/shims:$PATH&quot;</span>
-</span><span class='line'><span class="s">eval &quot;$(rbenv init -)&quot;</span>
+</span><span class='line'><span class="s">### Ruby ###</span>
+</span><span class='line'><span class="s">export PATH=/package/host/localhost/ruby-2.1.1/bin:$PATH</span>
+</span><span class='line'><span class="s">export PATH=$HOME/.gem/ruby/2.1.0/bin:$PATH</span>
 </span><span class='line'><span class="s">__EOF__</span>
-</span><span class='line'>	
-</span><span class='line'>	<span class="c"># Activate profile changes</span>
-</span><span class='line'>	. <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.bash_profile
-</span><span class='line'>	
-</span><span class='line'>	<span class="c"># Check rbenv.</span>
-</span><span class='line'>	<span class="nb">type </span>rbenv
-</span><span class='line'>	
-</span><span class='line'>	<span class="c"># Install ruby-build - The `rbenv install` command.</span>
-</span><span class='line'>	git clone https://github.com/sstephenson/ruby-build.git <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv/plugins/ruby-build
-</span><span class='line'>	<span class="c"># Install rbenv-gem-rehash - The auto `rbenv rehash` when installing new gems.</span>
-</span><span class='line'>	git clone https://github.com/sstephenson/rbenv-gem-rehash.git <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv/plugins/rbenv-gem-rehash
-</span><span class='line'>	
-</span><span class='line'>	<span class="c"># List available installations.</span>
-</span><span class='line'>	<span class="c">#rbenv install --list</span>
-</span><span class='line'>	
-</span><span class='line'>	<span class="c"># Install ruby (need some time).</span>
-</span><span class='line'>	rbenv install 2.1.2
-</span><span class='line'>	rbenv install 1.9.3-p547
 </span><span class='line'>
-</span><span class='line'>	<span class="c"># Set global ruby version.</span>
-</span><span class='line'>	rbenv global 2.1.2
-</span><span class='line'>	<span class="c"># Rehash rbenv. This write changes into ~/.rbenv/shims. </span>
-</span><span class='line'>	<span class="c"># Important if gems provide some new bins.</span>
-</span><span class='line'>	<span class="c"># Or the environment changes.</span>
-</span><span class='line'>	rbenv rehash
+</span><span class='line'><span class="c"># To install all gems into user account. </span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;gem: --user-install --no-rdoc --no-ri&quot;</span> &gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.gemrc
 </span><span class='line'>
-</span><span class='line'>	<span class="c"># Hooks rbenv into the shell. </span>
-</span><span class='line'>	<span class="c"># Already happend after `. ~/.bash_profile`.</span>
-</span><span class='line'>	<span class="c"># Use `rbenv init -` to see more informations.</span>
-</span><span class='line'>	<span class="c">#rbenv init</span>
-</span><span class='line'>	
-</span><span class='line'>	<span class="c"># Print rbenv used ruby version.</span>
-</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;rbenv version:&quot;</span>
-</span><span class='line'>	rbenv version
-</span><span class='line'>	
-</span><span class='line'>	<span class="c"># Install options for gem.</span>
-</span><span class='line'>	<span class="c"># Old: echo &quot;gem: --user-install --no-rdoc --no-ri&quot; &gt; ~/.gemrc</span>
-</span><span class='line'>	<span class="c"># Do not use the `--user-install` option! This will install gems into `~/.gem` dir and not into the rbenv 	version specific folder!</span>
-</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;gem: --no-rdoc --no-ri&quot;</span> &gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.gemrc
+</span><span class='line'>. <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.bash_profile
 </span><span class='line'>
-</span><span class='line'>	<span class="c"># Install bundler for both installed versions.</span>
-</span><span class='line'>	<span class="c"># For 1.9.3</span>
-</span><span class='line'>	rbenv shell 1.9.3-p547
-</span><span class='line'>	gem install bundler
-</span><span class='line'>	<span class="c"># For 2.1.2</span>
-</span><span class='line'>	rbenv shell 2.1.2
-</span><span class='line'>	gem install bundler
-</span><span class='line'>	<span class="c"># Leave rbenv shell</span>
-</span><span class='line'>	rbenv shell --unset
-</span><span class='line'><span class="k">fi</span>
 </span><span class='line'>
 </span><span class='line'><span class="c">### Gitlab Shell ### ###########################################################</span>
 </span><span class='line'>git clone https://gitlab.com/gitlab-org/gitlab-shell.git <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-shell
 </span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-shell
-</span><span class='line'>rbenv <span class="nb">local </span>2.1.2
+</span><span class='line'><span class="c">#rbenv local 2.1.2</span>
 </span><span class='line'>git fetch origin <span class="o">&amp;&amp;</span> git reset --hard <span class="k">$(</span>git describe v1.9.6 <span class="o">||</span> git describe origin/v1.9.6<span class="k">)</span>
 </span><span class='line'>
 </span><span class='line'>cat &gt; <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-shell/config.yml <span class="s">&lt;&lt;__EOF__</span>
@@ -871,7 +766,7 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or 
 </span><span class='line'><span class="c">### GitLab ### #################################################################</span>
 </span><span class='line'>git clone https://gitlab.com/gitlab-org/gitlab-ce.git -b 7-1-stable <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab
 </span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab
-</span><span class='line'>rbenv <span class="nb">local </span>2.1.2
+</span><span class='line'><span class="c">#rbenv local 2.1.2</span>
 </span><span class='line'>
 </span><span class='line'><span class="c"># Some folders</span>
 </span><span class='line'>mkdir -p log
@@ -910,7 +805,7 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or 
 </span><span class='line'><span class="s">    https: true</span>
 </span><span class='line'>
 </span><span class='line'><span class="s">    user: ${USER}</span>
-</span><span class='line'><span class="s">    email_from: hq@${DOMAINNAME}</span>
+</span><span class='line'><span class="s">    email_from: ${USER}@${DOMAINNAME}</span>
 </span><span class='line'>
 </span><span class='line'><span class="s">    ## User settings</span>
 </span><span class='line'><span class="s">    default_projects_limit: 10</span>
@@ -1059,7 +954,7 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or 
 </span><span class='line'>
 </span><span class='line'><span class="s">working_directory &quot;${WORKSPACE}/gitlab&quot;</span>
 </span><span class='line'>
-</span><span class='line'><span class="s">listen &quot;/home/hq/workspace/gitlab/tmp/sockets/gitlab.socket&quot;, :backlog =&gt; 64</span>
+</span><span class='line'><span class="s">listen &quot;${WORKSPACE}/gitlab/tmp/sockets/gitlab.socket&quot;, :backlog =&gt; 64</span>
 </span><span class='line'><span class="s">listen &quot;127.0.0.1:${INTERNPORT}&quot;, :tcp_nopush =&gt; true</span>
 </span><span class='line'>
 </span><span class='line'><span class="s">timeout 30</span>
@@ -1113,6 +1008,7 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or 
 </span><span class='line'>cp config/initializers/rack_attack.rb.example config/initializers/rack_attack.rb
 </span><span class='line'>
 </span><span class='line'><span class="c"># Production environment.</span>
+</span><span class='line'>cp --force config/environments/production.rb config/environments/production.rb.bak
 </span><span class='line'>cat &gt; config/environments/production.rb <span class="s">&lt;&lt;__EOF__</span>
 </span><span class='line'><span class="s">Gitlab::Application.configure do</span>
 </span><span class='line'><span class="s">  # Settings specified here will take precedence over those in config/application.rb</span>
@@ -1226,7 +1122,7 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or 
 </span><span class='line'>chmod o-rwx <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab/config/database.yml
 </span><span class='line'>
 </span><span class='line'>
-</span><span class='line'><span class="c">### Install ### ################################################################</span>
+</span><span class='line'><span class="c">### Gitlab Install ### #########################################################</span>
 </span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab
 </span><span class='line'><span class="c"># CentOS 5? cat /etc/*-release</span>
 </span><span class='line'><span class="c"># Then do also: bundle config build.charlock_holmes --with-icu-dir=/package/host/localhost/icu4c</span>
@@ -1243,7 +1139,7 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or 
 </span><span class='line'><span class="c"># 	password......5iveL!fe</span>
 </span><span class='line'>
 </span><span class='line'>
-</span><span class='line'><span class="c">### Initscript ### #############################################################</span>
+</span><span class='line'><span class="c">### Gitlab initscript ### ######################################################</span>
 </span><span class='line'><span class="c"># Be aware, this starter is not good to use with Uberspace service.</span>
 </span><span class='line'><span class="c"># Default variables file.</span>
 </span><span class='line'>mkdir -p <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/etc/default
@@ -1515,7 +1411,7 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or 
 </span><span class='line'>
 </span><span class='line'>&lt;h3&gt;Ruby&lt;/h3&gt;
 </span><span class='line'>
-</span><span class='line'>&lt;p&gt;export <span class="nv">PATH</span><span class="o">=</span>/package/host/localhost/ruby-2.1.1/bin:<span class="nv">$PATH</span>
+</span><span class='line'>&lt;p&gt;export <span class="nv">PATH</span><span class="o">=</span>/package/host/localhost/ruby-2.1.2/bin:<span class="nv">$PATH</span>
 </span><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$HOME</span>/.gem/ruby/2.1.0/bin:<span class="nv">$PATH</span>
 </span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;&lt;/p&gt;
 </span><span class='line'>
@@ -1856,6 +1752,27 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or 
 </span><span class='line'>&lt;p&gt;./bin/install
 </span></code></pre></td></tr></table></div></figure></p>
 
+<p> If you use rbenv change system ruby path to your path.
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Change <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-shell/hooks/update&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;#!/usr/bin/env ruby  -&gt;  <span class="c">#!${HOME}/.rbenv/shims/ruby&lt;/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Old: sed -i -e <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="nv">s</span><span class="o">=</span><span class="se">\/</span>usr<span class="se">\/</span>bin<span class="se">\/</span>env <span class="nv">ruby</span><span class="o">=</span><span class="k">${</span><span class="nv">HOME</span><span class="k">}</span><span class="se">\/</span>.rbenv<span class="se">\/</span>shims<span class="se">\/</span><span class="nv">ruby</span><span class="o">=</span>g<span class="p">&amp;</span>rdquo<span class="p">;</span> <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-shell/hooks/update&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;sed -i -e <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="nv">s</span><span class="o">=</span><span class="se">\/</span>usr<span class="se">\/</span>bin<span class="se">\/</span>env <span class="nv">ruby</span><span class="o">=</span><span class="k">$(</span>which ruby<span class="k">)</span><span class="o">=</span>g<span class="p">&amp;</span>rdquo<span class="p">;</span> <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-shell/hooks/update
+</span></code></pre></td></tr></table></div></figure></p>
+
 <!--########################################-->
 
 
@@ -1918,6 +1835,12 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or 
 </span></code></pre></td></tr></table></div></figure></p>
 
 <h4>Config files</h4>
+
+<ul>
+<li>Why I don&rsquo;t post just the config files instead posting cat commands?</li>
+<li>Well, you don&rsquo;t need to keep in mind to every thing you have to change. Run this commands and every thing should be fine.</li>
+</ul>
+
 
 <p><figure class='code'><figcaption><span>gitlab.yml </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -2113,7 +2036,7 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or 
 </span><span class='line'>    &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https:&quot;</span>&gt;https:&lt;/a&gt; <span class="nb">true</span>&lt;/p&gt;
 </span><span class='line'>
 </span><span class='line'>&lt;pre&gt;&lt;code&gt;user: <span class="k">${</span><span class="nv">USER</span><span class="k">}</span>
-</span><span class='line'>email_from: hq@<span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>
+</span><span class='line'>email_from: <span class="k">${</span><span class="nv">USER</span><span class="k">}</span>@<span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="c">## User settings</span>
 </span><span class='line'>default_projects_limit: 10
@@ -2380,6 +2303,46 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or 
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Config Redis connection.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cat &gt; config/resque.yml <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;
+</span><span class='line'>development: redis://localhost:6379
+</span><span class='line'><span class="nb">test</span>: redis://localhost:6379&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;production: redis://redis.example.com:6379&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;production: unix:<span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.redis/sock
+</span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><figure class='code'><figcaption><span>rack_attack.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Configure your rack.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cp config/initializers/rack_attack.rb.example config/initializers/rack_attack.rb
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><figure class='code'><figcaption><span>production.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
@@ -2465,40 +2428,12 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or 
 <span class='line-number'>95</span>
 <span class='line-number'>96</span>
 <span class='line-number'>97</span>
-<span class='line-number'>98</span>
-<span class='line-number'>99</span>
-<span class='line-number'>100</span>
-<span class='line-number'>101</span>
-<span class='line-number'>102</span>
-<span class='line-number'>103</span>
-<span class='line-number'>104</span>
-<span class='line-number'>105</span>
-<span class='line-number'>106</span>
-<span class='line-number'>107</span>
-<span class='line-number'>108</span>
-<span class='line-number'>109</span>
-<span class='line-number'>110</span>
-<span class='line-number'>111</span>
 </pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Config Redis connection.&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;cat &gt; config/resque.yml <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;
-</span><span class='line'>development: redis://localhost:6379
-</span><span class='line'><span class="nb">test</span>: redis://localhost:6379&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;production: redis://redis.example.com:6379&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;production: unix:<span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.redis/sock
-</span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Configure your rack.&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;cp config/initializers/rack_attack.rb.example config/initializers/rack_attack.rb&lt;/p&gt;
 </span><span class='line'>
 </span><span class='line'>&lt;h1&gt;Production environment.&lt;/h1&gt;
 </span><span class='line'>
-</span><span class='line'>&lt;p&gt;cat &gt; config/environments/production.rb <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;
+</span><span class='line'>&lt;p&gt;cp <span class="p">&amp;</span>ndash<span class="p">;</span>force config/environments/production.rb config/environments/production.rb.bak
+</span><span class='line'>cat &gt; config/environments/production.rb <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;
 </span><span class='line'>Gitlab::Application.configure <span class="k">do</span>
 </span><span class='line'>  <span class="c"># Settings specified here will take precedence over those in config/application.rb&lt;/p&gt;</span>
 </span><span class='line'>
@@ -2979,11 +2914,12 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or 
 <ul>
 <li>change in github-shell/hooks/update</li>
 <li><code>#!/usr/bin/env ruby</code> to <code>#!/home/&lt;user&gt;/.rbenv/shims/ruby</code></li>
+<li>-> Edit install script using $(which ruby)</li>
 </ul>
 </li>
 <li>You are not allowed to access master! remote: error: hook declined to update refs/heads/master</li>
 <li>In gitlab/config/gitlab.yml email_from has to include your uberspace username</li>
-<li>email_from: <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#x3a;&#117;&#x73;&#101;&#x72;&#64;&#x67;&#105;&#116;&#x6c;&#x61;&#x62;&#46;&#101;&#120;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#46;&#99;&#x6f;&#x6d;">&#117;&#x73;&#x65;&#x72;&#x40;&#103;&#x69;&#116;&#x6c;&#97;&#98;&#46;&#x65;&#120;&#97;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a></li>
+<li>email_from: <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#117;&#115;&#x65;&#114;&#x40;&#103;&#105;&#116;&#x6c;&#97;&#98;&#x2e;&#x65;&#x78;&#x61;&#109;&#x70;&#x6c;&#101;&#46;&#99;&#x6f;&#109;">&#117;&#x73;&#x65;&#x72;&#x40;&#x67;&#105;&#116;&#x6c;&#97;&#98;&#x2e;&#x65;&#120;&#x61;&#x6d;&#112;&#108;&#x65;&#x2e;&#x63;&#111;&#109;</a></li>
 <li>LoadError: cannot load such file &ndash; rb-inotify
 
 <ul>
