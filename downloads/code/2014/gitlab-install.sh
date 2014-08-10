@@ -10,9 +10,10 @@ DOMAINNAME="gitlab.example.com"
 INTERNPORT="54321"
 # Check availablebility of port.
 netstat -tulpen | grep ${INTERNPORT}
+#	No answer, if port is unused.
+
 WORKSPACE=${HOME}/workspace
 mkdir -p ${WORKSPACE}
-
 cd ${WORKSPACE}
 
 
