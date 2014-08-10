@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openbox_menu xmlns="http://openbox.org/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://openbox.org/
+                file:///usr/share/openbox/menu.xsd">
+
+<menu id="root-menu" label="Openbox 3">
+
+<!-- Start menu to display. -->
+
+  <item label="Terminal emulator">
+    <action name="Execute"><execute>x-terminal-emulator -T "Bash" -e /bin/bash --login</execute></action>
+  </item>
+  <item label="Appfinder">
+    <action name="Execute"><execute>xfce4-appfinder</execute></action>
+  </item>
+
+<separator/>
+
+<menu id="/Debian" />
+
+<menu id="desktop-app-menu"
+      label="Applications"
+      execute="openbox-menu gnome-applications.menu" /> 
+<!--      execute="openbox-menu lxde-applications.menu" /> -->
+<!--      execute="openbox-menu xfce-applications.menu" /> -->
+<!--      execute="openbox-menu xfce-settings-manager.menu" /> -->
+<!--      execute="openbox-menu gnome-applications.menu" /> -->
+<!--      execute="openbox-menu kde4-applications.menu" /> -->
+<!--      execute="openbox-menu kde4-information.menu" />-->
+
+<separator/>
+
+<menu id="ID-file" label="File processing">
+  <item label="Nautilus">
+    <action name="Execute"><execute>nautilus</execute></action>
+  </item>
+  <item label="Thunar">
+    <action name="Execute"><execute>thunar</execute></action>
+  </item>
+  <item label="PCManFM">
+    <action name="Execute"><execute>pcmanfm</execute></action>
+  </item>
+  <item label="ROX Filer">
+    <action name="Execute"><execute>rox</execute></action>
+  </item>
+  <item label="File-Roller">
+    <action name="Execute"><execute>file-roller</execute></action>
+  </item>
+  <item label="pyRenamer">
+    <action name="Execute"><execute>pyrenamer</execute></action>
+  </item>
+</menu>
+
+<menu id="ID-edit" label="Editors">
+  <item label="Gedit">
+    <action name="Execute"><execute>gedit</execute></action>
+  </item>
+</menu>
+
+<separator/>
+
+<menu id="ID-communication" label="Communication">
+  <item label="Evolution">
+    <action name="Execute"><execute>evolution</execute></action>
+  </item>
+  <item label="Pidgin">
+    <action name="Execute"><execute>pidgin</execute></action>
+  </item>
+  <item label="Seahorse">
+    <action name="Execute"><execute>seahorse</execute></action>
+  </item>
+</menu>
+
+<menu id="ID-internet" label="Internet">
+  <item label="Epiphany">
+    <action name="Execute"><execute>epiphany</execute></action>
+  </item>
+  <item label="Firefox">
+    <action name="Execute"><execute>/usr/bin/firefox</execute></action>
+  </item>
+  <item label="Chromium">
+    <action name="Execute"><execute>chromium</execute></action>
+  </item>
+</menu>
+
+<separator/>
+
+<menu id="ID-image-process" label="Image processing">
+  <item label="Gimp">
+    <action name="Execute"><execute>gimp</execute></action>
+  </item>
+  <item label="ImageJ">
+    <action name="Execute"><execute>imagej</execute></action>
+  </item>
+  <item label="Luminance HDR">
+    <action name="Execute"><execute>luminance-hdr</execute></action>
+  </item>
+</menu>
+
+<separator/>
+
+  <item label="Truecrypt">
+    <action name="Execute"><execute>/usr/bin/truecrypt</execute></action>
+  </item>
+
+<separator/>
+
+<separator/>
+
+<!--  Some more functions.  -->
+
+<menu id="ID-xscreensaver" label="Screensaver">
+  <item label="Xscreensaver - enable">
+    <action name="Execute"><execute>xscreensaver -no-splash</execute></action>
+  </item>
+  <item label="Xscreensaver - disable">
+    <action name="Execute"><execute>xscreensaver-command -exit</execute></action>
+  </item>
+  <item label="Xscreensaver - restart">
+    <action name="Execute"><execute>xscreensaver-command -restart</execute></action>
+  </item>
+  <item label="Xscreensaver - activate">
+    <action name="Execute"><execute>xscreensaver-command -activate</execute></action>
+  </item>
+  <item label="Xscreensaver - lock">
+    <action name="Execute"><execute>xscreensaver-command -lock</execute></action>
+  </item>
+  <item label="Xscreensaver - preferences">
+    <action name="Execute"><execute>xscreensaver-demo -prefs</execute></action>
+  </item>
+</menu>
+
+<menu id="client-list-menu" />
+
+<menu id="ID-wm" label="Desktop tools">
+  <item label="conky">
+    <action name="Execute"><execute>conky</execute></action>
+  </item>
+  <item label="fbpanel">
+    <action name="Execute"><execute>fbpanel</execute></action>
+  </item>
+  <item label="Kupfer">
+    <action name="Execute"><execute>kupfer --no-splash</execute></action>
+  </item>
+  <item label="Wallpaper">
+    <action name="Execute"><execute>feh --bg-scale '.wallpaper.jpg'</execute></action>
+  </item>
+</menu>
+
+<menu id="ID-openboxconfig" label="Openbox">
+  <item label="ObConf">
+    <action name="Execute"><execute>obconf</execute></action>
+  </item>
+  <item label="Reconfigure OB">
+    <action name="Reconfigure" />
+  </item>
+  <item label="Restart OB">
+    <action name="Restart" />
+  </item>
+<separator />
+  <item label="Edit Autostart">
+    <action name="Execute"><execute>gedit ~/.config/openbox/autostart</execute></action>
+  </item>
+  <item label="Edit Menu">
+    <action name="Execute"><execute>gedit ~/.config/openbox/menu.xml</execute></action>
+  </item>
+  <item label="Edit RC">
+    <action name="Execute"><execute>gedit ~/.config/openbox/rc.xml</execute></action>
+  </item>
+  <item label="Edit FbPanel Menu">
+    <action name="Execute"><execute>gedit ~/.config/fbpanel/default</execute></action>
+  </item>
+</menu>
+
+<separator />
+
+<menu id="ID-settings" label="Settings">
+  <item label="gnome-control-center">
+    <action name="Execute"><command>gnome-control-center</command></action>
+  </item>
+  <item label="dconf-editor">
+    <action name="Execute"><command>dconf-editor</command></action>
+  </item>
+  <item label="gconf-editor">
+    <action name="Execute"><command>gconf-editor</command></action>
+  </item>
+  <item label="system-config-printer">
+    <action name="Execute"><execute>system-config-printer</execute></action>
+  </item>
+  <item label="nm-connection-editor">
+    <action name="Execute"><execute>nm-connection-editor</execute></action>
+  </item>
+  <item label="network-admin">
+    <action name="Execute"><execute>network-admin</execute></action>
+  </item>
+<separator />
+</menu>
+
+  <item label="Gnome Settings Sound">
+    <action name="Execute"><command>gnome-control-center sound</command></action>
+  </item>
+  <item label="PA Vol Control">
+    <action name="Execute"><execute>pavucontrol</execute></action>
+  </item>
+
+<separator />
+
+  <item label="Exit">
+    <action name="Exit" />
+  </item>
+  <item label="Exit 2">
+    <action name="Execute"><command>/usr/lib/fbpanel/fbpanel/xlogout</command></action>
+  </item>
+  <item label="Reboot">
+    <action name="Execute"><command>dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Reboot</command></action>
+  </item>
+  <item label="Shutdown">
+    <action name="Execute"><command>dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop</command></action>
+  </item>
+
+<!-- End menu to display. -->
+
+</menu>
+
+</openbox_menu>

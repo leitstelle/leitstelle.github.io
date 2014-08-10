@@ -1,0 +1,87 @@
+# Place it into /etc/radicale/config (global)
+# or ~/.config/radicale/config (user)
+
+################################################################################
+
+[server]
+# CalDAV server hostnames separated by a comma
+# IPv4 syntax: address:port
+# IPv6 syntax: [address]:port
+# For example: 0.0.0.0:9999, [::]:9999
+# IPv6 adresses are configured to only allow IPv6 connections
+hosts = dav.domain.tld:12345
+# Daemon flag
+daemon = False
+# File storing the PID in daemon mode
+pid =
+# SSL flag, enable HTTPS protocol
+ssl = True
+# SSL certificate path
+certificate = /home/alice/.ssl/domain.tld.class3.crt
+# SSL private key
+key = /home/alice/.ssl/domain.tld.private.key
+# SSL Protocol used. See python's ssl module for available values
+protocol = PROTOCOL_SSLv23
+# Ciphers available. See python's ssl module for available ciphers
+ciphers =
+# Reverse DNS to resolve client address in logs
+dns_lookup = True
+# Root URL of Radicale (starting and ending with a slash)
+base_prefix = /
+# Message displayed in the client when a password is needed
+realm = Radicale - Password Required.
+
+################################################################################
+
+[encoding]
+# Encoding for responding requests
+request = utf-8
+# Encoding for storing local collections
+stock = utf-8
+
+################################################################################
+
+[auth]
+# Authentication method
+# Value: None | htpasswd | IMAP | LDAP | PAM | courier | http | remote_user | custom
+type = htpasswd
+# Htpasswd filename
+htpasswd_filename = /home/alice/.config/radicale/users
+# Htpasswd encryption method
+# Value: plain | sha1 | crypt
+htpasswd_encryption = sha1
+
+################################################################################
+
+[rights]
+# Rights backend
+# Value: None | authenticated | owner_only | owner_write | from_file | custom
+type = from_file
+# File for rights management from_file
+file = /home/alice/.config/radicale/rights
+
+################################################################################
+
+[storage]
+# Storage backend
+# Value: filesystem | multifilesystem | database | custom
+type = filesystem
+# Folder for storing local collections, created if not present
+filesystem_folder = /home/alice/.config/radicale/collections
+
+################################################################################
+
+[logging]
+# Logging configuration file
+# If no config is given, simple information is printed on the standard output
+# For more information about the syntax of the configuration file, see:
+# http://docs.python.org/library/logging.config.html
+config = /home/alice/.config/radicale/logging
+# Set the default logging level to debug
+debug = False
+# Store all environment variables (including those set in the shell)
+full_environment = False 
+
+################################################################################
+################################################################################
+

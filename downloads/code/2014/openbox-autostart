@@ -1,0 +1,86 @@
+#!/bin/sh
+#
+# These things are run when an Openbox X Session is started.
+# You may place a similar script in $HOME/.config/openbox/autostart
+# to run user-specific things.
+#
+
+###  M Y  S E T T I N G S  ###
+
+### KEYRING ###
+
+# Secret Storage Service.
+/usr/bin/gnome-keyring-daemon --start --components=secrets &
+# GPG Password Agent.
+/usr/bin/gnome-keyring-daemon --start --components=gpg &
+# SSH-Agent.
+/usr/bin/gnome-keyring-daemon --start --components=ssh &
+# Certificate and Key Storage.
+/usr/bin/gnome-keyring-daemon --start --components=pkcs11 &
+
+### BASIC SETTINGS ###
+
+# Screensaver.
+xscreensaver -no-splash &
+# Deactivate terminal beep.
+xset -b &
+# Numlock
+numlockx on &
+
+# XKB
+# AltGr.
+setxkbmap -variant altgr-intl &
+# Make a clear xkb
+#setxkbmap -option &
+# Deactivate caps lock key.
+setxkbmap -option ctrl:nocaps &
+# This remaps the Control_R keysym to Compose, so I can access glyphs like ½, ±, and é by typing “Ctrl 1 2” or “Ctrl + -" or "Ctrl e '“.
+setxkbmap -option compose:rctrl & 
+# Kill X Server
+setxkbmap -option terminate:ctrl_alt_bkspc &
+# €, most not need.
+#setxkbmap -option eurosign:e
+# No breaking space sign: AltGr+Space.
+# Using level3n rather than level3 lets type thin non-breaking spaces with Shift+AltGr+Space.
+setxkbmap -option nbsp:level3 &
+
+### SETTINGS DAEMON ###
+
+# XFCE settings daemon.
+#xfce-mcs-manager &
+# Gnome settings daemon.
+gnome-settings-daemon &
+
+### STYLE ###
+
+# Wallpaper.
+feh --bg-scale '.wallpaper.jpg' &
+# feh: --image-bg --no-fehbg --bg-center --bg-fill --bg-max --bg-scale --bg-tile --bg-tile 
+# Panel.
+fbpanel &
+# System monitor on desktop.
+conky &
+# Search and launch tool.
+#kupfer --no-splash &
+# Roll down terminal.
+tilda &
+
+### APPLETS ###
+
+# Network manager applet.
+#nm-applet &
+# GSettings Data Conversion.
+gsettings-data-convert &
+# Dbus.
+/usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation &
+# Print Queue Applet.
+system-config-printer-applet &
+# Files.
+nautilus -n &
+# Evolution Alarm Notify.
+/usr/lib/evolution/3.8/evolution-alarm-notify &
+# Pulse Audio Sound System.
+start-pulseaudio-x11 &
+# Zeitgeist Datahub.
+zeitgeist-datahub &
+

@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: pim | Leitstelle]]></title>
+  <link href="http://leitstelle.github.io/blog/categories/pim/atom.xml" rel="self"/>
+  <link href="http://leitstelle.github.io/"/>
+  <updated>2014-08-10T13:10:34+02:00</updated>
+  <id>http://leitstelle.github.io/</id>
+  <author>
+    <name><![CDATA[Frank Zisko]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Horde Webmailer]]></title>
+    <link href="http://leitstelle.github.io/blog/2014/2014-06-05-horde/"/>
+    <updated>2014-06-05T13:21:00+02:00</updated>
+    <id>http://leitstelle.github.io/blog/2014/horde</id>
+    <content type="html"><![CDATA[<p>Installationsanleitung für ein Uberspace-Nutzerkonto.</p>
+
+<h2>Installation</h2>
+
+<ul>
+<li>Man benötigt php. Der Rest läuft mit <a href="http://pear.php.net/">Pear</a> (<a href="https://de.wikipedia.org/wiki/PHP_Extension_and_Application_Repository">de.wikipedia.org</a>).</li>
+<li>&lsquo;${UBERNAME}&rsquo; kann so übernommen werden</li>
+<li>&lsquo;\&lt;UBERNAME>&rsquo; muss manuell mit dem eigenen Uberspace-Nutzernamen ersetzt werden.</li>
+</ul>
+
+
+<p><figure class='code'><figcaption><span>Horde installation. </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/usr/bin/env bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Username&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;UBERNAME<span class="o">=</span><span class="k">$(</span>id -u -n<span class="k">)</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Create directory and database.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;mkdir ~/html/horde
+</span><span class='line'>mysql -e <span class="p">&amp;</span>ldquo<span class="p">;</span>CREATE DATABASE <span class="k">${</span><span class="nv">UBERNAME</span><span class="k">}</span>_horde<span class="p">;&amp;</span>rdquo<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Remind the mysql password:&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cat ~/.my.cnf&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Copy php.ini, <span class="k">if</span> not existing.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;test -f ~/etc/php.ini <span class="o">||</span> cp -a /package/host/localhost/php-<span class="nv">$PHPVERSION</span>/lib/php.ini ~/etc/&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Config php.ini.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;perl -pi -e <span class="p">&amp;</span>ldquo<span class="p">;</span>s<span class="p">|</span>^<span class="p">;</span>?include_path.*<span class="p">|</span><span class="nv">include_path</span><span class="o">=</span>.:<span class="nv">$HOME</span>/pear/php:/package/host/localhost/php-<span class="nv">$PHPVERSION</span>/lib/php<span class="p">|&amp;</span>rdquo<span class="p">;</span> ~/etc/php.ini&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;<span class="p">&amp;</span>ldquo<span class="p">;</span>Restart<span class="p">&amp;</span>rdquo<span class="p">;</span> php.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;killall -u <span class="k">${</span><span class="nv">UBERNAME</span><span class="k">}</span> php-cgi&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Configure PEAR.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;pear config-create ~ ~/.pearrc
+</span><span class='line'>pear channel-update pear.php.net
+</span><span class='line'><span class="nb">cd</span> ~/pear
+</span><span class='line'>pear install pear&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Install Horde.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;./pear channel-discover pear.horde.org
+</span><span class='line'>./pear install horde/horde_role
+</span><span class='line'>./pear run-scripts horde/horde_role&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Here you need to enter the installation directory.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;/home/&lt;UBERNAME&gt;/html/horde&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;For using your own domain make a symlink ln -s /home/<span class="k">${</span><span class="nv">UBERNAME</span><span class="k">}</span>/html/horde /var/www/virtual/<span class="k">${</span><span class="nv">UBERNAME</span><span class="k">}</span>/horde.domain.tld&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;./pear install -a -B horde/webmail&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Now it<span class="p">&amp;</span>rsquo<span class="p">;</span>s <span class="nb">time </span><span class="k">for</span> a little coffee.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;./webmail-install&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Here you need to give some informations.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;What database backend should we use?: mysql&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Username to connect to the database as* <span class="o">[]</span>: &lt;UBERNAME&gt;&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Password to connect with: Remember the mysql password&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;How should we connect to the database?: unix&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Location of UNIX socket <span class="o">[]</span>: &lt;ENTER&gt;&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Database name to use* <span class="o">[]</span>: &lt;UBERNAME&gt;_horde&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Internally used charset* <span class="o">[</span>utf-8<span class="o">]</span>: utf-8&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Use SSL to connect to the server?: <span class="o">(</span>1<span class="o">)</span> Yes&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Certification Authority to use <span class="k">for</span> SSL connections <span class="o">[]</span>: &lt;ENTER&gt;&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Split reads to a different server?: <span class="nb">false</span>&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Specify an existing mail user who you want to give administrator permissions <span class="o">(</span>optional<span class="o">)</span>: &lt;UBERNAME&gt;&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Finish.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Web: <span class="k">${</span><span class="nv">UBERNAME</span><span class="k">}</span>.<span class="k">${</span><span class="nv">UBERSERVER</span><span class="k">}</span>.uberspace.de/horde/&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><figure class='code'><figcaption><span>Horde upgrade. </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/usr/bin/env bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;pear upgrade -a -B -c horde
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><figure class='code'><figcaption><span>Horde uninstallation. </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/usr/bin/env bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Uninstall horde.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;pear uninstall &lt;code&gt;pear list -c horde <span class="p">|</span> tail -n +4 <span class="p">|</span> awk <span class="s1">&#39;{ print &quot;horde/&quot;$1 }&#39;</span>&lt;/code&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Sometimes it doesn<span class="p">&amp;</span>rsquo<span class="p">;</span>t work, so use:&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;pear/pear uninstall &lt;code&gt;pear/pear list -c horde <span class="p">|</span> tail -n +4 <span class="p">|</span> awk <span class="s1">&#39;{ print &quot;horde/&quot;$1 }&#39;</span>&lt;/code&gt;&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Drop database. Be careful!&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;If you want to use it again <span class="o">(</span>e.g. reinstallation<span class="o">)</span>, DO NOT DO THIS!!!&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;mysql -e <span class="p">&amp;</span>ldquo<span class="p">;</span>DROP DATABASE <span class="k">${</span><span class="nv">USER</span><span class="k">}</span>_horde<span class="p">;&amp;</span>rdquo<span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Start]]></title>
+    <link href="http://leitstelle.github.io/blog/2013/2013-09-01-start/"/>
+    <updated>2013-09-01T15:50:00+02:00</updated>
+    <id>http://leitstelle.github.io/blog/2013/start</id>
+    <content type="html"><![CDATA[<h2>Heute ist es soweit.</h2>
+
+<p>Mit der Leitstelle startet mein Blog mit den Themen, die mir während meiner Transition vom Pfuscher zum Hacker begegnen. Wenn der Übergang auf die andere Seite vollzogen ist, werde ich hoffentlich nicht aufhören. ;-)</p>
+
+<h2>Themen</h2>
+
+<ul>
+<li><a href="/blog/categories/howto">How To</a> / <a href="/blog/categories/diy">Do It Yourself</a> (DIY)</li>
+<li><a href="/blog/categories/start">Einstieg</a> / <a href="(/blog/categories/install">Installation</a>sanleitungen</li>
+<li><p><a href="/blog/categories/observe">Observe</a>. <a href="/blog/categories/hack">Hack</a>. <a href="/blog/categories/make">Make</a>.</p></li>
+<li><p><a href="/blog/categories/hardware">Hardware</a></p></li>
+<li><a href="/blog/categories/computer">Computer</a> / <a href="/blog/categories/server">Server</a> / <a href="/blog/categories/pc">PC</a> / <a href="/blog/categories/mobile">Mobile</a></li>
+<li><a href="/blog/categories/sync">Sync</a>ronisation / <a href="/blog/categories/pim">PIM</a> / <a href="/blog/categories/communication">Kommunikation</a></li>
+<li><p><a href="/blog/categories/security">Computersicherheit</a> / <a href="/blog/categories/crime">Computerkriminalität</a> / <a href="/blog/categories/safety">Sicherheit</a></p></li>
+<li><p><a href="/blog/categories/linux">Linux</a> / <a href="/blog/categories/software">Software</a></p></li>
+<li><p><a href="/blog/categories/politics">Politik</a> / <a href="/blog/categories/society">Gesellschaft</a></p></li>
+<li>Und natürlich vieles, was dazwischen liegt</li>
+</ul>
+
+
+<h2>Zielgruppe</h2>
+
+<ul>
+<li>Leute die mal was nachschlagen wollen.</li>
+<li>Fortgeschrittenere Nutzer von GNU/Linux, Handwerk, &hellip;</li>
+<li>Ab und an mal Neulinge.</li>
+</ul>
+
+
+<h2>Kritik</h2>
+
+<ul>
+<li>Den rechtlichen Schwierigkeiten, durch Kommentare, auch wenn ich im Ausland für das Ausland (<a href="https://github.com/">github.com</a>, USA) produziere und hoste, setzte ich mich nicht aus. Vielleicht fällt mir noch etwas anderes ein.</li>
+<li>Eine (für mich) anonyme Kontaktmöglichkeit überlege ich mir noch.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

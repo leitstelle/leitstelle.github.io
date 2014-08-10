@@ -1,0 +1,2978 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: howto | Leitstelle]]></title>
+  <link href="http://leitstelle.github.io/blog/categories/howto/atom.xml" rel="self"/>
+  <link href="http://leitstelle.github.io/"/>
+  <updated>2014-08-10T13:10:34+02:00</updated>
+  <id>http://leitstelle.github.io/</id>
+  <author>
+    <name><![CDATA[Frank Zisko]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[GitLab]]></title>
+    <link href="http://leitstelle.github.io/blog/2014/2014-08-07-gitlab/"/>
+    <updated>2014-08-07T13:14:00+02:00</updated>
+    <id>http://leitstelle.github.io/blog/2014/gitlab</id>
+    <content type="html"><![CDATA[<h2>About</h2>
+
+<p>Installation von GitLab auf einem Uberspace.</p>
+
+<h2>tl;dr</h2>
+
+<ul>
+<li>Folgt.</li>
+</ul>
+
+
+<h2>Konfiguration</h2>
+
+<pre><code>Uberspace-Username -&gt; ${USER}, &lt;ubername&gt; oder user
+Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; oder host
+~/workspace/$projectname # Dort werden die Quellen installiert.
+~/workspace/repositories # Git-Repo-Verzeichnis.
+</code></pre>
+
+<h2>Installation</h2>
+
+<p>Fire And Forget Script (FAFS):
+<figure class='code'><figcaption><span> (gitlab-install.sh)</span> <a href='/downloads/code/2014/gitlab-install.sh'>download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+<span class='line-number'>176</span>
+<span class='line-number'>177</span>
+<span class='line-number'>178</span>
+<span class='line-number'>179</span>
+<span class='line-number'>180</span>
+<span class='line-number'>181</span>
+<span class='line-number'>182</span>
+<span class='line-number'>183</span>
+<span class='line-number'>184</span>
+<span class='line-number'>185</span>
+<span class='line-number'>186</span>
+<span class='line-number'>187</span>
+<span class='line-number'>188</span>
+<span class='line-number'>189</span>
+<span class='line-number'>190</span>
+<span class='line-number'>191</span>
+<span class='line-number'>192</span>
+<span class='line-number'>193</span>
+<span class='line-number'>194</span>
+<span class='line-number'>195</span>
+<span class='line-number'>196</span>
+<span class='line-number'>197</span>
+<span class='line-number'>198</span>
+<span class='line-number'>199</span>
+<span class='line-number'>200</span>
+<span class='line-number'>201</span>
+<span class='line-number'>202</span>
+<span class='line-number'>203</span>
+<span class='line-number'>204</span>
+<span class='line-number'>205</span>
+<span class='line-number'>206</span>
+<span class='line-number'>207</span>
+<span class='line-number'>208</span>
+<span class='line-number'>209</span>
+<span class='line-number'>210</span>
+<span class='line-number'>211</span>
+<span class='line-number'>212</span>
+<span class='line-number'>213</span>
+<span class='line-number'>214</span>
+<span class='line-number'>215</span>
+<span class='line-number'>216</span>
+<span class='line-number'>217</span>
+<span class='line-number'>218</span>
+<span class='line-number'>219</span>
+<span class='line-number'>220</span>
+<span class='line-number'>221</span>
+<span class='line-number'>222</span>
+<span class='line-number'>223</span>
+<span class='line-number'>224</span>
+<span class='line-number'>225</span>
+<span class='line-number'>226</span>
+<span class='line-number'>227</span>
+<span class='line-number'>228</span>
+<span class='line-number'>229</span>
+<span class='line-number'>230</span>
+<span class='line-number'>231</span>
+<span class='line-number'>232</span>
+<span class='line-number'>233</span>
+<span class='line-number'>234</span>
+<span class='line-number'>235</span>
+<span class='line-number'>236</span>
+<span class='line-number'>237</span>
+<span class='line-number'>238</span>
+<span class='line-number'>239</span>
+<span class='line-number'>240</span>
+<span class='line-number'>241</span>
+<span class='line-number'>242</span>
+<span class='line-number'>243</span>
+<span class='line-number'>244</span>
+<span class='line-number'>245</span>
+<span class='line-number'>246</span>
+<span class='line-number'>247</span>
+<span class='line-number'>248</span>
+<span class='line-number'>249</span>
+<span class='line-number'>250</span>
+<span class='line-number'>251</span>
+<span class='line-number'>252</span>
+<span class='line-number'>253</span>
+<span class='line-number'>254</span>
+<span class='line-number'>255</span>
+<span class='line-number'>256</span>
+<span class='line-number'>257</span>
+<span class='line-number'>258</span>
+<span class='line-number'>259</span>
+<span class='line-number'>260</span>
+<span class='line-number'>261</span>
+<span class='line-number'>262</span>
+<span class='line-number'>263</span>
+<span class='line-number'>264</span>
+<span class='line-number'>265</span>
+<span class='line-number'>266</span>
+<span class='line-number'>267</span>
+<span class='line-number'>268</span>
+<span class='line-number'>269</span>
+<span class='line-number'>270</span>
+<span class='line-number'>271</span>
+<span class='line-number'>272</span>
+<span class='line-number'>273</span>
+<span class='line-number'>274</span>
+<span class='line-number'>275</span>
+<span class='line-number'>276</span>
+<span class='line-number'>277</span>
+<span class='line-number'>278</span>
+<span class='line-number'>279</span>
+<span class='line-number'>280</span>
+<span class='line-number'>281</span>
+<span class='line-number'>282</span>
+<span class='line-number'>283</span>
+<span class='line-number'>284</span>
+<span class='line-number'>285</span>
+<span class='line-number'>286</span>
+<span class='line-number'>287</span>
+<span class='line-number'>288</span>
+<span class='line-number'>289</span>
+<span class='line-number'>290</span>
+<span class='line-number'>291</span>
+<span class='line-number'>292</span>
+<span class='line-number'>293</span>
+<span class='line-number'>294</span>
+<span class='line-number'>295</span>
+<span class='line-number'>296</span>
+<span class='line-number'>297</span>
+<span class='line-number'>298</span>
+<span class='line-number'>299</span>
+<span class='line-number'>300</span>
+<span class='line-number'>301</span>
+<span class='line-number'>302</span>
+<span class='line-number'>303</span>
+<span class='line-number'>304</span>
+<span class='line-number'>305</span>
+<span class='line-number'>306</span>
+<span class='line-number'>307</span>
+<span class='line-number'>308</span>
+<span class='line-number'>309</span>
+<span class='line-number'>310</span>
+<span class='line-number'>311</span>
+<span class='line-number'>312</span>
+<span class='line-number'>313</span>
+<span class='line-number'>314</span>
+<span class='line-number'>315</span>
+<span class='line-number'>316</span>
+<span class='line-number'>317</span>
+<span class='line-number'>318</span>
+<span class='line-number'>319</span>
+<span class='line-number'>320</span>
+<span class='line-number'>321</span>
+<span class='line-number'>322</span>
+<span class='line-number'>323</span>
+<span class='line-number'>324</span>
+<span class='line-number'>325</span>
+<span class='line-number'>326</span>
+<span class='line-number'>327</span>
+<span class='line-number'>328</span>
+<span class='line-number'>329</span>
+<span class='line-number'>330</span>
+<span class='line-number'>331</span>
+<span class='line-number'>332</span>
+<span class='line-number'>333</span>
+<span class='line-number'>334</span>
+<span class='line-number'>335</span>
+<span class='line-number'>336</span>
+<span class='line-number'>337</span>
+<span class='line-number'>338</span>
+<span class='line-number'>339</span>
+<span class='line-number'>340</span>
+<span class='line-number'>341</span>
+<span class='line-number'>342</span>
+<span class='line-number'>343</span>
+<span class='line-number'>344</span>
+<span class='line-number'>345</span>
+<span class='line-number'>346</span>
+<span class='line-number'>347</span>
+<span class='line-number'>348</span>
+<span class='line-number'>349</span>
+<span class='line-number'>350</span>
+<span class='line-number'>351</span>
+<span class='line-number'>352</span>
+<span class='line-number'>353</span>
+<span class='line-number'>354</span>
+<span class='line-number'>355</span>
+<span class='line-number'>356</span>
+<span class='line-number'>357</span>
+<span class='line-number'>358</span>
+<span class='line-number'>359</span>
+<span class='line-number'>360</span>
+<span class='line-number'>361</span>
+<span class='line-number'>362</span>
+<span class='line-number'>363</span>
+<span class='line-number'>364</span>
+<span class='line-number'>365</span>
+<span class='line-number'>366</span>
+<span class='line-number'>367</span>
+<span class='line-number'>368</span>
+<span class='line-number'>369</span>
+<span class='line-number'>370</span>
+<span class='line-number'>371</span>
+<span class='line-number'>372</span>
+<span class='line-number'>373</span>
+<span class='line-number'>374</span>
+<span class='line-number'>375</span>
+<span class='line-number'>376</span>
+<span class='line-number'>377</span>
+<span class='line-number'>378</span>
+<span class='line-number'>379</span>
+<span class='line-number'>380</span>
+<span class='line-number'>381</span>
+<span class='line-number'>382</span>
+<span class='line-number'>383</span>
+<span class='line-number'>384</span>
+<span class='line-number'>385</span>
+<span class='line-number'>386</span>
+<span class='line-number'>387</span>
+<span class='line-number'>388</span>
+<span class='line-number'>389</span>
+<span class='line-number'>390</span>
+<span class='line-number'>391</span>
+<span class='line-number'>392</span>
+<span class='line-number'>393</span>
+<span class='line-number'>394</span>
+<span class='line-number'>395</span>
+<span class='line-number'>396</span>
+<span class='line-number'>397</span>
+<span class='line-number'>398</span>
+<span class='line-number'>399</span>
+<span class='line-number'>400</span>
+<span class='line-number'>401</span>
+<span class='line-number'>402</span>
+<span class='line-number'>403</span>
+<span class='line-number'>404</span>
+<span class='line-number'>405</span>
+<span class='line-number'>406</span>
+<span class='line-number'>407</span>
+<span class='line-number'>408</span>
+<span class='line-number'>409</span>
+<span class='line-number'>410</span>
+<span class='line-number'>411</span>
+<span class='line-number'>412</span>
+<span class='line-number'>413</span>
+<span class='line-number'>414</span>
+<span class='line-number'>415</span>
+<span class='line-number'>416</span>
+<span class='line-number'>417</span>
+<span class='line-number'>418</span>
+<span class='line-number'>419</span>
+<span class='line-number'>420</span>
+<span class='line-number'>421</span>
+<span class='line-number'>422</span>
+<span class='line-number'>423</span>
+<span class='line-number'>424</span>
+<span class='line-number'>425</span>
+<span class='line-number'>426</span>
+<span class='line-number'>427</span>
+<span class='line-number'>428</span>
+<span class='line-number'>429</span>
+<span class='line-number'>430</span>
+<span class='line-number'>431</span>
+<span class='line-number'>432</span>
+<span class='line-number'>433</span>
+<span class='line-number'>434</span>
+<span class='line-number'>435</span>
+<span class='line-number'>436</span>
+<span class='line-number'>437</span>
+<span class='line-number'>438</span>
+<span class='line-number'>439</span>
+<span class='line-number'>440</span>
+<span class='line-number'>441</span>
+<span class='line-number'>442</span>
+<span class='line-number'>443</span>
+<span class='line-number'>444</span>
+<span class='line-number'>445</span>
+<span class='line-number'>446</span>
+<span class='line-number'>447</span>
+<span class='line-number'>448</span>
+<span class='line-number'>449</span>
+<span class='line-number'>450</span>
+<span class='line-number'>451</span>
+<span class='line-number'>452</span>
+<span class='line-number'>453</span>
+<span class='line-number'>454</span>
+<span class='line-number'>455</span>
+<span class='line-number'>456</span>
+<span class='line-number'>457</span>
+<span class='line-number'>458</span>
+<span class='line-number'>459</span>
+<span class='line-number'>460</span>
+<span class='line-number'>461</span>
+<span class='line-number'>462</span>
+<span class='line-number'>463</span>
+<span class='line-number'>464</span>
+<span class='line-number'>465</span>
+<span class='line-number'>466</span>
+<span class='line-number'>467</span>
+<span class='line-number'>468</span>
+<span class='line-number'>469</span>
+<span class='line-number'>470</span>
+<span class='line-number'>471</span>
+<span class='line-number'>472</span>
+<span class='line-number'>473</span>
+<span class='line-number'>474</span>
+<span class='line-number'>475</span>
+<span class='line-number'>476</span>
+<span class='line-number'>477</span>
+<span class='line-number'>478</span>
+<span class='line-number'>479</span>
+<span class='line-number'>480</span>
+<span class='line-number'>481</span>
+<span class='line-number'>482</span>
+<span class='line-number'>483</span>
+<span class='line-number'>484</span>
+<span class='line-number'>485</span>
+<span class='line-number'>486</span>
+<span class='line-number'>487</span>
+<span class='line-number'>488</span>
+<span class='line-number'>489</span>
+<span class='line-number'>490</span>
+<span class='line-number'>491</span>
+<span class='line-number'>492</span>
+<span class='line-number'>493</span>
+<span class='line-number'>494</span>
+<span class='line-number'>495</span>
+<span class='line-number'>496</span>
+<span class='line-number'>497</span>
+<span class='line-number'>498</span>
+<span class='line-number'>499</span>
+<span class='line-number'>500</span>
+<span class='line-number'>501</span>
+<span class='line-number'>502</span>
+<span class='line-number'>503</span>
+<span class='line-number'>504</span>
+<span class='line-number'>505</span>
+<span class='line-number'>506</span>
+<span class='line-number'>507</span>
+<span class='line-number'>508</span>
+<span class='line-number'>509</span>
+<span class='line-number'>510</span>
+<span class='line-number'>511</span>
+<span class='line-number'>512</span>
+<span class='line-number'>513</span>
+<span class='line-number'>514</span>
+<span class='line-number'>515</span>
+<span class='line-number'>516</span>
+<span class='line-number'>517</span>
+<span class='line-number'>518</span>
+<span class='line-number'>519</span>
+<span class='line-number'>520</span>
+<span class='line-number'>521</span>
+<span class='line-number'>522</span>
+<span class='line-number'>523</span>
+<span class='line-number'>524</span>
+<span class='line-number'>525</span>
+<span class='line-number'>526</span>
+<span class='line-number'>527</span>
+<span class='line-number'>528</span>
+<span class='line-number'>529</span>
+<span class='line-number'>530</span>
+<span class='line-number'>531</span>
+<span class='line-number'>532</span>
+<span class='line-number'>533</span>
+<span class='line-number'>534</span>
+<span class='line-number'>535</span>
+<span class='line-number'>536</span>
+<span class='line-number'>537</span>
+<span class='line-number'>538</span>
+<span class='line-number'>539</span>
+<span class='line-number'>540</span>
+<span class='line-number'>541</span>
+<span class='line-number'>542</span>
+<span class='line-number'>543</span>
+<span class='line-number'>544</span>
+<span class='line-number'>545</span>
+<span class='line-number'>546</span>
+<span class='line-number'>547</span>
+<span class='line-number'>548</span>
+<span class='line-number'>549</span>
+<span class='line-number'>550</span>
+<span class='line-number'>551</span>
+<span class='line-number'>552</span>
+<span class='line-number'>553</span>
+<span class='line-number'>554</span>
+<span class='line-number'>555</span>
+<span class='line-number'>556</span>
+<span class='line-number'>557</span>
+<span class='line-number'>558</span>
+<span class='line-number'>559</span>
+<span class='line-number'>560</span>
+<span class='line-number'>561</span>
+<span class='line-number'>562</span>
+<span class='line-number'>563</span>
+<span class='line-number'>564</span>
+<span class='line-number'>565</span>
+<span class='line-number'>566</span>
+<span class='line-number'>567</span>
+<span class='line-number'>568</span>
+<span class='line-number'>569</span>
+<span class='line-number'>570</span>
+<span class='line-number'>571</span>
+<span class='line-number'>572</span>
+<span class='line-number'>573</span>
+<span class='line-number'>574</span>
+<span class='line-number'>575</span>
+<span class='line-number'>576</span>
+<span class='line-number'>577</span>
+<span class='line-number'>578</span>
+<span class='line-number'>579</span>
+<span class='line-number'>580</span>
+<span class='line-number'>581</span>
+<span class='line-number'>582</span>
+<span class='line-number'>583</span>
+<span class='line-number'>584</span>
+<span class='line-number'>585</span>
+<span class='line-number'>586</span>
+<span class='line-number'>587</span>
+<span class='line-number'>588</span>
+<span class='line-number'>589</span>
+<span class='line-number'>590</span>
+<span class='line-number'>591</span>
+<span class='line-number'>592</span>
+<span class='line-number'>593</span>
+<span class='line-number'>594</span>
+<span class='line-number'>595</span>
+<span class='line-number'>596</span>
+<span class='line-number'>597</span>
+<span class='line-number'>598</span>
+<span class='line-number'>599</span>
+<span class='line-number'>600</span>
+<span class='line-number'>601</span>
+<span class='line-number'>602</span>
+<span class='line-number'>603</span>
+<span class='line-number'>604</span>
+<span class='line-number'>605</span>
+<span class='line-number'>606</span>
+<span class='line-number'>607</span>
+<span class='line-number'>608</span>
+<span class='line-number'>609</span>
+<span class='line-number'>610</span>
+<span class='line-number'>611</span>
+<span class='line-number'>612</span>
+<span class='line-number'>613</span>
+<span class='line-number'>614</span>
+<span class='line-number'>615</span>
+<span class='line-number'>616</span>
+<span class='line-number'>617</span>
+<span class='line-number'>618</span>
+<span class='line-number'>619</span>
+<span class='line-number'>620</span>
+<span class='line-number'>621</span>
+<span class='line-number'>622</span>
+<span class='line-number'>623</span>
+<span class='line-number'>624</span>
+<span class='line-number'>625</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/usr/bin/env bash</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Init. Use it: pause &#39;Press [Enter] key to continue...&#39;</span>
+</span><span class='line'><span class="k">function</span> pause<span class="o">(){</span>
+</span><span class='line'>   <span class="nb">read</span> -p <span class="s2">&quot;$*&quot;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">#DOMAINNAME=&quot;gitlab.${USER}.$(hostname -a).uberspace.de&quot;</span>
+</span><span class='line'><span class="nv">DOMAINNAME</span><span class="o">=</span><span class="s2">&quot;gitlab.example.com&quot;</span>
+</span><span class='line'><span class="nv">INTERNPORT</span><span class="o">=</span><span class="s2">&quot;54321&quot;</span>
+</span><span class='line'><span class="c"># Check availablebility of port.</span>
+</span><span class='line'>netstat -tulpen <span class="p">|</span> grep <span class="k">${</span><span class="nv">INTERNPORT</span><span class="k">}</span>
+</span><span class='line'><span class="nv">WORKSPACE</span><span class="o">=</span><span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/workspace
+</span><span class='line'>mkdir -p <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">################################################################################</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># GitLab 7.1-stable installation on uberspace account wioth rbenv.</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Using:</span>
+</span><span class='line'><span class="c"># Git 2.0.4</span>
+</span><span class='line'><span class="c"># Redis 2.8.13</span>
+</span><span class='line'><span class="c"># Python 2.7.3</span>
+</span><span class='line'><span class="c"># Ruby 2.1.2</span>
+</span><span class='line'><span class="c">#   via rbenv 0.4.0</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">### Python ### #################################################################</span>
+</span><span class='line'><span class="c"># Add aliases to your bash config</span>
+</span><span class='line'>cat <span class="s">&lt;&lt; &#39;__EOF__&#39; &gt;&gt; ${HOME}/.bash_profile</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">### Python ###</span>
+</span><span class='line'><span class="s">alias python=python2.7</span>
+</span><span class='line'><span class="s">alias python2=python2.7</span>
+</span><span class='line'><span class="s">alias pip=pip-2.7</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Don&#39;t forget bashrc. Because services don&#39;t youse a login shell.</span>
+</span><span class='line'>cat <span class="s">&lt;&lt; &#39;__EOF__&#39; &gt;&gt; ${HOME}/.bashrc</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">### Python ###</span>
+</span><span class='line'><span class="s">alias python=python2.7</span>
+</span><span class='line'><span class="s">alias python2=python2.7</span>
+</span><span class='line'><span class="s">alias pip=pip-2.7</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">### Toasts ### #################################################################</span>
+</span><span class='line'><span class="c"># Git.</span>
+</span><span class='line'>toast arm https://www.kernel.org/pub/software/scm/git/git-2.0.4.tar.gz
+</span><span class='line'>git config --global user.name <span class="s2">&quot;Git&quot;</span>
+</span><span class='line'>git config --global user.email <span class="s2">&quot;${USER}@localhost&quot;</span>
+</span><span class='line'>git config --global core.autocrlf input
+</span><span class='line'>
+</span><span class='line'><span class="c"># Redis.</span>
+</span><span class='line'>toast arm http://download.redis.io/releases/redis-2.8.13.tar.gz
+</span><span class='line'>mkdir -p <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.redis
+</span><span class='line'>cat &gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.redis/conf <span class="s">&lt;&lt;__EOF__</span>
+</span><span class='line'><span class="s">unixsocket ${HOME}/.redis/sock</span>
+</span><span class='line'><span class="s">daemonize no</span>
+</span><span class='line'><span class="s"># For logging in uberspace service.</span>
+</span><span class='line'><span class="s"># logfile stdout</span>
+</span><span class='line'><span class="s"># For logging in a file.</span>
+</span><span class='line'><span class="s">logfile ${HOME}/.redis/log</span>
+</span><span class='line'><span class="s">port 0</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>redis-server <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.redis/conf <span class="p">&amp;</span>
+</span><span class='line'><span class="c"># Access: redis-cli -s ${HOME}/.redis/conf &amp;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">### Ruby ### ###################################################################</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -d <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;The directory ~/.rbenv already exists. So we do nothing.&quot;</span>
+</span><span class='line'>	pause <span class="s1">&#39;Press [Enter] key to continue... or Ctl+C to abort installation.&#39;</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>	<span class="c"># Git checkout.</span>
+</span><span class='line'>    	git clone https://github.com/sstephenson/rbenv.git <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv
+</span><span class='line'>
+</span><span class='line'>	<span class="c"># Update.</span>
+</span><span class='line'>	<span class="c">#cd ${HOME}/.rbenv</span>
+</span><span class='line'>	<span class="c">#git pull</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Activate rbenv.</span>
+</span><span class='line'>cat <span class="s">&lt;&lt; &#39;__EOF__&#39; &gt;&gt; ${HOME}/.bash_profile</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">### rbenv ###</span>
+</span><span class='line'><span class="s">export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;</span>
+</span><span class='line'><span class="s">export PATH=&quot;$HOME/.rbenv/shims:$PATH&quot;</span>
+</span><span class='line'><span class="s">eval &quot;$(rbenv init -)&quot;</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Don&#39;t forget bashrc.</span>
+</span><span class='line'>cat <span class="s">&lt;&lt; &#39;__EOF__&#39; &gt;&gt; ${HOME}/.bashrc</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">### rbenv ###</span>
+</span><span class='line'><span class="s">export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;</span>
+</span><span class='line'><span class="s">export PATH=&quot;$HOME/.rbenv/shims:$PATH&quot;</span>
+</span><span class='line'><span class="s">eval &quot;$(rbenv init -)&quot;</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>	
+</span><span class='line'>	<span class="c"># Activate profile changes</span>
+</span><span class='line'>	. <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.bash_profile
+</span><span class='line'>	
+</span><span class='line'>	<span class="c"># Check rbenv.</span>
+</span><span class='line'>	<span class="nb">type </span>rbenv
+</span><span class='line'>	
+</span><span class='line'>	<span class="c"># Install ruby-build - The `rbenv install` command.</span>
+</span><span class='line'>	git clone https://github.com/sstephenson/ruby-build.git <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv/plugins/ruby-build
+</span><span class='line'>	<span class="c"># Install rbenv-gem-rehash - The auto `rbenv rehash` when installing new gems.</span>
+</span><span class='line'>	git clone https://github.com/sstephenson/rbenv-gem-rehash.git <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv/plugins/rbenv-gem-rehash
+</span><span class='line'>	
+</span><span class='line'>	<span class="c"># List available installations.</span>
+</span><span class='line'>	<span class="c">#rbenv install --list</span>
+</span><span class='line'>	
+</span><span class='line'>	<span class="c"># Install ruby (need some time).</span>
+</span><span class='line'>	rbenv install 2.1.2
+</span><span class='line'>	rbenv install 1.9.3-p547
+</span><span class='line'>
+</span><span class='line'>	<span class="c"># Set global ruby version.</span>
+</span><span class='line'>	rbenv global 2.1.2
+</span><span class='line'>	<span class="c"># Rehash rbenv. This write changes into ~/.rbenv/shims. </span>
+</span><span class='line'>	<span class="c"># Important if gems provide some new bins.</span>
+</span><span class='line'>	<span class="c"># Or the environment changes.</span>
+</span><span class='line'>	rbenv rehash
+</span><span class='line'>
+</span><span class='line'>	<span class="c"># Hooks rbenv into the shell. </span>
+</span><span class='line'>	<span class="c"># Already happend after `. ~/.bash_profile`.</span>
+</span><span class='line'>	<span class="c"># Use `rbenv init -` to see more informations.</span>
+</span><span class='line'>	<span class="c">#rbenv init</span>
+</span><span class='line'>	
+</span><span class='line'>	<span class="c"># Print rbenv used ruby version.</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;rbenv version:&quot;</span>
+</span><span class='line'>	rbenv version
+</span><span class='line'>	
+</span><span class='line'>	<span class="c"># Install options for gem.</span>
+</span><span class='line'>	<span class="c"># Old: echo &quot;gem: --user-install --no-rdoc --no-ri&quot; &gt; ~/.gemrc</span>
+</span><span class='line'>	<span class="c"># Do not use the `--user-install` option! This will install gems into `~/.gem` dir and not into the rbenv 	version specific folder!</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;gem: --no-rdoc --no-ri&quot;</span> &gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.gemrc
+</span><span class='line'>
+</span><span class='line'>	<span class="c"># Install bundler for both installed versions.</span>
+</span><span class='line'>	<span class="c"># For 1.9.3</span>
+</span><span class='line'>	rbenv shell 1.9.3-p547
+</span><span class='line'>	gem install bundler
+</span><span class='line'>	<span class="c"># For 2.1.2</span>
+</span><span class='line'>	rbenv shell 2.1.2
+</span><span class='line'>	gem install bundler
+</span><span class='line'>	<span class="c"># Leave rbenv shell</span>
+</span><span class='line'>	rbenv shell --unset
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">### Gitlab Shell ### ###########################################################</span>
+</span><span class='line'>git clone https://gitlab.com/gitlab-org/gitlab-shell.git <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-shell
+</span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-shell
+</span><span class='line'>rbenv <span class="nb">local </span>2.1.2
+</span><span class='line'>git fetch origin <span class="o">&amp;&amp;</span> git reset --hard <span class="k">$(</span>git describe v1.9.6 <span class="o">||</span> git describe origin/v1.9.6<span class="k">)</span>
+</span><span class='line'>
+</span><span class='line'>cat &gt; <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-shell/config.yml <span class="s">&lt;&lt;__EOF__</span>
+</span><span class='line'><span class="s">---</span>
+</span><span class='line'><span class="s">user: ${USER}</span>
+</span><span class='line'><span class="s">#gitlab_url: http://gitlab.${USER}.$(hostname -s).uberspace.de/</span>
+</span><span class='line'><span class="s">gitlab_url: http://${DOMAINNAME}/</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">http_settings:</span>
+</span><span class='line'><span class="s">#  user: someone</span>
+</span><span class='line'><span class="s">#  password: somepass</span>
+</span><span class='line'><span class="s">#  ca_file: /etc/ssl/cert.pem</span>
+</span><span class='line'><span class="s">#  ca_path: /etc/pki/tls/certs</span>
+</span><span class='line'><span class="s">  self_signed_cert: false</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">repos_path: &quot;${WORKSPACE}/repositories/&quot;</span>
+</span><span class='line'><span class="s">auth_file: &quot;${HOME}/.ssh/authorized_keys&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">redis:</span>
+</span><span class='line'><span class="s">  bin: ${HOME}/.toast/armed/bin/redis-cli</span>
+</span><span class='line'><span class="s">  # host: 127.0.0.1</span>
+</span><span class='line'><span class="s">  # port: 6379</span>
+</span><span class='line'><span class="s">  socket: ${HOME}/.redis/sock</span>
+</span><span class='line'><span class="s">  # socket: /tmp/redis.socket # Only define this if you want to use sockets</span>
+</span><span class='line'><span class="s">  namespace: resque:gitlab</span>
+</span><span class='line'>
+</span><span class='line'><span class="s"># Log file.</span>
+</span><span class='line'><span class="s">log_file: &quot;${WORKSPACE}/gitlab-shell/gitlab-shell.log&quot;</span>
+</span><span class='line'><span class="s">log_level: INFO</span>
+</span><span class='line'>
+</span><span class='line'><span class="s"># Audit usernames.</span>
+</span><span class='line'><span class="s">audit_usernames: false</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">#?</span>
+</span><span class='line'><span class="c">#bundle install --deployment --without development test</span>
+</span><span class='line'>./bin/install
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">### GitLab ### #################################################################</span>
+</span><span class='line'>git clone https://gitlab.com/gitlab-org/gitlab-ce.git -b 7-1-stable <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab
+</span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab
+</span><span class='line'>rbenv <span class="nb">local </span>2.1.2
+</span><span class='line'>
+</span><span class='line'><span class="c"># Some folders</span>
+</span><span class='line'>mkdir -p log
+</span><span class='line'>mkdir -p tmp/pids
+</span><span class='line'>mkdir -p tmp/sockets
+</span><span class='line'>mkdir -p public/uploads
+</span><span class='line'><span class="c"># Allow access to folders.</span>
+</span><span class='line'>chown -R <span class="k">${</span><span class="nv">USER</span><span class="k">}</span> log/
+</span><span class='line'>chown -R <span class="k">${</span><span class="nv">USER</span><span class="k">}</span> tmp/
+</span><span class='line'>chmod -R u+rwX <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/repositories
+</span><span class='line'>chmod -R u+rwX log/
+</span><span class='line'>chmod -R u+rwX tmp/
+</span><span class='line'>chmod -R u+rwX tmp/pids/
+</span><span class='line'>chmod -R u+rwX tmp/sockets/
+</span><span class='line'>chmod -R u+rwX public/uploads
+</span><span class='line'><span class="c"># GitLab Satelittes.</span>
+</span><span class='line'>mkdir -p <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-satellites
+</span><span class='line'>chmod u+rwx,g<span class="o">=</span>rx,o-rwx <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-satellites
+</span><span class='line'>
+</span><span class='line'><span class="c"># Configure the application main config file.</span>
+</span><span class='line'>cat &gt; config/gitlab.yml <span class="s">&lt;&lt;__EOF__</span>
+</span><span class='line'><span class="s"># # # # # # # # # # # # # # # # # #</span>
+</span><span class='line'><span class="s"># GitLab application config file  #</span>
+</span><span class='line'><span class="s"># # # # # # # # # # # # # # # # # #</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">production: &amp;base</span>
+</span><span class='line'><span class="s">  #</span>
+</span><span class='line'><span class="s">  # 1. GitLab app settings</span>
+</span><span class='line'><span class="s">  # ==========================</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  ## GitLab settings</span>
+</span><span class='line'><span class="s">  gitlab:</span>
+</span><span class='line'><span class="s">    ## Web server settings (note: host is the FQDN, do not include http://)</span>
+</span><span class='line'><span class="s">    host: ${DOMAINNAME}</span>
+</span><span class='line'><span class="s">    port: 80</span>
+</span><span class='line'><span class="s">    https: true</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">    user: ${USER}</span>
+</span><span class='line'><span class="s">    email_from: hq@${DOMAINNAME}</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">    ## User settings</span>
+</span><span class='line'><span class="s">    default_projects_limit: 10</span>
+</span><span class='line'><span class="s">    # default_can_create_group: false  # default: true</span>
+</span><span class='line'><span class="s">    # username_changing_enabled: false # default: true - User can change her username/namespace</span>
+</span><span class='line'><span class="s">    ## Default theme</span>
+</span><span class='line'><span class="s">    ##   BASIC  = 1, MARS   = 2, MODERN = 3, GRAY   = 4, COLOR  = 5</span>
+</span><span class='line'><span class="s">    default_theme: 2 # default: 2</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">    ## Users management</span>
+</span><span class='line'><span class="s">    # default: false - Account passwords are not sent via the email if signup is enabled.</span>
+</span><span class='line'><span class="s">    # signup_enabled: true</span>
+</span><span class='line'><span class="s">    #</span>
+</span><span class='line'><span class="s">    # default: true - If set to false, standard login form won&#39;t be shown on the sign-in page</span>
+</span><span class='line'><span class="s">    # signin_enabled: false</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">    # Restrict setting visibility levels for non-admin users.</span>
+</span><span class='line'><span class="s">    # The default is to allow all levels.</span>
+</span><span class='line'><span class="s">    #restricted_visibility_levels: [ &quot;public&quot; ]</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">    ## Automatic issue closing</span>
+</span><span class='line'><span class="s">    # If a commit message matches this regular expression, all issues referenced from the matched text will be closed.</span>
+</span><span class='line'><span class="s">    # This happens when the commit is pushed or merged into the default branch of a project.</span>
+</span><span class='line'><span class="s">    # When not specified the default issue_closing_pattern as specified below will be used.</span>
+</span><span class='line'><span class="s">    # issue_closing_pattern: &#39;([Cc]lose[sd]|[Ff]ixe[sd]) #(\d+)&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">    ## Default project features settings</span>
+</span><span class='line'><span class="s">    default_projects_features:</span>
+</span><span class='line'><span class="s">      issues: true</span>
+</span><span class='line'><span class="s">      merge_requests: true</span>
+</span><span class='line'><span class="s">      wiki: true</span>
+</span><span class='line'><span class="s">      snippets: false</span>
+</span><span class='line'><span class="s">      visibility_level: &quot;private&quot;  # can be &quot;private&quot; | &quot;internal&quot; | &quot;public&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">    ## Repository downloads directory</span>
+</span><span class='line'><span class="s">    # When a user clicks e.g. &#39;Download zip&#39; on a project, a temporary zip file is created in the following directory.</span>
+</span><span class='line'><span class="s">    # The default is &#39;tmp/repositories&#39; relative to the root of the Rails app.</span>
+</span><span class='line'><span class="s">    # repository_downloads_path: tmp/repositories</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  ## External issues trackers</span>
+</span><span class='line'><span class="s">  issues_tracker:</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  ## Gravatar</span>
+</span><span class='line'><span class="s">  gravatar:</span>
+</span><span class='line'><span class="s">    enabled: true                 # Use user avatar image from Gravatar.com (default: true)</span>
+</span><span class='line'><span class="s">    # gravatar urls: possible placeholders: %{hash} %{size} %{email}</span>
+</span><span class='line'><span class="s">    # plain_url: &quot;http://...&quot;     # default: http://www.gravatar.com/avatar/%{hash}?s=%{size}&amp;d=identicon</span>
+</span><span class='line'><span class="s">    # ssl_url:   &quot;https://...&quot;    # default: https://secure.gravatar.com/avatar/%{hash}?s=%{size}&amp;d=identicon</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  #</span>
+</span><span class='line'><span class="s">  # 2. Auth settings</span>
+</span><span class='line'><span class="s">  # ==========================</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  ## LDAP settings</span>
+</span><span class='line'><span class="s">  ldap:</span>
+</span><span class='line'><span class="s">    enabled: false</span>
+</span><span class='line'><span class="s">    host: &#39;_your_ldap_server&#39;</span>
+</span><span class='line'><span class="s">    port: 636</span>
+</span><span class='line'><span class="s">    uid: &#39;sAMAccountName&#39;</span>
+</span><span class='line'><span class="s">    method: &#39;ssl&#39; # &quot;tls&quot; or &quot;ssl&quot; or &quot;plain&quot;</span>
+</span><span class='line'><span class="s">    bind_dn: &#39;_the_full_dn_of_the_user_you_will_bind_with&#39;</span>
+</span><span class='line'><span class="s">    password: &#39;_the_password_of_the_bind_user&#39;</span>
+</span><span class='line'><span class="s">    # If you are using &quot;uid: &#39;userPrincipalName&#39;&quot; on ActiveDirectory you need to</span>
+</span><span class='line'><span class="s">    # disable this setting, because the userPrincipalName contains an &#39;@&#39;.</span>
+</span><span class='line'><span class="s">    allow_username_or_email_login: true</span>
+</span><span class='line'><span class="s">    base: &#39;&#39;</span>
+</span><span class='line'><span class="s">    user_filter: &#39;&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  ## OmniAuth settings</span>
+</span><span class='line'><span class="s">  omniauth:</span>
+</span><span class='line'><span class="s">    # Allow login via Twitter, Google, etc. using OmniAuth providers</span>
+</span><span class='line'><span class="s">    enabled: false</span>
+</span><span class='line'><span class="s">    # CAUTION!</span>
+</span><span class='line'><span class="s">    # This allows users to login without having a user account first (default: false).</span>
+</span><span class='line'><span class="s">    # User accounts will be created automatically when authentication was successful.</span>
+</span><span class='line'><span class="s">    allow_single_sign_on: false</span>
+</span><span class='line'><span class="s">    # Locks down those users until they have been cleared by the admin (default: true).</span>
+</span><span class='line'><span class="s">    block_auto_created_users: true</span>
+</span><span class='line'><span class="s">    providers:</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  #</span>
+</span><span class='line'><span class="s">  # 3. Advanced settings</span>
+</span><span class='line'><span class="s">  # ==========================</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # GitLab Satellites</span>
+</span><span class='line'><span class="s">  satellites:</span>
+</span><span class='line'><span class="s">    # Relative paths are relative to Rails.root (default: tmp/repo_satellites/)</span>
+</span><span class='line'><span class="s">    path: ${WORKSPACE}/gitlab-satellites/</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  ## Backup settings</span>
+</span><span class='line'><span class="s">  backup:</span>
+</span><span class='line'><span class="s">    path: &quot;tmp/backups&quot;   # Relative paths are relative to Rails.root (default: tmp/backups/)</span>
+</span><span class='line'><span class="s">    # keep_time: 604800   # default: 0 (forever) (in seconds)</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  ## GitLab Shell settings</span>
+</span><span class='line'><span class="s">  gitlab_shell:</span>
+</span><span class='line'><span class="s">    path: ${WORKSPACE}/gitlab-shell/</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">    # REPOS_PATH MUST NOT BE A SYMLINK!!!</span>
+</span><span class='line'><span class="s">    repos_path: ${WORKSPACE}/repositories/</span>
+</span><span class='line'><span class="s">    hooks_path: ${WORKSPACE}/gitlab-shell/hooks/</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">    # Git over HTTP</span>
+</span><span class='line'><span class="s">    upload_pack: true</span>
+</span><span class='line'><span class="s">    receive_pack: true</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">    # If you use non-standard ssh port you need to specify it</span>
+</span><span class='line'><span class="s">    # ssh_port: 22</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  ## Git settings</span>
+</span><span class='line'><span class="s">  # CAUTION!</span>
+</span><span class='line'><span class="s">  # Use the default values unless you really know what you are doing</span>
+</span><span class='line'><span class="s">  git:</span>
+</span><span class='line'><span class="s">    bin_path: ${HOME}/.toast/armed/bin/git</span>
+</span><span class='line'><span class="s">    # The next value is the maximum memory size grit can use</span>
+</span><span class='line'><span class="s">    # Given in number of bytes per git object (e.g. a commit)</span>
+</span><span class='line'><span class="s">    # This value can be increased if you have very large commits</span>
+</span><span class='line'><span class="s">    max_size: 5242880 # 5.megabytes</span>
+</span><span class='line'><span class="s">    # Git timeout to read a commit, in seconds</span>
+</span><span class='line'><span class="s">    timeout: 10</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  #</span>
+</span><span class='line'><span class="s">  # 4. Extra customization</span>
+</span><span class='line'><span class="s">  # ==========================</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  extra:</span>
+</span><span class='line'><span class="s">    ## Google analytics. Uncomment if you want it</span>
+</span><span class='line'><span class="s">    # google_analytics_id: &#39;_your_tracking_id&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">    ## Piwik analytics.</span>
+</span><span class='line'><span class="s">    # piwik_url: &#39;_your_piwik_url&#39;</span>
+</span><span class='line'><span class="s">    # piwik_site_id: &#39;_your_piwik_site_id&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">    ## Text under sign-in page (Markdown enabled)</span>
+</span><span class='line'><span class="s">    # sign_in_text: |</span>
+</span><span class='line'><span class="s">    #   ![Company Logo](http://www.companydomain.com/logo.png)</span>
+</span><span class='line'><span class="s">    #   [Learn more about CompanyName](http://www.companydomain.com/)</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Configure Charlie the unicorn. ;-)</span>
+</span><span class='line'>cat &gt; config/unicorn.rb <span class="s">&lt;&lt;__EOF__</span>
+</span><span class='line'><span class="s"># Sample verbose configuration file for Unicorn (not Rack)</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">worker_processes 2</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">working_directory &quot;${WORKSPACE}/gitlab&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">listen &quot;/home/hq/workspace/gitlab/tmp/sockets/gitlab.socket&quot;, :backlog =&gt; 64</span>
+</span><span class='line'><span class="s">listen &quot;127.0.0.1:${INTERNPORT}&quot;, :tcp_nopush =&gt; true</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">timeout 30</span>
+</span><span class='line'>
+</span><span class='line'><span class="s"># feel free to point this anywhere accessible on the filesystem</span>
+</span><span class='line'><span class="s">pid &quot;${WORKSPACE}/gitlab/tmp/pids/unicorn.pid&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">stderr_path &quot;${WORKSPACE}/gitlab/log/unicorn.stderr.log&quot;</span>
+</span><span class='line'><span class="s">stdout_path &quot;${WORKSPACE}/gitlab/log/unicorn.stdout.log&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">preload_app true</span>
+</span><span class='line'><span class="s">GC.respond_to?(:copy_on_write_friendly=) and</span>
+</span><span class='line'><span class="s">  GC.copy_on_write_friendly = true</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="s">check_client_connection false</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">before_fork do |server, worker|</span>
+</span><span class='line'><span class="s">  defined?(ActiveRecord::Base) and</span>
+</span><span class='line'><span class="s">    ActiveRecord::Base.connection.disconnect!</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  old_pid = &quot;#{server.config[:pid]}.oldbin&quot;</span>
+</span><span class='line'><span class="s">  if old_pid != server.pid</span>
+</span><span class='line'><span class="s">    begin</span>
+</span><span class='line'><span class="s">      sig = (worker.nr + 1) &gt;= server.worker_processes ? :QUIT : :TTOU</span>
+</span><span class='line'><span class="s">      Process.kill(sig, File.read(old_pid).to_i)</span>
+</span><span class='line'><span class="s">    rescue Errno::ENOENT, Errno::ESRCH</span>
+</span><span class='line'><span class="s">    end</span>
+</span><span class='line'><span class="s">  end</span>
+</span><span class='line'><span class="s">  # sleep 1</span>
+</span><span class='line'><span class="s">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">after_fork do |server, worker|</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  defined?(ActiveRecord::Base) and</span>
+</span><span class='line'><span class="s">    ActiveRecord::Base.establish_connection</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Config Redis connection.</span>
+</span><span class='line'>cat &gt; config/resque.yml <span class="s">&lt;&lt;__EOF__</span>
+</span><span class='line'><span class="s">development: redis://localhost:6379</span>
+</span><span class='line'><span class="s">test: redis://localhost:6379</span>
+</span><span class='line'><span class="s">#production: redis://redis.example.com:6379</span>
+</span><span class='line'><span class="s">production: unix:${HOME}/.redis/sock</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Configure your rack.</span>
+</span><span class='line'>cp config/initializers/rack_attack.rb.example config/initializers/rack_attack.rb
+</span><span class='line'>
+</span><span class='line'><span class="c"># Production environment.</span>
+</span><span class='line'>cat &gt; config/environments/production.rb <span class="s">&lt;&lt;__EOF__</span>
+</span><span class='line'><span class="s">Gitlab::Application.configure do</span>
+</span><span class='line'><span class="s">  # Settings specified here will take precedence over those in config/application.rb</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Code is not reloaded between requests</span>
+</span><span class='line'><span class="s">  config.cache_classes = true</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Full error reports are disabled and caching is turned on</span>
+</span><span class='line'><span class="s">  config.consider_all_requests_local       = false</span>
+</span><span class='line'><span class="s">  config.action_controller.perform_caching = true</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Disable Rails&#39;s static asset server (Apache or nginx will already do this)</span>
+</span><span class='line'><span class="s">  config.serve_static_assets = true</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Compress JavaScripts and CSS</span>
+</span><span class='line'><span class="s">  config.assets.compress = true</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Don&#39;t fallback to assets pipeline if a precompiled asset is missed</span>
+</span><span class='line'><span class="s">  config.assets.compile = true</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Generate digests for assets URLs</span>
+</span><span class='line'><span class="s">  config.assets.digest = true</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Defaults to nil and saved in location specified by config.assets.prefix</span>
+</span><span class='line'><span class="s">  # config.assets.manifest = YOUR_PATH</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Specifies the header that your server uses for sending files</span>
+</span><span class='line'><span class="s">  # config.action_dispatch.x_sendfile_header = &quot;X-Sendfile&quot; # for apache</span>
+</span><span class='line'><span class="s">  # config.action_dispatch.x_sendfile_header = &#39;X-Accel-Redirect&#39; # for nginx</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.</span>
+</span><span class='line'><span class="s">  # config.force_ssl = true</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # See everything in the log (default is :info)</span>
+</span><span class='line'><span class="s">  # config.log_level = :debug</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Suppress &#39;Rendered template ...&#39; messages in the log</span>
+</span><span class='line'><span class="s">  # source: http://stackoverflow.com/a/16369363</span>
+</span><span class='line'><span class="s">  %w{render_template render_partial render_collection}.each do |event|</span>
+</span><span class='line'><span class="s">    ActiveSupport::Notifications.unsubscribe &quot;#{event}.action_view&quot;</span>
+</span><span class='line'><span class="s">  end</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Prepend all log lines with the following tags</span>
+</span><span class='line'><span class="s">  # config.log_tags = [ :subdomain, :uuid ]</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Use a different logger for distributed setups</span>
+</span><span class='line'><span class="s">  # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Use a different cache store in production</span>
+</span><span class='line'><span class="s">  config_file = Rails.root.join(&#39;config&#39;, &#39;resque.yml&#39;)</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  resque_url = if File.exists?(config_file)</span>
+</span><span class='line'><span class="s">                 YAML.load_file(config_file)[Rails.env]</span>
+</span><span class='line'><span class="s">               else</span>
+</span><span class='line'><span class="s">                 &quot;redis://localhost:6379&quot;</span>
+</span><span class='line'><span class="s">               end</span>
+</span><span class='line'><span class="s">  config.cache_store = :redis_store, {:url =&gt; resque_url}, {namespace: &#39;cache:gitlab&#39;}</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Enable serving of images, stylesheets, and JavaScripts from an asset server</span>
+</span><span class='line'><span class="s">  # config.action_controller.asset_host = &quot;http://assets.example.com&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)</span>
+</span><span class='line'><span class="s">  # config.assets.precompile += %w( search.js )</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Disable delivery errors, bad email addresses will be ignored</span>
+</span><span class='line'><span class="s">  # config.action_mailer.raise_delivery_errors = false</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Enable threaded mode</span>
+</span><span class='line'><span class="s">  # config.threadsafe! unless $rails_rake_task</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Enable locale fallbacks for I18n (makes lookups for any locale fall back to</span>
+</span><span class='line'><span class="s">  # the I18n.default_locale when a translation can not be found)</span>
+</span><span class='line'><span class="s">  config.i18n.fallbacks = true</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  # Send deprecation notices to registered listeners</span>
+</span><span class='line'><span class="s">  config.active_support.deprecation = :notify</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  config.action_mailer.delivery_method = :sendmail</span>
+</span><span class='line'><span class="s">  # Defaults to:</span>
+</span><span class='line'><span class="s">  # # config.action_mailer.sendmail_settings = {</span>
+</span><span class='line'><span class="s">  # #   location: &#39;/usr/sbin/sendmail&#39;,</span>
+</span><span class='line'><span class="s">  # #   arguments: &#39;-i -t&#39;</span>
+</span><span class='line'><span class="s">  # # }</span>
+</span><span class='line'><span class="s">  config.action_mailer.perform_deliveries = true</span>
+</span><span class='line'><span class="s">  config.action_mailer.raise_delivery_errors = true</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  config.eager_load = true</span>
+</span><span class='line'><span class="s">  config.assets.js_compressor = :uglifier</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">  config.allow_concurrency = false</span>
+</span><span class='line'><span class="s">end</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">### GitLab Database ### ########################################################</span>
+</span><span class='line'><span class="c"># Be carefull with &quot;DROP DATABASE&quot; commands!</span>
+</span><span class='line'>mysql -e <span class="s2">&quot;DROP DATABASE ${USER}_gitlab;&quot;</span>
+</span><span class='line'>mysql -e <span class="s2">&quot;CREATE DATABASE ${USER}_gitlab CHARACTER SET utf8&quot;</span>
+</span><span class='line'>cat &gt; <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab/config/database.yml <span class="s">&lt;&lt;__EOF__</span>
+</span><span class='line'><span class="s">production:</span>
+</span><span class='line'><span class="s">  adapter: mysql2</span>
+</span><span class='line'><span class="s">  encoding: utf8</span>
+</span><span class='line'><span class="s">  reconnect: false</span>
+</span><span class='line'><span class="s">  database: ${USER}_gitlab</span>
+</span><span class='line'><span class="s">  pool: 10</span>
+</span><span class='line'><span class="s">  username: ${USER}</span>
+</span><span class='line'><span class="s">  password: `my_print_defaults client | grep -- --password | awk -F = &#39;{ print $2 }&#39;`</span>
+</span><span class='line'><span class="s">  # host: localhost</span>
+</span><span class='line'><span class="s">  # socket: /tmp/mysql.sock</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>chmod o-rwx <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab/config/database.yml
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">### Install ### ################################################################</span>
+</span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab
+</span><span class='line'><span class="c"># CentOS 5? cat /etc/*-release</span>
+</span><span class='line'><span class="c"># Then do also: bundle config build.charlock_holmes --with-icu-dir=/package/host/localhost/icu4c</span>
+</span><span class='line'>bundle install --deployment --without development <span class="nb">test </span>postgres aws
+</span><span class='line'>
+</span><span class='line'><span class="c"># Be sure, redis is running and a database exists before doing the setup.</span>
+</span><span class='line'>bundle <span class="nb">exec </span>rake gitlab:setup <span class="nv">RAILS_ENV</span><span class="o">=</span>production
+</span><span class='line'><span class="c">#	Answer with &#39;yes&#39; to create db tables.</span>
+</span><span class='line'><span class="c"># 	Ends with:</span>
+</span><span class='line'><span class="c"># 	...</span>
+</span><span class='line'><span class="c"># 	Administrator account created:</span>
+</span><span class='line'><span class="c"># 	</span>
+</span><span class='line'><span class="c"># 	login.........root</span>
+</span><span class='line'><span class="c"># 	password......5iveL!fe</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">### Initscript ### #############################################################</span>
+</span><span class='line'><span class="c"># Be aware, this starter is not good to use with Uberspace service.</span>
+</span><span class='line'><span class="c"># Default variables file.</span>
+</span><span class='line'>mkdir -p <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/etc/default
+</span><span class='line'>cat &gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/etc/default/gitlab.default <span class="s">&lt;&lt;__EOF__</span>
+</span><span class='line'><span class="s">RAILS_ENV=&quot;production&quot;</span>
+</span><span class='line'><span class="s">app_user=&quot;${USER}&quot;</span>
+</span><span class='line'><span class="s">app_root=&quot;${WORKSPACE}/gitlab&quot;</span>
+</span><span class='line'><span class="s">pid_path=&quot;\$app_root/tmp/pids&quot;</span>
+</span><span class='line'><span class="s">socket_path=&quot;\$app_root/tmp/sockets&quot;</span>
+</span><span class='line'><span class="s">web_server_pid_path=&quot;\$pid_path/unicorn.pid&quot;</span>
+</span><span class='line'><span class="s">sidekiq_pid_path=&quot;\$pid_path/sidekiq.pid&quot;</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># GitLab starter.</span>
+</span><span class='line'>cp -f <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/workspace/gitlab/lib/support/init.d/gitlab <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/bin/gitlab
+</span><span class='line'>chmod +x <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/bin/gitlab
+</span><span class='line'><span class="c"># Change to &#39;read ${HOME}/etc/default/gitlab.default&#39;.</span>
+</span><span class='line'>sed -i -e <span class="s1">&#39;s=\/etc\/default\/gitlab=${HOME}\/etc\/default\/gitlab.default=g&#39;</span> <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/bin/gitlab
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">### Redirect ### ###############################################################</span>
+</span><span class='line'><span class="c"># Configure web.</span>
+</span><span class='line'>mkdir -p /var/www/virtual/<span class="k">${</span><span class="nv">USER</span><span class="k">}</span>/<span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>
+</span><span class='line'>cat &gt; /var/www/virtual/<span class="k">${</span><span class="nv">USER</span><span class="k">}</span>/<span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>/.htaccess <span class="s">&lt;&lt;__EOF__</span>
+</span><span class='line'><span class="s">&lt;IfModule mod_rewrite.c&gt;</span>
+</span><span class='line'><span class="s">  RewriteEngine On</span>
+</span><span class='line'><span class="s">  RewriteBase /</span>
+</span><span class='line'><span class="s">  RewriteRule ^(.*)$ http://localhost:${INTERNPORT}/\$1 [P]</span>
+</span><span class='line'><span class="s">&lt;/IfModule&gt;</span>
+</span><span class='line'><span class="s"># Agains &quot;Can&#39;t verify CSRF token authenticity&quot; error.</span>
+</span><span class='line'><span class="s">RequestHeader set X-Forwarded-Proto https</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">### Check ### ##################################################################</span>
+</span><span class='line'><span class="c"># Last check.</span>
+</span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/workspace/gitlab
+</span><span class='line'>bundle <span class="nb">exec </span>rake gitlab:env:info <span class="nv">RAILS_ENV</span><span class="o">=</span>production
+</span><span class='line'>bundle <span class="nb">exec </span>rake gitlab:check <span class="nv">RAILS_ENV</span><span class="o">=</span>production
+</span><span class='line'>
+</span><span class='line'>pause <span class="s1">&#39;Press [Enter] key to continue... if your are lucky with the tests above. \nAfterwards it is just starting Gitlab. So it will be not a problem to abort this script.&#39;</span>
+</span><span class='line'>bundle <span class="nb">exec </span>rake assets:precompile <span class="nv">RAILS_ENV</span><span class="o">=</span>production
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">### Start ### ##################################################################</span>
+</span><span class='line'><span class="c"># This is for what we&#39;ve done all this stuff above.</span>
+</span><span class='line'><span class="nb">cd</span>
+</span><span class='line'>gitlab start <span class="c"># start, stop, restart, status</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">################################################################################</span>
+</span><span class='line'><span class="c">################################################################################</span>
+</span><span class='line'><span class="c">################################################################################</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h3>Local SSH config</h3>
+
+<p><figure class='code'><figcaption><span>ON YOUR LOCAL MACHINE !!! </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h3&gt;CONFIG ON YOUR LOCAL MACHINE !!!&lt;/h3&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;DOMAINNAME<span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span>gitlab.example.com<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>mkdir -p <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.ssh
+</span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.ssh&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;ssh-keygen -t rsa -f git_rsa -C <span class="p">&amp;</span>ldquo<span class="p">;</span>Git Key<span class="p">&amp;</span>rdquo<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Enter no passphrase, or not.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Configure ssh <span class="k">for</span> your domains.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;touch <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.ssh/config
+</span><span class='line'>chmod <span class="m">600</span> <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.ssh/config&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Add.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cat &gt;&gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.ssh/config <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;
+</span><span class='line'>Host <span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>
+</span><span class='line'>    Hostname <span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>
+</span><span class='line'>    IdentityFile ~/.ssh/git_rsa
+</span><span class='line'>    IdentitiesOnly yes
+</span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Uninstallation</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rm -rf <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/workspace/gitlab
+</span><span class='line'>rm -rf <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/workspace/gitlab-shell
+</span><span class='line'>rm -rf <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/workspace/gitlab-satellites
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Issues</h2>
+
+<ul>
+<li>Double Emails für every report.</li>
+<li>Initial git push errors.
+
+<ul>
+<li>change your repo adress
+
+<ul>
+<li><code>git remote add origin user@gitlab.example.com:gituser/repo.git</code></li>
+<li>to:</li>
+<li><code>git remote add origin user@gitlab.example.com:path-to-repositories-dir-relative-from-user-home-dir/gituser/repo.git</code></li>
+</ul>
+</li>
+<li>hook error
+
+<ul>
+<li>change in github-shell/hooks/update</li>
+<li><code>#!/usr/bin/env ruby</code> to <code>#!/home/&lt;user&gt;/.rbenv/shims/ruby</code></li>
+</ul>
+</li>
+<li>You are not allowed to access master! remote: error: hook declined to update refs/heads/master</li>
+<li>In gitlab/config/gitlab.yml email_from has to include your uberspace username</li>
+<li>email_from: <a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#x3a;&#117;&#115;&#101;&#x72;&#x40;&#x67;&#105;&#x74;&#108;&#97;&#98;&#46;&#x65;&#120;&#x61;&#109;&#x70;&#108;&#x65;&#46;&#x63;&#x6f;&#109;">&#x75;&#115;&#101;&#x72;&#64;&#103;&#x69;&#116;&#108;&#97;&#98;&#x2e;&#x65;&#x78;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#x6f;&#x6d;</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Sources</h3>
+
+<ul>
+<li><a href="https://wiki.uberspace.de/cool?s[]=gitlab">wiki.uberspace.de/cool</a></li>
+<li><a href="https://blog.kanedo.net/1925,gitlab-7-0-auf-einem-uberspace-installieren.html">kanedo - Gitlab 7.0 auf einem Uberspace installieren</a></li>
+<li><a href="https://ricwein.com/ricwein/uberspacetutorial/tree/7-0-stable">Richard Weinhold / HowTo install Gitlab at Uberspace</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Redmine Installation (with rbenv)]]></title>
+    <link href="http://leitstelle.github.io/blog/2014/2014-07-04-redmine-with-rbenv/"/>
+    <updated>2014-07-04T15:33:00+02:00</updated>
+    <id>http://leitstelle.github.io/blog/2014/redmine-with-rbenv</id>
+    <content type="html"><![CDATA[<h2>About</h2>
+
+<p>Installation von Redmine 2.5 auf einem Uberspace-Account unter Benutzung von rbenv mit einer eigenen Domain.</p>
+
+<h2>tl;dr</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>wget -O <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/redmine-2.5-install-on-rbenv.sh &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://leitstelle.github.io/downloads/code/2014/redmine-2.5-install-on-rbenv.sh&quot;</span>&gt;https://leitstelle.github.io/downloads/code/2014/redmine-2.5-install-on-rbenv.sh&lt;/a&gt;
+</span><span class='line'>chmod u+x <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/redmine-2.5-install-on-rbenv.sh
+</span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>
+</span><span class='line'>sed -i -e <span class="p">&amp;</span>rsquo<span class="p">;</span>s/DOMAINNAME<span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span>redmine.example.com<span class="p">&amp;</span>rdquo<span class="p">;</span>/DOMAINNAME<span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span>redmine.yourdomain.net<span class="p">&amp;</span>rdquo<span class="p">;</span>/g<span class="p">&amp;</span><span class="c">#8217; redmine-2.5-install-on-rbenv.sh</span>
+</span><span class='line'>./redmine-2.5-install-on-rbenv.sh
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Konfiguration</h2>
+
+<ul>
+<li>Uberspace-Username -> ${USER}, <ubername> oder user</li>
+<li>Uberspace-Severname -> $(hostname -a), <uberhost>, <hostname> oder host</li>
+<li>/var/www/virtual/${USER}/redmine
+
+<ul>
+<li>Dort wird Redmine hinein installiert, damit der Unterordner <code>/var/www/virtual/${USER}/redmine/public</code> von außen über den Symlink <code>ln -s ./redmine/public redmine.example.com</code> erreichbar ist.</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Installation</h2>
+
+<p><figure class='code'><figcaption><span> (redmine-2.5-install-on-rbenv.sh)</span> <a href='/downloads/code/2014/redmine-2.5-install-on-rbenv.sh'>download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+<span class='line-number'>176</span>
+<span class='line-number'>177</span>
+<span class='line-number'>178</span>
+<span class='line-number'>179</span>
+<span class='line-number'>180</span>
+<span class='line-number'>181</span>
+<span class='line-number'>182</span>
+<span class='line-number'>183</span>
+<span class='line-number'>184</span>
+<span class='line-number'>185</span>
+<span class='line-number'>186</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/usr/bin/env bash</span>
+</span><span class='line'><span class="nb">echo</span> -e <span class="s2">&quot;\e[0;45mInstallation of Redmine 2.5.\e[0m&quot;</span>
+</span><span class='line'><span class="nb">cd</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">################################################################################</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Subfolder or subdomain?</span>
+</span><span class='line'><span class="nv">SUBFOLDER</span><span class="o">=</span><span class="nb">false</span>
+</span><span class='line'><span class="nv">DOMAINNAME</span><span class="o">=</span><span class="s2">&quot;redmine.example.com&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c"># rbenv.</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -f <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;~/.rbenv exists. So I assume rbenv is correctly installed. Here is nothing to do.&quot;</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>    	<span class="nb">echo</span> <span class="s2">&quot;~/.rbenv does not exist. So I install and configure it. This will need some time.&quot;</span>
+</span><span class='line'>	<span class="nb">cd</span> <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>
+</span><span class='line'>	wget -O <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/rbenv-install.sh https://leitstelle.github.io/downloads/code/2014/rbenv-install.sh
+</span><span class='line'>	chmod u+x rbenv-install.sh
+</span><span class='line'>	./rbenv-install.sh
+</span><span class='line'>	. <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.bash_profile
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Ruby.</span>
+</span><span class='line'>rbenv install -s 2.1.2
+</span><span class='line'>rbenv rehash
+</span><span class='line'>
+</span><span class='line'><span class="c"># Apache readable directory, but not html doc folder</span>
+</span><span class='line'>/var/www/virtual/<span class="k">${</span><span class="nv">USER</span><span class="k">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Check existing repository.</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -d redmine-git <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;Source directory redmine-git exists. Updateing and copying data from there.&quot;</span>
+</span><span class='line'>	<span class="nb">cd </span>redmine-git
+</span><span class='line'>	git pull
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>	.
+</span><span class='line'>    	git clone https://github.com/redmine/redmine.git -b 2.5-stable redmine-git
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">## Checkout stable version.</span>
+</span><span class='line'><span class="c">#cd /var/www/virtual/$USER/redmine-git</span>
+</span><span class='line'><span class="c">#git checkout 2.5-stable</span>
+</span><span class='line'><span class="c">#cd ..</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Clear existing redmine installation.</span>
+</span><span class='line'>rm -Rf redmine <span class="o">&amp;&amp;</span> mkdir -p redmine
+</span><span class='line'>cp -R redmine-git/* redmine/
+</span><span class='line'>
+</span><span class='line'><span class="c"># REDMINE DIR.</span>
+</span><span class='line'><span class="nb">cd </span>redmine
+</span><span class='line'>rbenv <span class="nb">local </span>2.1.2
+</span><span class='line'>
+</span><span class='line'><span class="c"># Install bundler for local rbenv version, if not already done.</span>
+</span><span class='line'>gem install bundler
+</span><span class='line'>rbenv rehash
+</span><span class='line'>
+</span><span class='line'><span class="c"># Add fcgi to gem installation.</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;gem &#39;fcgi&#39;&quot;</span> &gt; Gemfile.local
+</span><span class='line'>
+</span><span class='line'><span class="c"># Create MySQL database.</span>
+</span><span class='line'><span class="c"># Be carefully to drop : </span>
+</span><span class='line'>mysql -e <span class="s2">&quot;DROP DATABASE ${USER}_redmine;&quot;</span>
+</span><span class='line'>mysql -e <span class="s2">&quot;CREATE DATABASE ${USER}_redmine CHARACTER SET utf8&quot;</span>
+</span><span class='line'>
+</span><span class='line'>cat &gt; config/database.yml <span class="s">&lt;&lt;__EOF__</span>
+</span><span class='line'><span class="s">production:</span>
+</span><span class='line'><span class="s">  adapter: mysql2</span>
+</span><span class='line'><span class="s">  database: ${USER}_redmine</span>
+</span><span class='line'><span class="s">  host: localhost</span>
+</span><span class='line'><span class="s">  username: $USER</span>
+</span><span class='line'><span class="s">  password: `my_print_defaults client | grep -- --password | awk -F = &#39;{ print $2 }&#39;`</span>
+</span><span class='line'><span class="s">  encoding: utf8</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Install dependencies.</span>
+</span><span class='line'><span class="c"># Old: bundle install --path ~/.gem --without development test postgresql sqlite</span>
+</span><span class='line'><span class="c"># Do not use `--path ~/.gem` this is not compatible with rbenv!</span>
+</span><span class='line'>bundle install --without development <span class="nb">test </span>postgresql sqlite
+</span><span class='line'>rbenv rehash
+</span><span class='line'>
+</span><span class='line'><span class="c"># Generate key.</span>
+</span><span class='line'>rake generate_secret_token
+</span><span class='line'>
+</span><span class='line'><span class="c"># Migrate database. Creates also admin account.</span>
+</span><span class='line'>rake db:migrate <span class="nv">RAILS_ENV</span><span class="o">=</span>production
+</span><span class='line'>
+</span><span class='line'><span class="c"># Load default configuration.</span>
+</span><span class='line'>rake redmine:load_default_data <span class="nv">RAILS_ENV</span><span class="o">=</span>production
+</span><span class='line'><span class="c"># 	Select your prefered langugae.</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Configure to send emails.</span>
+</span><span class='line'>cat &gt; config/configuration.yml <span class="s">&lt;&lt;__EOF__</span>
+</span><span class='line'><span class="s">production:</span>
+</span><span class='line'><span class="s">  email_delivery:</span>
+</span><span class='line'><span class="s">    delivery_method: :sendmail</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># FastCGI.</span>
+</span><span class='line'><span class="nb">cd </span>public
+</span><span class='line'>cp -a dispatch.fcgi.example dispatch.fcgi
+</span><span class='line'><span class="c"># FastCGI wrapper.</span>
+</span><span class='line'>cat &gt; wrapper.fcgi <span class="s">&lt;&lt;__EOF__</span>
+</span><span class='line'><span class="s">#!/bin/bash</span>
+</span><span class='line'><span class="s">export USER=$USER</span>
+</span><span class='line'><span class="s">export HOME=$HOME</span>
+</span><span class='line'><span class="s">source \$HOME/.bash_profile</span>
+</span><span class='line'><span class="s">export RAILS_ENV=production</span>
+</span><span class='line'><span class="s">exec ./dispatch.fcgi</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>chmod <span class="m">755</span> wrapper.fcgi
+</span><span class='line'>
+</span><span class='line'><span class="c"># Make public directory readable.</span>
+</span><span class='line'>chmod <span class="m">755</span> .
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">### SUBFOLDER OR SUBDOMAIN? ###</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;${SUBFOLDER}&quot;</span> <span class="o">=</span> <span class="nb">true</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>	<span class="c"># SUBFOLDER</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;Configure for usage of redmine in a subfolder.&quot;</span>
+</span><span class='line'>	<span class="nb">cd</span> /var/www/virtual/<span class="nv">$USER</span>/redmine
+</span><span class='line'>	<span class="nb">echo</span> <span class="s1">&#39;Redmine::Utils::relative_url_root = &quot;/redmine&quot;&#39;</span> &gt;&gt; config/environment.rb
+</span><span class='line'>	<span class="c"># Bugfix</span>
+</span><span class='line'>	sed -i -e <span class="s2">&quot;s/^# Initialize the rails application/RedmineApp::Application.routes.default_scope = { :path =&gt; &#39;\/redmine&#39;, :shallow_path =&gt; &#39;\/redmine&#39; }\n\n# Initialize the rails application/&quot;</span> config/environment.rb
+</span><span class='line'>
+</span><span class='line'>	<span class="c"># Create link.</span>
+</span><span class='line'>	<span class="nb">cd</span> /var/www/virtual/<span class="nv">$USER</span>/html
+</span><span class='line'>	ln -s ../redmine/public redmine
+</span><span class='line'>	
+</span><span class='line'>	<span class="c"># &#39;.htaccess&#39;</span>
+</span><span class='line'>	cat &gt; .htaccess <span class="s">&lt;&lt;&#39;__EOF__&#39;</span>
+</span><span class='line'><span class="s">	&lt;IfModule mod_fastcgi.c&gt;</span>
+</span><span class='line'><span class="s">	        AddHandler fastcgi-script .fcgi</span>
+</span><span class='line'><span class="s">	&lt;/IfModule&gt;</span>
+</span><span class='line'><span class="s">	&lt;IfModule mod_fcgid.c&gt;</span>
+</span><span class='line'><span class="s">	        AddHandler fcgid-script .fcgi</span>
+</span><span class='line'><span class="s">	&lt;/IfModule&gt;</span>
+</span><span class='line'><span class="s">	Options + SymLinksIfOwnerMatch +ExecCGI</span>
+</span><span class='line'><span class="s">	 </span>
+</span><span class='line'><span class="s">	RewriteEngine On</span>
+</span><span class='line'><span class="s">	 </span>
+</span><span class='line'><span class="s">	RewriteRule ^$ index.html [QSA]</span>
+</span><span class='line'><span class="s">	RewriteRule ^([^.]+)$ $1.html [QSA]</span>
+</span><span class='line'><span class="s">	RewriteCond %{REQUEST_FILENAME} !-f</span>
+</span><span class='line'><span class="s">	RewriteRule ^(.*)$ wrapper.fcgi [QSA,L]</span>
+</span><span class='line'><span class="s">	 </span>
+</span><span class='line'><span class="s">	ErrorDocument 500 &quot;&lt;h2&gt;Application error&lt;/h2&gt;Rails application failed to start properly&quot;</span>
+</span><span class='line'><span class="s">	__EOF__</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>	<span class="c"># SUBDOMAIN</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;Configure for usage of redmine in a subdomain.&quot;</span>
+</span><span class='line'>	<span class="c"># &#39;.htaccess&#39;.</span>
+</span><span class='line'>	<span class="nb">cd</span> /var/www/virtual/<span class="nv">$USER</span>/redmine/public
+</span><span class='line'>	cat &gt; .htaccess <span class="s">&lt;&lt;&#39;__EOF__&#39;</span>
+</span><span class='line'><span class="s">	&lt;IfModule mod_fastcgi.c&gt;</span>
+</span><span class='line'><span class="s">	        AddHandler fastcgi-script .fcgi</span>
+</span><span class='line'><span class="s">	&lt;/IfModule&gt;</span>
+</span><span class='line'><span class="s">	&lt;IfModule mod_fcgid.c&gt;</span>
+</span><span class='line'><span class="s">	        AddHandler fcgid-script .fcgi</span>
+</span><span class='line'><span class="s">	&lt;/IfModule&gt;</span>
+</span><span class='line'><span class="s">	Options +SymLinksIfOwnerMatch +ExecCGI</span>
+</span><span class='line'><span class="s">	 </span>
+</span><span class='line'><span class="s">	RewriteEngine On</span>
+</span><span class='line'><span class="s">	RewriteBase /</span>
+</span><span class='line'><span class="s">	 </span>
+</span><span class='line'><span class="s">	# http:// -&gt; https://</span>
+</span><span class='line'><span class="s">	RewriteCond %{SERVER_PORT} 80</span>
+</span><span class='line'><span class="s">	RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R,L]</span>
+</span><span class='line'><span class="s">	</span>
+</span><span class='line'><span class="s">	RewriteRule ^$ index.html [QSA]</span>
+</span><span class='line'><span class="s">	RewriteRule ^([^.]+)$ $1.html [QSA]</span>
+</span><span class='line'><span class="s">	RewriteCond %{REQUEST_FILENAME} !-f</span>
+</span><span class='line'><span class="s">	RewriteRule ^(.*)$ wrapper.fcgi [QSA,L]</span>
+</span><span class='line'><span class="s">	 </span>
+</span><span class='line'><span class="s">	ErrorDocument 500 &quot;&lt;h2&gt;Application error&lt;/h2&gt;Rails application failed to start properly&quot;</span>
+</span><span class='line'><span class="s">	__EOF__</span>
+</span><span class='line'>	
+</span><span class='line'>	<span class="c"># Create link.</span>
+</span><span class='line'>	<span class="nb">cd</span> /var/www/virtual/<span class="nv">$USER</span>
+</span><span class='line'>	ln -s redmine/public redmine.<span class="nv">$USER</span>.<span class="k">$(</span>hostname -a<span class="k">)</span>.uberspace.de
+</span><span class='line'>	ln -s redmine/public <span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Call Webpage information.</span>
+</span><span class='line'><span class="nb">echo</span> -e <span class="s2">&quot;\e[0mInstallation of Redmine 2.5 done.\e[0m&quot;</span>
+</span><span class='line'><span class="nb">echo</span> -e <span class="s2">&quot;\e[0;45mCall the your Redmine web page and log into admin account, to change the beginning password. User:\e[0;93madmin\e[0;45m Password:\e[0;93madmin\e[0m&quot;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Uninstallation</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rm -rf /var/www/virtual/<span class="k">${</span><span class="nv">USER</span><span class="k">}</span>/redmine
+</span><span class='line'>mysql -e <span class="p">&amp;</span>ldquo<span class="p">;</span>DROP DATABASE <span class="k">${</span><span class="nv">USER</span><span class="k">}</span>_redmine<span class="p">;&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>rm /var/www/virtual/<span class="k">${</span><span class="nv">USER</span><span class="k">}</span>/redmine.<span class="nv">$USER</span>.<span class="k">$(</span>hostname -a<span class="k">)</span>.uberspace.de
+</span><span class='line'>rm /var/www/virtual/<span class="k">${</span><span class="nv">USER</span><span class="k">}</span>/<span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h3>Plugins-Installation</h3>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> /var/www/virtual/<span class="nv">$USER</span>/redmine
+</span><span class='line'>git clone &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://github.com/jongha/redmine_vote.git&quot;</span>&gt;https://github.com/jongha/redmine_vote.git&lt;/a&gt; plugins/redmine_vote&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Migragte plugins, <span class="k">if</span> neccessary.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cd /var/www/virtual/<span class="nv">$USER</span>/redmine
+</span><span class='line'>rake redmine:plugins:migrate <span class="nv">RAILS_ENV</span><span class="o">=</span>production <span class="nv">NAME</span><span class="o">=</span>redmine_vote&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Restart Redmine.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Stop Redmine.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;kill <span class="k">$(</span>ps aux <span class="p">|</span> grep <span class="p">&amp;</span>lsquo<span class="p">;</span><span class="o">[</span>r<span class="o">]</span>edmine/public/dispatch.fcgi<span class="p">&amp;</span>rsquo<span class="p">;</span> <span class="p">|</span> awk <span class="p">&amp;</span>lsquo<span class="p">;</span><span class="o">{</span>print <span class="nv">$2</span><span class="o">}</span><span class="p">&amp;</span>rsquo<span class="p">;</span><span class="k">)</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Start Redmine. <span class="o">(</span>Via calling the website.<span class="o">)</span>&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;wget <span class="p">&amp;</span>ndash<span class="p">;</span>no-check-certificate <span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>/this-is-a-dummy-website-call/redmine-starts-when-webpage-is-called
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h3>Plugin-Uninstallation:</h3>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">DOMAINNAME</span><span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span>redmine.domain.tld<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'><span class="nb">cd</span> /var/www/virtual/<span class="nv">$USER</span>/redmine&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Version does not work vor every plugin. But this will remove Database entries and tables.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;So it<span class="p">&amp;</span>rsquo<span class="p">;</span>s important to remove data from old plugins!&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;rake redmine:plugins:migrate <span class="nv">RAILS_ENV</span><span class="o">=</span>production <span class="nv">VERSION</span><span class="o">=</span>0.0.1 <span class="nv">NAME</span><span class="o">=</span>redmine_vote&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Normally use <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="nv">VERSION</span><span class="o">=</span>0<span class="p">&amp;</span>rdquo<span class="p">;</span>.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;rm -rf plugins/redmine_vote&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Restart Redmine.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Stop Redmine.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;kill <span class="k">$(</span>ps aux <span class="p">|</span> grep <span class="p">&amp;</span>lsquo<span class="p">;</span><span class="o">[</span>r<span class="o">]</span>edmine/public/dispatch.fcgi<span class="p">&amp;</span>rsquo<span class="p">;</span> <span class="p">|</span> awk <span class="p">&amp;</span>lsquo<span class="p">;</span><span class="o">{</span>print <span class="nv">$2</span><span class="o">}</span><span class="p">&amp;</span>rsquo<span class="p">;</span><span class="k">)</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Start Redmine. <span class="o">(</span>Via calling the website.<span class="o">)</span>&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;wget <span class="p">&amp;</span>ndash<span class="p">;</span>no-check-certificate <span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>/this-is-a-dummy-website-call/redmine-starts-when-webpage-is-called
+</span></code></pre></td></tr></table></div></figure></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rbenv Installation]]></title>
+    <link href="http://leitstelle.github.io/blog/2014/2014-07-04-rbenv/"/>
+    <updated>2014-07-04T14:14:00+02:00</updated>
+    <id>http://leitstelle.github.io/blog/2014/rbenv</id>
+    <content type="html"><![CDATA[<h2>About</h2>
+
+<p>Installation von rbenv in das eigene $HOME-Verzeichnis. Z.B. auch für Shared-Hoster geeignet.</p>
+
+<h2>tl;dr</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>wget -O <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/rbenv-install.sh &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://leitstelle.github.io/downloads/code/2014/rbenv-install.sh&quot;</span>&gt;https://leitstelle.github.io/downloads/code/2014/rbenv-install.sh&lt;/a&gt;
+</span><span class='line'>chmod u+x <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/rbenv-install.sh
+</span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>
+</span><span class='line'>./rbenv-install.sh
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Konfiguration</h2>
+
+<ul>
+<li>Uberspace-Username -> ${USER}, <ubername> oder user</li>
+<li>Uberspace-Severname -> $(hostname -a), <uberhost>, <hostname> oder host</li>
+<li>${HOME}/.rbenv
+
+<ul>
+<li>Dort wird &lsquo;rbenv&rsquo; hinein installiert. Das heißt auch alle verschiedenen Ruby-Versionen und deren individuell installierten gems.</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Installation</h2>
+
+<p><figure class='code'><figcaption><span> (rbenv-install.sh)</span> <a href='/downloads/code/2014/rbenv-install.sh'>download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/usr/bin/env bash</span>
+</span><span class='line'><span class="nb">echo</span> -e <span class="s2">&quot;\e[0;45mInstallation of rbenv\e[0m&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">################################################################################</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Check existing repository.</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -d <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;The directory ~/.rbenv already exists. Check it. Aborting.&quot;</span>
+</span><span class='line'>	<span class="nb">exit </span>2
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>	<span class="c"># Git checkout.</span>
+</span><span class='line'>    	git clone https://github.com/sstephenson/rbenv.git <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv
+</span><span class='line'>	<span class="c"># Update</span>
+</span><span class='line'>	<span class="c">#cd ~/.rbenv</span>
+</span><span class='line'>	<span class="c">#git pull</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Activate rbenv.</span>
+</span><span class='line'>cat <span class="s">&lt;&lt; &#39;__EOF__&#39; &gt;&gt; ${HOME}/.bash_profile</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">### rbenv ###</span>
+</span><span class='line'><span class="s">export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;</span>
+</span><span class='line'><span class="s">export PATH=&quot;$HOME/.rbenv/shims:$PATH&quot;</span>
+</span><span class='line'><span class="s">eval &quot;$(rbenv init -)&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'><span class="c"># Don&#39;t forget bashrc.</span>
+</span><span class='line'>cat <span class="s">&lt;&lt; &#39;__EOF__&#39; &gt;&gt; ${HOME}/.bashrc</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">### rbenv ###</span>
+</span><span class='line'><span class="s">export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;</span>
+</span><span class='line'><span class="s">export PATH=&quot;$HOME/.rbenv/shims:$PATH&quot;</span>
+</span><span class='line'><span class="s">eval &quot;$(rbenv init -)&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># exec $SHELL</span>
+</span><span class='line'>. <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.bash_profile
+</span><span class='line'>
+</span><span class='line'><span class="c"># Check rbenv.</span>
+</span><span class='line'><span class="nb">type </span>rbenv
+</span><span class='line'>
+</span><span class='line'><span class="c"># Install ruby-build - The `rbenv install` command.</span>
+</span><span class='line'>git clone https://github.com/sstephenson/ruby-build.git <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv/plugins/ruby-build
+</span><span class='line'><span class="c"># Install rbenv-gem-rehash - The auto `rbenv rehash` when installing new gems.</span>
+</span><span class='line'>git clone https://github.com/sstephenson/rbenv-gem-rehash.git <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv/plugins/rbenv-gem-rehash
+</span><span class='line'>
+</span><span class='line'><span class="c"># List available installations.</span>
+</span><span class='line'><span class="c">#rbenv install --list</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Install ruby (need some time).</span>
+</span><span class='line'>rbenv install 2.1.2
+</span><span class='line'>rbenv install 1.9.3-p547
+</span><span class='line'><span class="c"># Rehash rbenv. This write changes into ~/.rbenv/shims. Important if gems provide some new bins.</span>
+</span><span class='line'>rbenv rehash
+</span><span class='line'>
+</span><span class='line'><span class="c"># Set global ruby version.</span>
+</span><span class='line'>rbenv global 2.1.2
+</span><span class='line'>
+</span><span class='line'><span class="c"># Hooks rbenv into the shell. (Already happend after `. ~/.bash_profile`. use `rbenv init -` to see more informations.)</span>
+</span><span class='line'><span class="c">#rbenv init</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Print rbenv used ruby version.</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;rbenv version:&quot;</span>
+</span><span class='line'>rbenv version
+</span><span class='line'>
+</span><span class='line'><span class="c"># Install options for gem.</span>
+</span><span class='line'><span class="c"># Old: echo &quot;gem: --user-install --no-rdoc --no-ri&quot; &gt; ~/.gemrc</span>
+</span><span class='line'><span class="c"># Do not use the `--user-install` option! This will install gems into `~/.gem` dir and not into the rbenv version specific folder!</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;gem: --no-rdoc --no-ri&quot;</span> &gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.gemrc
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Uninstallation</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rm -rf <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv
+</span><span class='line'>rm <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.gemrc
+</span><span class='line'>rm -rf <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.gem
+</span><span class='line'>sed -i -e <span class="p">&amp;</span>rsquo<span class="p">;</span>s/eval <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">$(</span>rbenv init -<span class="k">)</span><span class="p">&amp;</span>rdquo<span class="p">;</span>/ /g<span class="p">&amp;</span><span class="c">#8217; ${HOME}/.bash_profile</span>
+</span><span class='line'>sed -i -e <span class="p">&amp;</span>rsquo<span class="p">;</span>s/export <span class="nv">PATH</span><span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span><span class="nv">$HOME</span><span class="se">\/</span>.rbenv<span class="se">\/</span>shims:<span class="nv">$PATH</span><span class="p">&amp;</span>rdquo<span class="p">;</span>/ /g<span class="p">&amp;</span><span class="c">#8217; ${HOME}/.bash_profile</span>
+</span><span class='line'>sed -i -e <span class="p">&amp;</span>rsquo<span class="p">;</span>s/export <span class="nv">PATH</span><span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span><span class="nv">$HOME</span><span class="se">\/</span>.rbenv<span class="se">\/</span>bin:<span class="nv">$PATH</span><span class="p">&amp;</span>rdquo<span class="p">;</span>/ /g<span class="p">&amp;</span><span class="c">#8217; ${HOME}/.bash_profile</span>
+</span><span class='line'>sed -i -e <span class="p">&amp;</span>rsquo<span class="p">;</span>s/### rbenv <span class="c">###/ /g&amp;#8217; ${HOME}/.bash_profile</span>
+</span></code></pre></td></tr></table></div></figure></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Redmine Installation]]></title>
+    <link href="http://leitstelle.github.io/blog/2014/2014-07-04-redmine/"/>
+    <updated>2014-07-04T13:14:00+02:00</updated>
+    <id>http://leitstelle.github.io/blog/2014/redmine</id>
+    <content type="html"><![CDATA[<h2>About</h2>
+
+<p>Installation von Redmine 2.5 auf einem Uberspace-Account unter Benutzung einer eigenen Domain.</p>
+
+<h2>tl;dr</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>wget -O <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/redmine-2.5-install-on-ruby-2.1.1.sh &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://leitstelle.github.io/downloads/code/2014/redmine-2.5-install-on-ruby-2.1.1.sh&quot;</span>&gt;https://leitstelle.github.io/downloads/code/2014/redmine-2.5-install-on-ruby-2.1.1.sh&lt;/a&gt;
+</span><span class='line'>chmod u+x <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/redmine-2.5-install-on-ruby-2.1.1.sh
+</span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>
+</span><span class='line'>sed -i -e <span class="p">&amp;</span>rsquo<span class="p">;</span>s/DOMAINNAME<span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span>redmine.example.com<span class="p">&amp;</span>rdquo<span class="p">;</span>/DOMAINNAME<span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span>redmine.yourdomain.net<span class="p">&amp;</span>rdquo<span class="p">;</span>/g<span class="p">&amp;</span><span class="c">#8217; redmine-2.5-install-on-ruby-2.1.1.sh</span>
+</span><span class='line'>./redmine-2.5-install-on-ruby-2.1.1.sh
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Konfiguration</h2>
+
+<ul>
+<li>Uberspace-Username -> ${USER}, <ubername> oder user</li>
+<li>Uberspace-Severname -> $(hostname -a), <uberhost>, <hostname> oder host</li>
+<li>/var/www/virtual/${USER}/redmine
+
+<ul>
+<li>Dort wird Redmine hinein installiert, damit der Unterordner <code>/var/www/virtual/${USER}/redmine/public</code> von außen über den Symlink <code>ln -s ./redmine/public redmine.example.com</code> erreichbar ist.</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Installation</h2>
+
+<p><figure class='code'><figcaption><span> (redmine-2.5-install-on-ruby-2.1.1.sh)</span> <a href='/downloads/code/2014/redmine-2.5-install-on-ruby-2.1.1.sh'>download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/usr/bin/env bash</span>
+</span><span class='line'><span class="nb">echo</span> -e <span class="s2">&quot;\e[0;45mInstallation of Redmine 2.5.\e[0m&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">################################################################################</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Subfolder or subdomain?</span>
+</span><span class='line'><span class="nv">SUBFOLDER</span><span class="o">=</span><span class="nb">false</span>
+</span><span class='line'><span class="nv">DOMAINNAME</span><span class="o">=</span><span class="s2">&quot;redmine.example.com&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Activate Ruby</span>
+</span><span class='line'>cat <span class="s">&lt;&lt;&#39;__EOF__&#39; &gt;&gt; ~/.bash_profile</span>
+</span><span class='line'><span class="s">export PATH=/package/host/localhost/ruby-2.1.1/bin:$PATH</span>
+</span><span class='line'><span class="s">export PATH=$HOME/.gem/ruby/2.1.0/bin:$PATH</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>. ~/.bash_profile
+</span><span class='line'>
+</span><span class='line'><span class="c">## Activate Ruby using &#39;rbenv&#39;.</span>
+</span><span class='line'><span class="c">#cat &lt;&lt;&#39;__EOF__&#39; &gt;&gt; ~/.bash_profile</span>
+</span><span class='line'><span class="c">#export PATH=$HOME/.rbenv/shims:$PATH</span>
+</span><span class='line'><span class="c">#__EOF__</span>
+</span><span class='line'><span class="c">#. ~/.bash_profile</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Prepare gem.</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;gem: --user-install --no-rdoc --no-ri&quot;</span> &gt; ~/.gemrc
+</span><span class='line'>
+</span><span class='line'><span class="c"># We need bundler to install all gem dependencies for redmine.</span>
+</span><span class='line'><span class="c">#Old: gem install --user-install --no-rdoc --no-ri bundler</span>
+</span><span class='line'>gem install bundler
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Apache readable directory, but not html doc folder.</span>
+</span><span class='line'><span class="nb">cd</span> /var/www/virtual/<span class="nv">$USER</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Check existing repository.</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -d redmine-2.5 <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;Source directory redmine-2.5 exists. Copying data from there.&quot;</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>    	svn co http://svn.redmine.org/redmine/branches/2.5-stable redmine-2.5
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Clear existing redmine installation.</span>
+</span><span class='line'>rm -Rf redmine <span class="o">&amp;&amp;</span> mkdir -p redmine
+</span><span class='line'>cp -R redmine-2.5/* redmine/
+</span><span class='line'>
+</span><span class='line'><span class="c"># REDMINE DIR</span>
+</span><span class='line'><span class="nb">cd </span>redmine
+</span><span class='line'>
+</span><span class='line'><span class="c"># Add fcgi to gem installation.</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;gem &#39;fcgi&#39;&quot;</span> &gt; Gemfile.local
+</span><span class='line'>
+</span><span class='line'><span class="c"># Create MySQL database.</span>
+</span><span class='line'><span class="c"># Be carefully to drop : </span>
+</span><span class='line'>mysql -e <span class="s2">&quot;DROP DATABASE \`${USER}_redmine\`;&quot;</span>
+</span><span class='line'>mysql -e <span class="s2">&quot;CREATE DATABASE ${USER}_redmine CHARACTER SET utf8&quot;</span>
+</span><span class='line'>
+</span><span class='line'>cat &gt; config/database.yml <span class="s">&lt;&lt;__EOF__</span>
+</span><span class='line'><span class="s">production:</span>
+</span><span class='line'><span class="s">  adapter: mysql2</span>
+</span><span class='line'><span class="s">  database: ${USER}_redmine</span>
+</span><span class='line'><span class="s">  host: localhost</span>
+</span><span class='line'><span class="s">  username: $USER</span>
+</span><span class='line'><span class="s">  password: `my_print_defaults client | grep -- --password | awk -F = &#39;{ print $2 }&#39;`</span>
+</span><span class='line'><span class="s">  encoding: utf8</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Install dependencies.</span>
+</span><span class='line'>bundle install --path ~/.gem --without development <span class="nb">test </span>postgresql sqlite
+</span><span class='line'>
+</span><span class='line'><span class="c"># Generate key.</span>
+</span><span class='line'>rake generate_secret_token
+</span><span class='line'>
+</span><span class='line'><span class="c"># Migrate database. Creates also admin account.</span>
+</span><span class='line'>rake db:migrate <span class="nv">RAILS_ENV</span><span class="o">=</span>production
+</span><span class='line'>
+</span><span class='line'><span class="c"># Load default configuration.</span>
+</span><span class='line'>rake redmine:load_default_data <span class="nv">RAILS_ENV</span><span class="o">=</span>production
+</span><span class='line'><span class="c"># 	Select your prefered langugae.</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Configure to send emails.</span>
+</span><span class='line'>cat &gt; config/configuration.yml <span class="s">&lt;&lt;__EOF__</span>
+</span><span class='line'><span class="s">production:</span>
+</span><span class='line'><span class="s">  email_delivery:</span>
+</span><span class='line'><span class="s">    delivery_method: :sendmail</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># FastCGI.</span>
+</span><span class='line'><span class="nb">cd </span>public
+</span><span class='line'>cp -a dispatch.fcgi.example dispatch.fcgi
+</span><span class='line'><span class="c"># FastCGI wrapper.</span>
+</span><span class='line'>cat &gt; wrapper.fcgi <span class="s">&lt;&lt;__EOF__</span>
+</span><span class='line'><span class="s">#!/bin/bash</span>
+</span><span class='line'><span class="s">export USER=$USER</span>
+</span><span class='line'><span class="s">export HOME=$HOME</span>
+</span><span class='line'><span class="s">source \$HOME/.bash_profile</span>
+</span><span class='line'><span class="s">export RAILS_ENV=production</span>
+</span><span class='line'><span class="s">exec ./dispatch.fcgi</span>
+</span><span class='line'><span class="s">__EOF__</span>
+</span><span class='line'>chmod <span class="m">755</span> wrapper.fcgi
+</span><span class='line'>
+</span><span class='line'><span class="c"># Make public directory readable.</span>
+</span><span class='line'>chmod <span class="m">755</span> .
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">### SUBFOLDER OR SUBDOMAIN? ###</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;${SUBFOLDER}&quot;</span> <span class="o">=</span> <span class="nb">true</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>	<span class="c"># SUBFOLDER</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;Configure for usage of redmine in a subfolder.&quot;</span>
+</span><span class='line'>	<span class="nb">cd</span> /var/www/virtual/<span class="nv">$USER</span>/redmine
+</span><span class='line'>	<span class="nb">echo</span> <span class="s1">&#39;Redmine::Utils::relative_url_root = &quot;/redmine&quot;&#39;</span> &gt;&gt; config/environment.rb
+</span><span class='line'>	<span class="c"># Bugfix</span>
+</span><span class='line'>	sed -i -e <span class="s2">&quot;s/^# Initialize the rails application/RedmineApp::Application.routes.default_scope = { :path =&gt; &#39;\/redmine&#39;, :shallow_path =&gt; &#39;\/redmine&#39; }\n\n# Initialize the rails application/&quot;</span> config/environment.rb
+</span><span class='line'>
+</span><span class='line'>	<span class="c"># Create link.</span>
+</span><span class='line'>	<span class="nb">cd</span> /var/www/virtual/<span class="nv">$USER</span>/html
+</span><span class='line'>	ln -s ../redmine/public redmine
+</span><span class='line'>	
+</span><span class='line'>	<span class="c"># &#39;.htaccess&#39;</span>
+</span><span class='line'>	cat &gt; .htaccess <span class="s">&lt;&lt;&#39;__EOF__&#39;</span>
+</span><span class='line'><span class="s">	&lt;IfModule mod_fastcgi.c&gt;</span>
+</span><span class='line'><span class="s">	        AddHandler fastcgi-script .fcgi</span>
+</span><span class='line'><span class="s">	&lt;/IfModule&gt;</span>
+</span><span class='line'><span class="s">	&lt;IfModule mod_fcgid.c&gt;</span>
+</span><span class='line'><span class="s">	        AddHandler fcgid-script .fcgi</span>
+</span><span class='line'><span class="s">	&lt;/IfModule&gt;</span>
+</span><span class='line'><span class="s">	Options + SymLinksIfOwnerMatch +ExecCGI</span>
+</span><span class='line'><span class="s">	 </span>
+</span><span class='line'><span class="s">	RewriteEngine On</span>
+</span><span class='line'><span class="s">	 </span>
+</span><span class='line'><span class="s">	RewriteRule ^$ index.html [QSA]</span>
+</span><span class='line'><span class="s">	RewriteRule ^([^.]+)$ $1.html [QSA]</span>
+</span><span class='line'><span class="s">	RewriteCond %{REQUEST_FILENAME} !-f</span>
+</span><span class='line'><span class="s">	RewriteRule ^(.*)$ wrapper.fcgi [QSA,L]</span>
+</span><span class='line'><span class="s">	 </span>
+</span><span class='line'><span class="s">	ErrorDocument 500 &quot;&lt;h2&gt;Application error&lt;/h2&gt;Rails application failed to start properly&quot;</span>
+</span><span class='line'><span class="s">	__EOF__</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>	<span class="c"># SUBDOMAIN</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;Configure for usage of redmine in a subdomain.&quot;</span>
+</span><span class='line'>	<span class="c"># &#39;.htaccess&#39;.</span>
+</span><span class='line'>	<span class="nb">cd</span> /var/www/virtual/<span class="nv">$USER</span>/redmine/public
+</span><span class='line'>	cat &gt; .htaccess <span class="s">&lt;&lt;&#39;__EOF__&#39;</span>
+</span><span class='line'><span class="s">	&lt;IfModule mod_fastcgi.c&gt;</span>
+</span><span class='line'><span class="s">	        AddHandler fastcgi-script .fcgi</span>
+</span><span class='line'><span class="s">	&lt;/IfModule&gt;</span>
+</span><span class='line'><span class="s">	&lt;IfModule mod_fcgid.c&gt;</span>
+</span><span class='line'><span class="s">	        AddHandler fcgid-script .fcgi</span>
+</span><span class='line'><span class="s">	&lt;/IfModule&gt;</span>
+</span><span class='line'><span class="s">	Options +SymLinksIfOwnerMatch +ExecCGI</span>
+</span><span class='line'><span class="s">	 </span>
+</span><span class='line'><span class="s">	RewriteEngine On</span>
+</span><span class='line'><span class="s">	RewriteBase /</span>
+</span><span class='line'><span class="s">	 </span>
+</span><span class='line'><span class="s">	# http:// -&gt; https://</span>
+</span><span class='line'><span class="s">	RewriteCond %{SERVER_PORT} 80</span>
+</span><span class='line'><span class="s">	RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R,L]</span>
+</span><span class='line'><span class="s">	</span>
+</span><span class='line'><span class="s">	RewriteRule ^$ index.html [QSA]</span>
+</span><span class='line'><span class="s">	RewriteRule ^([^.]+)$ $1.html [QSA]</span>
+</span><span class='line'><span class="s">	RewriteCond %{REQUEST_FILENAME} !-f</span>
+</span><span class='line'><span class="s">	RewriteRule ^(.*)$ wrapper.fcgi [QSA,L]</span>
+</span><span class='line'><span class="s">	 </span>
+</span><span class='line'><span class="s">	ErrorDocument 500 &quot;&lt;h2&gt;Application error&lt;/h2&gt;Rails application failed to start properly&quot;</span>
+</span><span class='line'><span class="s">	__EOF__</span>
+</span><span class='line'>	
+</span><span class='line'>	<span class="c"># Create link.</span>
+</span><span class='line'>	<span class="nb">cd</span> /var/www/virtual/<span class="nv">$USER</span>
+</span><span class='line'>	ln -s redmine/public redmine.<span class="nv">$USER</span>.<span class="k">$(</span>hostname -a<span class="k">)</span>.uberspace.de
+</span><span class='line'>	ln -s redmine/public <span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Call Webpage information.</span>
+</span><span class='line'><span class="nb">echo</span> -e <span class="s2">&quot;\e[0mInstallation of Redmine 2.5 done.\e[0m&quot;</span>
+</span><span class='line'><span class="nb">echo</span> -e <span class="s2">&quot;\e[0;45mCall the your Redmine web page and log into admin account, to change the beginning password. User:\e[0;93madmin\e[0;45m Password:\e[0;93madmin\e[0m&quot;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Uninstallation</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rm -rf /var/www/virtual/<span class="nv">$USER</span>/redmine
+</span><span class='line'>rm redmine
+</span><span class='line'>rm redmine.<span class="nv">$USER</span>.<span class="k">$(</span>hostname -a<span class="k">)</span>.uberspace.de
+</span><span class='line'>rm <span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>
+</span><span class='line'>mysql -e <span class="p">&amp;</span>ldquo<span class="p">;</span>DROP DATABASE <span class="sb">`</span><span class="k">${</span><span class="nv">USER</span><span class="k">}</span>_redmine<span class="sb">`</span><span class="p">;&amp;</span>rdquo<span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h3>Plugins-Installation</h3>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> /var/www/virtual/<span class="nv">$USER</span>/redmine
+</span><span class='line'>git clone &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://github.com/jongha/redmine_vote.git&quot;</span>&gt;https://github.com/jongha/redmine_vote.git&lt;/a&gt; plugins/redmine_vote&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Migragte plugins, <span class="k">if</span> neccessary.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cd /var/www/virtual/<span class="nv">$USER</span>/redmine
+</span><span class='line'>rake redmine:plugins:migrate <span class="nv">RAILS_ENV</span><span class="o">=</span>production <span class="nv">NAME</span><span class="o">=</span>redmine_vote&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Restart Redmine.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Stop Redmine.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;kill <span class="k">$(</span>ps aux <span class="p">|</span> grep <span class="p">&amp;</span>lsquo<span class="p">;</span><span class="o">[</span>r<span class="o">]</span>edmine/public/dispatch.fcgi<span class="p">&amp;</span>rsquo<span class="p">;</span> <span class="p">|</span> awk <span class="p">&amp;</span>lsquo<span class="p">;</span><span class="o">{</span>print <span class="nv">$2</span><span class="o">}</span><span class="p">&amp;</span>rsquo<span class="p">;</span><span class="k">)</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Start Redmine. <span class="o">(</span>Via calling the website.<span class="o">)</span>&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;wget <span class="p">&amp;</span>ndash<span class="p">;</span>no-check-certificate <span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>/this-is-a-dummy-website-call/redmine-starts-when-webpage-is-called
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h3>Plugin-Uninstallation:</h3>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">DOMAINNAME</span><span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span>redmine.domain.tld<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'><span class="nb">cd</span> /var/www/virtual/<span class="nv">$USER</span>/redmine&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Version does not work vor every plugin. But this will remove Database entries and tables.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;So it<span class="p">&amp;</span>rsquo<span class="p">;</span>s important to remove data from old plugins!&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;rake redmine:plugins:migrate <span class="nv">RAILS_ENV</span><span class="o">=</span>production <span class="nv">VERSION</span><span class="o">=</span>0.0.1 <span class="nv">NAME</span><span class="o">=</span>redmine_vote&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Normally use <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="nv">VERSION</span><span class="o">=</span>0<span class="p">&amp;</span>rdquo<span class="p">;</span>.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;rm -rf plugins/redmine_vote&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Stop Redmine.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;kill <span class="k">$(</span>ps aux <span class="p">|</span> grep <span class="p">&amp;</span>lsquo<span class="p">;</span><span class="o">[</span>r<span class="o">]</span>edmine/public/dispatch.fcgi<span class="p">&amp;</span>rsquo<span class="p">;</span> <span class="p">|</span> awk <span class="p">&amp;</span>lsquo<span class="p">;</span><span class="o">{</span>print <span class="nv">$2</span><span class="o">}</span><span class="p">&amp;</span>rsquo<span class="p">;</span><span class="k">)</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Start Redmine. <span class="o">(</span>Via calling the website.<span class="o">)</span>&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;wget <span class="p">&amp;</span>ndash<span class="p">;</span>no-check-certificate <span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>/this-is-a-dummy-website-call/redmine-starts-when-webpage-is-called
+</span></code></pre></td></tr></table></div></figure></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Zertifikate]]></title>
+    <link href="http://leitstelle.github.io/blog/2014/2014-01-14-cert/"/>
+    <updated>2014-01-14T12:53:00+01:00</updated>
+    <id>http://leitstelle.github.io/blog/2014/cert</id>
+    <content type="html"><![CDATA[<p>Wie erstelle ich mir Zertifikate? Hier wird kurz beschrieben, wie man sich ein selbst signiertes Zertifikat ausstellt. Anschließend, wie man sich ein Zertifikat bei einer Zertifizierungsstelle, am Beispiel von CAcert, ausstellt.</p>
+
+<h2>Selbst-signiertes Zertifikat</h2>
+
+<ol>
+<li>Generiere einen privaten Schlüssel und eine Zertifizierungs-Anfrage</li>
+<li>Konvertiere den privaten Schlüssel in ein geeignetes Format um andere Schlüssel(Zertifizierungsanfragen) zu signieren.</li>
+<li>Erzeuge ein Zertifikat mit dem eigenen Schlüssel</li>
+</ol>
+
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/usr/bin/env bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Check <span class="k">if</span> domain is given as first argument.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;if <span class="o">[</span> -z <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">${</span><span class="nv">1</span><span class="k">}</span><span class="p">&amp;</span>rdquo<span class="p">;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>    <span class="nv">DOMAIN</span><span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span>domain.tld<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>    <span class="nv">DOMAIN</span><span class="o">=</span><span class="k">${</span><span class="nv">1</span><span class="k">}</span>
+</span><span class='line'><span class="k">fi</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;mkdir -p ~/.ssl
+</span><span class='line'><span class="nb">cd</span> ~/.ssl&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;1. Generate private key and certificate request&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;openssl req -new -keyout <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.pem &gt; <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.request.csr&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;2. Convert private key&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;openssl rsa -in <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.pem -out <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.authority.key&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;3. Create certificate from authority <span class="k">for</span> the certificate request.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;openssl x509 -in <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.request.csr -out <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.public.crt -req -signkey <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.authority.key -days 999
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Erzeugung des Zertifikates kann auch eine andere Autorität, als man selbst übernehemen. Dann spricht man nicht mehr von einer Selbstsignatur. Lässt man eine andere Autorität, als man selbst, den eigenen Schlüssel unterschreiben ist zu beachten, dass man nicht einfach (wie hier geschehen) den privaten Schlüssel als Zertifikats-Anfrage verwenden kann. Vielmehr erstellt man aus dem privaten Schlüssel die Anfrage:
+        openssl req -new -key ${DOMAIN}.private.pem -out ${DOMAIN}.request.csr -days 3</p>
+
+<p>Oder mit allen Wildcards und Schreibweisen.
+        openssl req -new -key ${DOMAIN}.private.pem -out ${DOMAIN}.request.csr -days 3 -subj &ldquo;/CN=*.${DOMAIN}/CN=${DOMAIN}/CN=.${DOMAIN}./CN=${DOMAIN}.&rdquo;</p>
+
+<p>Eine bekannte Zertifizierungsstelle ist CAcert; I.d.R. Kostenlos, weit verbreitet und von vielen akzeptiert.</p>
+
+<h2>CAcert</h2>
+
+<p>Um sich ein Zertifikat von <a href="http://cacert.org">CAcert.org</a> auszustellen, benötigt man einen Account. Mit diesem lässt sich ein Zertifikat mit einer Gültigkeit von 6 Monaten erstellen.</p>
+
+<p>Möchte man seinen Namen im Zertifikat (= mehr Vertrauen) und eine Gültigkeit von 24 Monaten, so benötigt man mindestens 50 Punkte. Punkte kann man mit seinem Account sammeln, wenn man sich &lsquo;assuren&rsquo; lässt. D.h. man trifft sich mit erfahrenen CAcert-Nutzern, &lsquo;Assurer&rsquo;, und lässt sich seine Identität mittels zwei offiziellen Dokumenten (Ausweis, Führerschein, &hellip;) bestätigen. Die &lsquo;Assurer&rsquo; tragen dann später die Bestätigung in ihren Accounts ein. Wenn dies geschehen ist, bekommt man Punkte gut geschrieben (Kann manchmal etwas dauern, die &lsquo;Assurer&rsquo; machen das schließlich freiwillig). Mehr Punkte = mehr vertauen. Wie viele Punkte vergeben werden können, ist von Assuer zu Assuer verschieden und erfragst du besser bei diesem.</p>
+
+<h3>Server-Zertifikat von CAcert</h3>
+
+<ol>
+<li>Füge deine Domain in deinem CAcert-Konto hinzu.</li>
+<li>Erstelle einen privaten Schlüssel</li>
+<li>Erstelle eine Zertifikats-Anfrage: $DOMAIN.request.csr</li>
+<li>Lade die Anfrage auf cacert.org hoch.</li>
+<li>Download und speichern deines privaten Schlüssels: $DOMAIN.crt</li>
+</ol>
+
+
+<p><figure class='code'><figcaption><span>Create SSL Keys (ssl-create-keys.sh)</span> <a href='/downloads/code/2014/ssl-create-keys.sh'>download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/usr/bin/env bash</span>
+</span><span class='line'><span class="c"># Download this script directly:</span>
+</span><span class='line'><span class="c"># wget --no-check-certificate https://leitstelle.salzkraftwerk.org/downloads/code/2014/ssl-create-keys.sh</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Check if domain is given as first argument.</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -z <span class="s2">&quot;${1}&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>    <span class="nv">DOMAIN</span><span class="o">=</span><span class="s2">&quot;domain.tld&quot;</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>    <span class="nv">DOMAIN</span><span class="o">=</span><span class="k">${</span><span class="nv">1</span><span class="k">}</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'>mkdir -p ~/.ssl
+</span><span class='line'><span class="nb">cd</span> ~/.ssl
+</span><span class='line'>
+</span><span class='line'><span class="c"># RSA-key pair with 4096 Bit key length.</span>
+</span><span class='line'><span class="c"># With a password:</span>
+</span><span class='line'><span class="c">#  openssl genrsa -aes256 -out ${DOMAIN}.private.pem 4096</span>
+</span><span class='line'><span class="c"># Without a password:</span>
+</span><span class='line'>openssl genrsa -out <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.pem 4096
+</span><span class='line'>openssl rsa -inform pem -in <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.pem -outform pem -out <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.key
+</span><span class='line'>openssl rsa -inform pem -in <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.pem -outform der -out <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.der
+</span><span class='line'>
+</span><span class='line'><span class="c"># Cert request for a X.509 cert, valid for 3 days.</span>
+</span><span class='line'><span class="c"># In interactive mode, you get a few questions asked. In the example here not. ;-)</span>
+</span><span class='line'><span class="c"># Important is &#39;CN (Common Name)&#39;; Write here your &#39;$DOMAIN&#39;.</span>
+</span><span class='line'><span class="c"># If you want use &#39;*.$DOMAIN&#39;, add it in &#39;CN&#39; the field.</span>
+</span><span class='line'><span class="c"># If you want use &#39;*.$DOMAIN.&#39;, add it as well.</span>
+</span><span class='line'>openssl req -new -key <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.pem -out <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.request.csr -days <span class="m">3</span> -subj <span class="s2">&quot;/CN=*.${DOMAIN}/CN=${DOMAIN}/CN=.${DOMAIN}./CN=${DOMAIN}.&quot;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Die nun erstellte Zertifikats-Anfrage läd man auf cacert.org unter Menu -> Server-Zertifikate -> <a href="https://www.cacert.org/account.php?id=10">Neu</a> hoch. Als kommentar empfehle ich, &lsquo;class1&rsquo; oder &lsquo;class3&rsquo; hinein zu schreiben, je nachdem für welche Zertifikats-Klasse man sich entschieden hat.</p>
+
+<p>Nach einer kurzen Zeit bekommt man das Zertifikat angezeigt. Dieses speichert man in einer Datei, z.B.: &lsquo;*.$DOMAIN.crt.pem&rsquo;. Um sich das Zertifikat anzeigen zu lassen ruft man folgendes auf:</p>
+
+<p><figure class='code'><figcaption><span> (ssl-check-cert.sh)</span> <a href='/downloads/code/2014/ssl-check-cert.sh'>download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/usr/bin/env bash</span>
+</span><span class='line'><span class="c"># Download this script directly:</span>
+</span><span class='line'><span class="c"># wget --no-check-certificate https://leitstelle.salzkraftwerk.org/downloads/code/2014/ssl-check-cert.sh</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Check if domain is given as first argument.</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -z <span class="s2">&quot;${1}&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>    <span class="nv">DOMAIN</span><span class="o">=</span><span class="s2">&quot;domain.tld&quot;</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>    <span class="nv">DOMAIN</span><span class="o">=</span><span class="k">${</span><span class="nv">1</span><span class="k">}</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">cd</span> ~/.ssl
+</span><span class='line'>
+</span><span class='line'><span class="c"># KEY</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -f <span class="s2">&quot;${DOMAIN}.private.pem&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>	<span class="nb">echo</span> -e <span class="s2">&quot;\e[93m Check your private key.\e[0m&quot;</span>
+</span><span class='line'>	openssl rsa -in <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.pem -check
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;No private key available.&quot;</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># CSR</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -f <span class="s2">&quot;${DOMAIN}.request.csr&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>	<span class="nb">echo</span> -e <span class="s2">&quot;\e[93m Check your certificate request.\e[0m&quot;</span>
+</span><span class='line'>	openssl req -text -noout -verify -in <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.request.csr
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;No certificate request available.&quot;</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># CRT</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -f <span class="s2">&quot;${DOMAIN}.pem.crt&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>	<span class="nb">echo</span> -e <span class="s2">&quot;\e[93m Check your public certificate.\e[0m&quot;</span>
+</span><span class='line'>	openssl x509 -in <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.crt.pem -noout -text
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;No public certificate available.&quot;</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Uberspace</span>
+</span><span class='line'><span class="nb">echo</span> -e <span class="s2">&quot;\e[93m Check for uberspace users.\e[0m&quot;</span>
+</span><span class='line'>   <span class="k">if</span> <span class="o">[</span> -f /usr/local/bin/uberspace-prepare-certificate <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>        uberspace-prepare-certificate -k ~/.ssl/<span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.pem -c ~/.ssl/<span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.crt.pem
+</span><span class='line'>   <span class="k">else</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;You are using no uberspace account.&quot;</span>
+</span><span class='line'>   <span class="k">fi</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<!--        openssl x509 -in $DOMAIN.crt.pem -noout -text-->
+
+
+<p>Auf dem Server muss der private Schlüssel in der Regel unverschlüsselt vorliegen, sonst kann der Server z.B. keine SSL-Anfragen beantworten. Falls man beim Erstellen also ein Passwort vergeben hat, ist das nicht schlimm; Man speichert den Schlüssel unverschlüsselt ab.</p>
+
+<p>Den Schlüssel in PEM-ASCII-Format speichert:
+        openssl rsa -inform der -in $DOMAIN.private.der -outform pem -out $DOMAIN.private.pem
+Im DER-Binärformat speichert:
+        openssl rsa -inform pem -in $DOMAIN.private.pem -outform der -out $DOMAIN.private.der</p>
+
+<h3>Client-Zertifikat von CAcert</h3>
+
+<ol>
+<li>Erstelle ein privaten Schlüssel: $FOOBAR.private.pem</li>
+<li>Erstelle eine Zertifikats-Anfrage: $FOOBAR.request.csr</li>
+<li>Lade die Anfrage auf cacert.org hoch.</li>
+<li>Download deines privaten Schlüssels: $FOOBAR.crt.pem</li>
+<li>Erstelle mit dem öffentlichen Schlüssel ein privates Zertifikat: $FOOBAR.privatecert.p12</li>
+</ol>
+
+
+<p>Hier die wichtigsten Auszüge vom <a href="http://wiki.cacert.org/CAcertInShort-de">CAcert-Wiki</a>, wie man sich ein Client-Zertifikat ausstellt:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/bin/bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;FOOBAR<span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span>cacert.org<span class="p">&amp;</span>rdquo<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;RSA-Schlüsselpaar mit <span class="m">4096</span> Bit Schlüssellänge.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;openssl genrsa -aes256 -out <span class="nv">$FOOBAR</span>.private.pem 4096&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Antrag für ein X.509-Zertifikat, welcher <span class="m">3</span> Tage gültig ist.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;openssl req -new -key <span class="nv">$FOOBAR</span>.private.pem -out <span class="nv">$FOOBAR</span>.request.csr -days 3
+</span></code></pre></td></tr></table></div></figure></p>
+
+<ul>
+<li>Rufe die Seite Menu -> Client-Zertifikate -> <a href="https://www.cacert.org/account.php?id=3">Neu</a> auf, um eine neues Zertifikat zu beantragen.</li>
+<li>Wähle &lsquo;Erweiterte Optionen&rsquo; aus und kopiere dort den Inhalt der Datei &lsquo;$FOOBAR.request.csr&rsquo; in das Textfeld ein.</li>
+<li>Nach einem Klick auf &lsquo;Weiter&rsquo; kann man das von CAcert erstellte Zertifikat herunterladen (PEM-Format, wird allerdings als *.crt.pem-Datei abgespeichert).</li>
+<li>Um eine PKCS12-Datei zu erhalten, sind folgende Konsoleneingaben notwendig:</li>
+</ul>
+
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Check content of downloaded cert.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;openssl x509 -in <span class="nv">$FOOBAR</span>.crt.pem -noout -text&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Create PKCS12 file.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;openssl pkcs12 -des3 -export -in <span class="nv">$FOOBAR</span>.crt.pem -inkey <span class="nv">$FOOBAR</span>.private.pem -out <span class="nv">$FOOBAR</span>.privatecert.p12
+</span></code></pre></td></tr></table></div></figure></p>
+
+<!--### Zertifikat nach wiki.ubuntuusers.de-->
+
+
+<!--<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>--&gt;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;!--cd ~--&gt;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;!--DOMAIN<span class="o">=</span><span class="s2">&quot;domain&quot;</span>--&gt;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;!--TLD<span class="o">=</span><span class="s2">&quot;tld&quot;</span>--&gt;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;!--openssl req -new -newkey rsa:4096 -nodes -out <span class="nv">$DOMAIN</span>.<span class="nv">$TLD</span>.csr -keyout <span class="nv">$DOMAIN</span>.<span class="nv">$TLD</span>.key -subj <span class="s2">&quot;/C=DE/ST=BUNDESLAND/L=STADT/O=FIRMA/OU=BEREICH/CN=$DOMAIN.$TLD&quot;</span> --&gt;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;!--
+</span></code></pre></td></tr></table></div></figure>&#8211;>
+
+
+
+]]></content>
+  </entry>
+  
+</feed>

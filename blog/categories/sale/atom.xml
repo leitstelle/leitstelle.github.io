@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: sale | Leitstelle]]></title>
+  <link href="http://leitstelle.github.io/blog/categories/sale/atom.xml" rel="self"/>
+  <link href="http://leitstelle.github.io/"/>
+  <updated>2014-08-10T13:10:34+02:00</updated>
+  <id>http://leitstelle.github.io/</id>
+  <author>
+    <name><![CDATA[Frank Zisko]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Candle Arch]]></title>
+    <link href="http://leitstelle.github.io/blog/2013/2013-12-15-candle-arch/"/>
+    <updated>2013-12-15T22:12:00+01:00</updated>
+    <id>http://leitstelle.github.io/blog/2013/candle-arch</id>
+    <content type="html"><![CDATA[<h2>Tealight Holder</h2>
+
+<p><img src="/images/2013-12-15-candle-arch/teelicht1_001.JPG" width="390">
+<img src="/images/2013-12-15-candle-arch/teelicht1_002.JPG" width="390">
+<img src="/images/2013-12-15-candle-arch/teelicht1_003.JPG" width="390">
+<img src="/images/2013-12-15-candle-arch/teelicht1_004.gif" width="390"></p>
+
+<h2>LED Candle Arch</h2>
+
+<p><img src="/images/2013-12-15-candle-arch/bogen2_001.JPG" width="390">
+<img src="/images/2013-12-15-candle-arch/bogen2_002.JPG" width="390">
+<img src="/images/2013-12-15-candle-arch/bogen2_003.JPG" width="390">
+<img src="/images/2013-12-15-candle-arch/bogen2_004.gif" width="390"></p>
+
+<h2>Candle Arch With Tealight Holder</h2>
+
+<p><img src="/images/2013-12-15-candle-arch/bogen1_001.JPG" width="600" height="400"></p>
+
+<h2>After Work</h2>
+
+<p><img src="/images/2013-12-15-candle-arch/all_001.JPG"></p>
+]]></content>
+  </entry>
+  
+</feed>

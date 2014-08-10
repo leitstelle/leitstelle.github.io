@@ -1,0 +1,1030 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: security | Leitstelle]]></title>
+  <link href="http://leitstelle.github.io/blog/categories/security/atom.xml" rel="self"/>
+  <link href="http://leitstelle.github.io/"/>
+  <updated>2014-08-10T13:10:34+02:00</updated>
+  <id>http://leitstelle.github.io/</id>
+  <author>
+    <name><![CDATA[Frank Zisko]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Pipelight installieren]]></title>
+    <link href="http://leitstelle.github.io/blog/2014/2014-06-13-pipelight/"/>
+    <updated>2014-06-13T11:50:00+02:00</updated>
+    <id>http://leitstelle.github.io/blog/2014/pipelight</id>
+    <content type="html"><![CDATA[<p>&ndash;</p>
+
+<h2>System</h2>
+
+<ul>
+<li>Debian 8 &ldquo;Jessie&rdquo; 64-bit</li>
+</ul>
+
+
+<h2>About</h2>
+
+<p>Silverlight ist, trotz dass es nicht zum Glück mehr weiter entwickelt wird, für den geneigten Streamin-Fan (auf Seiten wie Amazon Prime Instant Video, Maxdome, WatchEver, Netflix, &hellip;) leider ein Muss, um nicht auf den Filmgenuss verzichten zu müssen.</p>
+
+<p>Für GNU/Linux-Benutzer gibt es da ja nun <a href="http://pipelight.net">Pipelight</a>. Die <a href="http://pipelight.net/cms/installation.html">Installationsseite</a>
+verrät, dass Pipelight bequem für eine Vielzahl an Platformen als Paket angeboten wird.</p>
+
+<p>Besitzt man einen dedizierten Rechner für das Benutzen von fremdartiger, nicht-vertrauenswürdiger Software (sog. Shit-Box), so kann man die Pakete einfach installieren und sich der Streamings erfreuen.</p>
+
+<p>Hat man keine Shit-Box verfügbar, so kann man, wenn auch mit Abzügen, einen Kompromiss wagen und Pipelight mit seinen Abhängigkeiten nur für einen separaten Benutzer einrichten. Dazu muss ein wenig gebaut werden.</p>
+
+<h2>Wine</h2>
+
+<p>Ja, das ganze basiert auf <em>Wine</em>. Das heißt, viel Kompilierungs-Spaß unter 64-bit Systemen. Auf der <a href="http://pipelight.net/cms/page-wine.html">Wine-Seite</a> von Pipelight heißt es auch, dass es das problematischste ist, die 32-bit-Abhängigkeiten zu installieren.</p>
+
+<p>Wir brauchen:</p>
+
+<ul>
+<li>Wine-Abhängigkeiten</li>
+<li>32-bit Wine (auch unte 64-bit-Systemen)</li>
+<li>Wine-Patches</li>
+</ul>
+
+
+<h3>Dependencies</h3>
+
+<ul>
+<li><a href="http://wiki.winehq.org/WineOn64bit">wiki.winehq.org/WineOn64bit</a></li>
+</ul>
+
+
+<p><figure class='code'><figcaption><span>Install dependencies </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>su -
+</span><span class='line'>dpkg <span class="p">&amp;</span>ndash<span class="p">;</span>add-architecture i386
+</span><span class='line'>aptitude update&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;aptitude install ia32-libs-i386 -&gt; use the following <span class="p">&amp;</span>ldquo<span class="p">;</span>replacement<span class="p">&amp;</span>rdquo<span class="p">;</span>&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;web: &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://packages.debian.org/wheezy/ia32-libs-i386&quot;</span>&gt;https://packages.debian.org/wheezy/ia32-libs-i386&lt;/a&gt;&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;aptitude install multiarch-support freeglut3 libacl1 libaio1 libasyncns0 libattr1  libaudio2 libaudiofile1 libavahi-client3 libavahi-common3 libbsd0 libcap2 libcomerr2 libcups2 libcurl3 libdbus-1-3 libdirectfb-1.2-9 libdrm-intel1 libdrm-radeon1 libdrm2 libedit2 libesd0 libexif12 libexpat1 libflac8 libfltk1.1 libfontconfig1 libfreetype6 libgcrypt11 libgdbm3 libgl1-mesa-dri libgl1-mesa-glx libglu1-mesa libgnutls26 libgpg-error0 libgssapi-krb5-2 libice6 libidn11 libieee1284-3 libjack-jackd2-0 libjpeg62 libjpeg8 libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0 liblcms1 libltdl7 liblzo2-2 libmpg123-0 libnspr4-0d libnss3-1d libodbc1 libogg0 libopenal1 libpam0g libpng12-0 libpopt0 libpulse0 libsamplerate0 libsane libsasl2-2 libsdl1.2debian libselinux1 libsigc++-2.0-0c2a libsm6 libsndfile1 libsqlite3-0 libssh2-1 libssl1.0.0 libstdc++6 libsysfs2 libtdb1 libts-0.0-0 libusb-0.1-4 libuuid1 libvorbis0a libvorbisenc2 libvorbisfile3 libwrap0 libx11-6 libx86-1 libxau6 libxaw7 libxcb-render-util0 libxcb-render0 libxcb1    libxcomposite1 libxcursor1 libxdamage1 libxdmcp6 libxext6  libxfixes3 libxft2 libxi6 libxinerama1 libxml2 libxmu6 libxmuu1 libxp6 libxpm4 libxrandr2 libxrender1 libxslt1.1 libxss1 libxt6 libxtst6 libxv1 libxxf86vm1 odbcinst1debian2 xaw3dg&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;old: lesstif2 libgphoto2-2 libgphoto2-port0 libsvga1 libtasn1-3 libtiff4 libjack0 libgstreamer-plugins-base0.10-0&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;development dependencies&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;aptitude install binutils-multiarch build-essential checkinstall:i386 libasound2-dev:i386 libfontconfig1-dev:i386 libfreetype6-dev:i386 libglu1-mesa-dev:i386 libjpeg8-dev:i386 libldap2-dev:i386 libosmesa6-dev:i386 libncurses5-dev:i386 libpng12-dev:i386 libtiff5-dev:i386 libxml2-dev:i386 libxslt1-dev:i386 libxrender-dev:i386 libx11-dev:i386  libxcursor-dev:i386 libxi-dev:i386 libxxf86vm-dev:i386 libxrandr-dev:i386 libxinerama-dev:i386 libxcomposite-dev:i386 libdbus-1-dev:i386 libgnutls-dev:i386 libncurses-dev:i386 libsane-dev:i386 libv4l-dev:i386 libgphoto2-2-dev:i386 liblcms2-dev:i386 libgstreamer-plugins-base0.10-dev:i386 libcapi20-dev:i386 libcups2-dev:i386  libgsm1-dev:i386  libmpg123-dev:i386 libopenal-dev:i386 libhal-dev:i386 gettext:i386 prelink:i386 bzip2:i386 bison:i386 flex:i386 oss4-dev:i386  ocl-icd-libopencl1:i386 opencl-headers:i386
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h3>Wine-Kompilation (v1.7.19)</h3>
+
+<p>NOTE: Besides the normal dependencies, you will additionally have to install the development files of libattr (i386) to get DRM working with Silverlight. Please double check that Wine was able to detect the libattr header files!</p>
+
+<p><figure class='code'><figcaption><span>Install dependencies </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Download and extract the latest supported wine version&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;wget &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://sourceforge.net/projects/wine/files/Source/wine-1.7.19.tar.bz2&quot;</span>&gt;http://sourceforge.net/projects/wine/files/Source/wine-1.7.19.tar.bz2&lt;/a&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;wget &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://skylink.dl.sourceforge.net/project/wine/Source/wine-1.7.19.tar.bz2&quot;</span>&gt;http://skylink.dl.sourceforge.net/project/wine/Source/wine-1.7.19.tar.bz2&lt;/a&gt;&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;tar -xvjf wine-1.7.19.tar.bz2&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Download and extract the latest wine patches&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;wget &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://github.com/compholio/wine-compholio-daily/archive/latest-release.tar.gz&quot;</span>&gt;https://github.com/compholio/wine-compholio-daily/archive/latest-release.tar.gz&lt;/a&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;tar -xvzf latest-release.tar.gz&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Apply patches&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;make -C wine-compholio-daily-latest-release/patches <span class="nv">DESTDIR</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/wine-1.7.19&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cd wine-1.7.19&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;./configure <span class="p">&amp;</span>ndash<span class="p">;</span>with-xattr&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;or: ./configure <span class="p">&amp;</span>ndash<span class="p">;</span>with-xattr <span class="p">&amp;</span>ndash<span class="p">;</span><span class="nv">prefix</span><span class="o">=</span><span class="nv">$HOME</span>/mywine&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Build and install.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;make depend
+</span><span class='line'>make
+</span><span class='line'>make install&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;or, when installing as a subdir of <span class="nv">$HOME</span>: make install&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h3>Wine-Patches</h3>
+
+<p>Es stehen 3 Downloads zur Verfügung:</p>
+
+<pre><code># All needed wine patches sort into grouped subfolders.
+wget http://fds-team.de/mirror/wine-compholio.tar.gz
+# All needed wine patches in one folder.
+wget http://fds-team.de/mirror/wine-patches.tar.gz
+# A minimal set of wine patches.
+wget http://fds-team.de/mirror/wine-patches-minimal.tar.gz
+</code></pre>
+
+<h2>UPDATE:</h2>
+
+<p>Die &ldquo;WINE Compholio&rdquo; Installation fehlt noch.
+(Tut mir leid, die habe ich völlig vergessen und wird noch nachgereicht. Ich hoffe ihr habt noch Geduld.)</p>
+
+<h2>tl;dr</h2>
+
+<ul>
+<li>Installiere Abhängigkeiten für Pipelight.</li>
+<li>Füge neuen Nutzer dem System hinzu.
+
+<ul>
+<li>Überprüfe, dass dieser Nutzer nur die Rechte hat, die er minimal benötigt.</li>
+</ul>
+</li>
+<li>Als anderer Nutzer anmelden.</li>
+<li>Download des Sourcecodes von Pipelight.</li>
+<li>Konfiguriere und kompiliere Pipelight.</li>
+<li>Kopiere die *.so Dateien.</li>
+<li>Schalte Silverlight ein.</li>
+<li>Starte den Browser.</li>
+</ul>
+
+
+<h2>Warum?</h2>
+
+<p>Linux-Benutzer kennen es: Man kann einfach kein &ldquo;Amazon Prime Instant Video&rdquo;, &ldquo;Watch Ever&rdquo; und sonstige Angebote für Video-Streaming wahrnehmen, weil sie alle auf das &ldquo;Krebsgeschwür des Internets&rdquo; setzen. Diesem will man sich normaler Weise auch nicht aussetzen. Von Sicherheitsbedenken ganz zu schweigen.</p>
+
+<p>Was tun? Das dachten sich wohl auch schon viele andere. Moonlight wurde entwickelt. Das kann leider kein DRM (Wer auch immer DRM erfunden hat.). Irgendwo, in den Weiten des Internets, kennt angeblich jemand eine Lösung für das Problem, die auf &lsquo;libflashplugin-nonfree&rsquo; setzt.</p>
+
+<p>Es gibt aber auch &ldquo;<a href="http://fds-team.de/cms/articles/2013-08/pipelight-using-silverlight-in-linux-browsers.html">Pipelight</a>&rdquo; (<a href="https://launchpad.net/pipelight">launchpad.net/pipelight</a>). Was macht das? Im Grunde wird Silverlight unter WINE installiert und als Plugin für den Linux-Browser verfügbar. Der Browser muss sich nur im Useragent als Windows-Gerät ausgeben und durch das Plugin die WINE-Installation von Silverlight aufrufen.</p>
+
+<p>Für viele Linux-Distributionen ist Pipelight als <a href="http://fds-team.de/cms/pipelight-installation.html">Repository</a> verfügbar. Allerdings lässt es sich auch kompilieren. Die Möglichkeit aus vielen Kompromissen (zwischen Sicherheit, Faulheit, dem fehlen eines zweiten unsicheren Computers, &hellip;) ist nun, einen weiteren Benutzer auf dem System anzulegen, diesen mit minimalen Ausführungsrechten zu versehen und es ihm weites gehend unmöglich machen, andere Home-User-Verzeichnisse zu lesen.</p>
+
+<h2>Vorbereitung</h2>
+
+<pre><code>wget https://leitstelle.github.io/downloads/code/2014/pipelight-preparation.root.sh
+chmod +x pipelight-preparation.root.sh
+su
+./pipelight-preparation.root.sh
+</code></pre>
+
+<p><figure class='code'><figcaption><span>Prepare the system to use pipelight. (pipelight-preparation.root.sh)</span> <a href='/downloads/code/2014/pipelight-preparation.root.sh'>download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/usr/bin/env bash</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Script for GNU/Linux Debian Jessie (Testing).</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Run this script with root rights.</span>
+</span><span class='line'><span class="c"># Some root things have to be done.</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Create new user</span>
+</span><span class='line'>adduser film
+</span><span class='line'>
+</span><span class='line'><span class="c"># Add user film to group video</span>
+</span><span class='line'>adduser film video
+</span><span class='line'>
+</span><span class='line'><span class="nv">wine_compholio_dep</span><span class="o">=(</span><span class="s1">&#39;lib32-fontconfig&#39;</span>
+</span><span class='line'>           <span class="s1">&#39;lib32-libxcursor&#39;</span>
+</span><span class='line'>           <span class="s1">&#39;lib32-libxrandr&#39;</span>
+</span><span class='line'>           <span class="s1">&#39;lib32-libxdamage&#39;</span>
+</span><span class='line'>           <span class="s1">&#39;lib32-libxi&#39;</span>
+</span><span class='line'>           <span class="s1">&#39;lib32-gettext&#39;</span>
+</span><span class='line'>           <span class="s1">&#39;lib32-glu&#39;</span>
+</span><span class='line'>           <span class="s1">&#39;lib32-libsm&#39;</span>
+</span><span class='line'>           <span class="s1">&#39;lib32-gcc-libs&#39;</span>
+</span><span class='line'>           <span class="s1">&#39;lib32-attr&#39;</span>
+</span><span class='line'>           <span class="s1">&#39;desktop-file-utils&#39;</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">wine_compholio_dev</span><span class="o">=(</span><span class="s1">&#39;autoconf&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;ncurses&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;bison&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;perl&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;fontforge&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;flex&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;prelink&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;gcc-multilib&gt;=4.5.0-2&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;lib32-giflib&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;lib32-libpng&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;lib32-gnutls&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;lib32-libxinerama&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;lib32-libxcomposite&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;lib32-libxmu&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;lib32-libxxf86vm&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;lib32-libxml2&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;lib32-libldap&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;lib32-lcms&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;lib32-mpg123&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;lib32-openal&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;lib32-v4l-utils&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;lib32-alsa-lib&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;lib32-mesa&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;lib32-libgl&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;lib32-libcl&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;attr&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;samba&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;pulseaudio&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;opencl-headers&#39;</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Application dependencies. </span>
+</span><span class='line'><span class="c"># (Instead of &#39;zenity&#39; you can use: &#39;kde-baseapps-bin&#39; AND &#39;qdbus&#39;.)</span>
+</span><span class='line'><span class="nv">pipelight_dep</span><span class="o">=(</span><span class="s1">&#39;libc6&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;libgcc1&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;libstdc++6&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;libx11-6&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;debconf&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;mesa-utils&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;ttf-mscorefonts-installer&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;wget&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;zenity&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;bash&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;unzip&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;cabextract&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;gnupg&#39;</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Development dependencies.</span>
+</span><span class='line'><span class="nv">pipelight_dev</span><span class="o">=(</span><span class="s1">&#39;libc6-dev&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;libx11-dev&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;mingw-w64&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;g++-mingw-w64&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;make&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;g++&#39;</span>
+</span><span class='line'>	<span class="s1">&#39;sed&#39;</span>
+</span><span class='line'><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>aptitude install <span class="k">${</span><span class="nv">wine_compholio_dep</span><span class="k">}</span> <span class="k">${</span><span class="nv">wine_compholio_dev</span><span class="k">}</span> <span class="k">${</span><span class="nv">pipelight_dep</span><span class="k">}</span> <span class="k">${</span><span class="nv">pipelight_dev</span><span class="k">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c"># XATTR support</span>
+</span><span class='line'><span class="c"># XATTR is for ext3 and ext4 enabled out of the box.</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># # Install the attr package (example for Ubuntu/Debian):</span>
+</span><span class='line'><span class="c"># aptitude install attr</span>
+</span><span class='line'><span class="c"># # Check XATTR</span>
+</span><span class='line'><span class="c"># touch ~/.xattr_test &amp;&amp; setfattr -n &#39;user.testAttr&#39; -v &#39;attribute value&#39; ~/.xattr_test &amp;&gt; /dev/null; getfattr ~/.xattr_test 2&gt;&amp;1 | grep -q user.testAttr &amp;&amp; echo &#39;It works!&#39; || echo &#39;No workie!&#39;; rm ~/.xattr_test &amp;&gt; /dev/null</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Root things are done.</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<pre><code># Root things are done.
+exit
+
+# Make your home directory readable only by yourself.
+chmod 0700 ${HOME}
+</code></pre>
+
+<h2>Konfigurieren und Kompilieren</h2>
+
+<p>Als Benutzer &ldquo;Film&rdquo; anmelden und das Script ausführen.</p>
+
+<pre><code>wget https://leitstelle.github.io/downloads/code/2014/pipelight-install.sh
+chmod +x pipelight-install.sh
+./pipelight-install.sh
+</code></pre>
+
+<p><figure class='code'><figcaption><span>Compile pipelight and enable silverlight. (pipelight-install.sh)</span> <a href='/downloads/code/2014/pipelight-install.sh'>download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'><span class="nv">USER_HOME</span><span class="o">=</span><span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>
+</span><span class='line'><span class="nv">USER_INSTALL_ROOT</span><span class="o">=</span><span class="k">${</span><span class="nv">USER_HOME</span><span class="k">}</span>/.local/build
+</span><span class='line'><span class="nv">USER_PIPELIGHT_LIB_DIR</span><span class="o">=</span><span class="k">${</span><span class="nv">USER_INSTALL_ROOT</span><span class="k">}</span>/lib/pipelight
+</span><span class='line'>
+</span><span class='line'><span class="c"># Prepare enviroment.</span>
+</span><span class='line'>mkdir -p <span class="k">${</span><span class="nv">USER_INSTALL_ROOT</span><span class="k">}</span>/src
+</span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">USER_INSTALL_ROOT</span><span class="k">}</span>/src
+</span><span class='line'>git clone https://bitbucket.org/mmueller2012/pipelight.git
+</span><span class='line'>
+</span><span class='line'><span class="c"># Configure pipelight and build it.</span>
+</span><span class='line'><span class="nb">cd </span>pipelight
+</span><span class='line'>
+</span><span class='line'>./configure --prefix<span class="o">=</span><span class="k">${</span><span class="nv">USER_INSTALL_ROOT</span><span class="k">}</span> --moz-plugin-path<span class="o">=</span><span class="k">${</span><span class="nv">USER_HOME</span><span class="k">}</span>/.mozilla/plugins/
+</span><span class='line'><span class="c"># --wine-path=&quot;/opt/wine-compholio/bin/wine&quot; --gcc-runtime-dlls=&quot;/lib/x86_64-linux-gnu/&quot;</span>
+</span><span class='line'>
+</span><span class='line'>make
+</span><span class='line'>make install
+</span><span class='line'>
+</span><span class='line'><span class="c"># Postinstall. Copy &#39;libpipelight.so&#39; to available plugins. Yes, this works like that.</span>
+</span><span class='line'>cp <span class="k">${</span><span class="nv">USER_PIPELIGHT_LIB_DIR</span><span class="k">}</span>/libpipelight.so <span class="k">${</span><span class="nv">USER_PIPELIGHT_LIB_DIR</span><span class="k">}</span>/libpipelight-flash.so
+</span><span class='line'>cp <span class="k">${</span><span class="nv">USER_PIPELIGHT_LIB_DIR</span><span class="k">}</span>/libpipelight.so <span class="k">${</span><span class="nv">USER_PIPELIGHT_LIB_DIR</span><span class="k">}</span>/libpipelight-silverlight4.so
+</span><span class='line'>cp <span class="k">${</span><span class="nv">USER_PIPELIGHT_LIB_DIR</span><span class="k">}</span>/libpipelight.so <span class="k">${</span><span class="nv">USER_PIPELIGHT_LIB_DIR</span><span class="k">}</span>/libpipelight-silverlight5.0.so
+</span><span class='line'>cp <span class="k">${</span><span class="nv">USER_PIPELIGHT_LIB_DIR</span><span class="k">}</span>/libpipelight.so <span class="k">${</span><span class="nv">USER_PIPELIGHT_LIB_DIR</span><span class="k">}</span>/libpipelight-silverlight5.1.so
+</span><span class='line'>cp <span class="k">${</span><span class="nv">USER_PIPELIGHT_LIB_DIR</span><span class="k">}</span>/libpipelight.so <span class="k">${</span><span class="nv">USER_PIPELIGHT_LIB_DIR</span><span class="k">}</span>/libpipelight-unity3d.so
+</span><span class='line'>cp <span class="k">${</span><span class="nv">USER_PIPELIGHT_LIB_DIR</span><span class="k">}</span>/libpipelight.so <span class="k">${</span><span class="nv">USER_PIPELIGHT_LIB_DIR</span><span class="k">}</span>/libpipelight-widevine.so
+</span><span class='line'>
+</span><span class='line'><span class="c"># Postinstall. Create link from &#39;~/bin/pipelight-plugin&#39; to &#39;~/.locale/usr/bin/pipelight-plugin&#39;.</span>
+</span><span class='line'><span class="c"># Need &#39;$HOME/bin&#39; in PATH. If this is not configured, configure it. ;-)</span>
+</span><span class='line'><span class="c"># mkdir -p ${USER_HOME}/bin</span>
+</span><span class='line'><span class="c"># cat &lt;&lt;EOF &gt;&gt; ${USER_HOME}/.bash_profile</span>
+</span><span class='line'><span class="c"># # if running bash</span>
+</span><span class='line'><span class="c"># if [ -n &quot;$BASH_VERSION&quot; ]; then</span>
+</span><span class='line'><span class="c">#     # include .bashrc if it exists</span>
+</span><span class='line'><span class="c">#     if [ -f &quot;$HOME/.bashrc&quot; ]; then</span>
+</span><span class='line'><span class="c">#         . &quot;$HOME/.bashrc</span>
+</span><span class='line'><span class="c">#     fi</span>
+</span><span class='line'><span class="c"># fi</span>
+</span><span class='line'><span class="c"># # set PATH so it includes user&#39;s private bin if it exists</span>
+</span><span class='line'><span class="c"># if [ -d &quot;$HOME/bin&quot; ] ; then</span>
+</span><span class='line'><span class="c">#     PATH=&quot;$HOME/bin:$PATH&quot;</span>
+</span><span class='line'><span class="c"># fi</span>
+</span><span class='line'><span class="c"># EOF</span>
+</span><span class='line'><span class="c"># bash -l</span>
+</span><span class='line'><span class="c"># TODO: Write small bash profile help.</span>
+</span><span class='line'>ln -s <span class="k">${</span><span class="nv">USER_INSTALL_ROOT</span><span class="k">}</span>/bin/pipelight-plugin <span class="k">${</span><span class="nv">USER_HOME</span><span class="k">}</span>/bin/pipelight-plugin
+</span><span class='line'>
+</span><span class='line'><span class="c"># Start Browser. On first run firefox detects a new plugin.</span>
+</span><span class='line'><span class="c"># This initalize a new wine bottle and install the plugins.</span>
+</span><span class='line'>pipelight-plugin --enable silverlight
+</span></code></pre></td></tr></table></div></figure></p>
+
+<pre><code># Start firefox / iceweasel.
+iceweasel
+</code></pre>
+
+<p>Zum Schluss muss noch ein Firefox-Addon installiert werden, welches es erlaubt, sich als Browser eines anderen Betriebssystems auszugeben. Damit wird den Streamingseiten suggeriert, man wäre ein Windows-Benutzer und könne Filme über &ldquo;Silverlight&rdquo; streamen. Dazu eignet sich z.B. &ldquo;<a href="https://addons.mozilla.org/firefox/addon/user-agent-overrider/">User Agent Overrider</a>&rdquo;. Natürlich muss man auch &ldquo;Windows / Firefox 26&rdquo; auswählen (Das neue Icon oben rechts klicken.).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[encfs-Cheatsheet]]></title>
+    <link href="http://leitstelle.github.io/blog/2014/2014-02-03-encfs/"/>
+    <updated>2014-02-03T18:35:00+01:00</updated>
+    <id>http://leitstelle.github.io/blog/2014/encfs</id>
+    <content type="html"><![CDATA[<p>Um auf einem unverschlüsseltem Datenträger Daten sicher abzulegen gibt es einige Werkzeuge. Eines ist &lsquo;encfs&rsquo;.</p>
+
+<p>Hier gibt es eine kurze Übersicht, wie man encfs benutzt.</p>
+
+<h2>Normale Verschlüsselung</h2>
+
+<pre><code>encfs /source/absolute/path/encdata /target/absolute/path/plainmount
+</code></pre>
+
+<p>Sollte noch keine Verschlüsselung konfiguriert sein wird diese interaktiv angelegt. Im verschlüsselten Ausgangsverzeichnis wird, wenn noch nicht vorhanden eine Datei <code>.encfs6.xml</code> angelegt. Diese beinhaltet wichtige Einstellungen (cipher mode, filename encoding, key size, block size).</p>
+
+<p>Um den &lsquo;Container&rsquo; wieder zu schliesen wird das Ziel ausgehangen:</p>
+
+<pre><code>fusermount -u /target/absolute/path/plainmount
+</code></pre>
+
+<p>Danach sind ist das ursprüngliche Zielverzeichnis des Mountpunktes nur noch ein leerer Ordner.</p>
+
+<h3>Andere Lese- und Schreibrechte</h3>
+
+<p>encfs nutzt fuse, dies wiederum erlaubt es Nutzern zu Mountvorgänge auszuführen. Die Mount-Punkte sind nur für den Nutzer verfügbar. Sollten noch andere Nutzer oder Dienste auf die Daten zugreifen müssen hilft die Option &lsquo;allow other&rsquo;.</p>
+
+<pre><code>encfs -o allow_other /source/absolute/path/encdata /target/absolute/path/plainmount
+</code></pre>
+
+<p>Damit dies auch bei nicht Root-Nutzern möglich ist muss die Datei &lsquo;/etc/fuse.conf&rsquo; geändert werden:</p>
+
+<pre><code>su -
+echo "user_allow_other" &gt;&gt; /etc/fuse.conf
+</code></pre>
+
+<h2>Umgekehrte Verschlüsselung</h2>
+
+<p>Wenn man die Daten auf der eigenen schon vom System verschlüsselten Festplatte liegen hat, wird man sie kaum nochmals verschlüsseln und dann Backupen wollen. encfs bietet den Umgekehrten Weg an, so dass die unverschlüsselten Daten verschlüsselt gemountet werden. Dort kann man diese dann wegsichern. <strong>Achtung</strong>: Die EInstellungsdatei, die bei normaler Benutzung bei den verschlüsselten Daten liegt wird genau genommen im Ausgangsordner angelegt. D.h. hier, dass diese bei den Klartextdaten angelegt wird und extra gesichert werden muss.</p>
+
+<pre><code>encfs --reverse /source/absolute/path/plaindata /target/absolute/path/encmount 
+fusermount -u encmount
+</code></pre>
+
+<h2>Cryptkeeper</h2>
+
+<p>Für besonders faule gibt es das Tool cryptkeeper.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Zertifikate]]></title>
+    <link href="http://leitstelle.github.io/blog/2014/2014-01-14-cert/"/>
+    <updated>2014-01-14T12:53:00+01:00</updated>
+    <id>http://leitstelle.github.io/blog/2014/cert</id>
+    <content type="html"><![CDATA[<p>Wie erstelle ich mir Zertifikate? Hier wird kurz beschrieben, wie man sich ein selbst signiertes Zertifikat ausstellt. Anschließend, wie man sich ein Zertifikat bei einer Zertifizierungsstelle, am Beispiel von CAcert, ausstellt.</p>
+
+<h2>Selbst-signiertes Zertifikat</h2>
+
+<ol>
+<li>Generiere einen privaten Schlüssel und eine Zertifizierungs-Anfrage</li>
+<li>Konvertiere den privaten Schlüssel in ein geeignetes Format um andere Schlüssel(Zertifizierungsanfragen) zu signieren.</li>
+<li>Erzeuge ein Zertifikat mit dem eigenen Schlüssel</li>
+</ol>
+
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/usr/bin/env bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Check <span class="k">if</span> domain is given as first argument.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;if <span class="o">[</span> -z <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">${</span><span class="nv">1</span><span class="k">}</span><span class="p">&amp;</span>rdquo<span class="p">;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>    <span class="nv">DOMAIN</span><span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span>domain.tld<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>    <span class="nv">DOMAIN</span><span class="o">=</span><span class="k">${</span><span class="nv">1</span><span class="k">}</span>
+</span><span class='line'><span class="k">fi</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;mkdir -p ~/.ssl
+</span><span class='line'><span class="nb">cd</span> ~/.ssl&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;1. Generate private key and certificate request&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;openssl req -new -keyout <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.pem &gt; <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.request.csr&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;2. Convert private key&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;openssl rsa -in <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.pem -out <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.authority.key&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;3. Create certificate from authority <span class="k">for</span> the certificate request.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;openssl x509 -in <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.request.csr -out <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.public.crt -req -signkey <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.authority.key -days 999
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Erzeugung des Zertifikates kann auch eine andere Autorität, als man selbst übernehemen. Dann spricht man nicht mehr von einer Selbstsignatur. Lässt man eine andere Autorität, als man selbst, den eigenen Schlüssel unterschreiben ist zu beachten, dass man nicht einfach (wie hier geschehen) den privaten Schlüssel als Zertifikats-Anfrage verwenden kann. Vielmehr erstellt man aus dem privaten Schlüssel die Anfrage:
+        openssl req -new -key ${DOMAIN}.private.pem -out ${DOMAIN}.request.csr -days 3</p>
+
+<p>Oder mit allen Wildcards und Schreibweisen.
+        openssl req -new -key ${DOMAIN}.private.pem -out ${DOMAIN}.request.csr -days 3 -subj &ldquo;/CN=*.${DOMAIN}/CN=${DOMAIN}/CN=.${DOMAIN}./CN=${DOMAIN}.&rdquo;</p>
+
+<p>Eine bekannte Zertifizierungsstelle ist CAcert; I.d.R. Kostenlos, weit verbreitet und von vielen akzeptiert.</p>
+
+<h2>CAcert</h2>
+
+<p>Um sich ein Zertifikat von <a href="http://cacert.org">CAcert.org</a> auszustellen, benötigt man einen Account. Mit diesem lässt sich ein Zertifikat mit einer Gültigkeit von 6 Monaten erstellen.</p>
+
+<p>Möchte man seinen Namen im Zertifikat (= mehr Vertrauen) und eine Gültigkeit von 24 Monaten, so benötigt man mindestens 50 Punkte. Punkte kann man mit seinem Account sammeln, wenn man sich &lsquo;assuren&rsquo; lässt. D.h. man trifft sich mit erfahrenen CAcert-Nutzern, &lsquo;Assurer&rsquo;, und lässt sich seine Identität mittels zwei offiziellen Dokumenten (Ausweis, Führerschein, &hellip;) bestätigen. Die &lsquo;Assurer&rsquo; tragen dann später die Bestätigung in ihren Accounts ein. Wenn dies geschehen ist, bekommt man Punkte gut geschrieben (Kann manchmal etwas dauern, die &lsquo;Assurer&rsquo; machen das schließlich freiwillig). Mehr Punkte = mehr vertauen. Wie viele Punkte vergeben werden können, ist von Assuer zu Assuer verschieden und erfragst du besser bei diesem.</p>
+
+<h3>Server-Zertifikat von CAcert</h3>
+
+<ol>
+<li>Füge deine Domain in deinem CAcert-Konto hinzu.</li>
+<li>Erstelle einen privaten Schlüssel</li>
+<li>Erstelle eine Zertifikats-Anfrage: $DOMAIN.request.csr</li>
+<li>Lade die Anfrage auf cacert.org hoch.</li>
+<li>Download und speichern deines privaten Schlüssels: $DOMAIN.crt</li>
+</ol>
+
+
+<p><figure class='code'><figcaption><span>Create SSL Keys (ssl-create-keys.sh)</span> <a href='/downloads/code/2014/ssl-create-keys.sh'>download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/usr/bin/env bash</span>
+</span><span class='line'><span class="c"># Download this script directly:</span>
+</span><span class='line'><span class="c"># wget --no-check-certificate https://leitstelle.salzkraftwerk.org/downloads/code/2014/ssl-create-keys.sh</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Check if domain is given as first argument.</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -z <span class="s2">&quot;${1}&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>    <span class="nv">DOMAIN</span><span class="o">=</span><span class="s2">&quot;domain.tld&quot;</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>    <span class="nv">DOMAIN</span><span class="o">=</span><span class="k">${</span><span class="nv">1</span><span class="k">}</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'>mkdir -p ~/.ssl
+</span><span class='line'><span class="nb">cd</span> ~/.ssl
+</span><span class='line'>
+</span><span class='line'><span class="c"># RSA-key pair with 4096 Bit key length.</span>
+</span><span class='line'><span class="c"># With a password:</span>
+</span><span class='line'><span class="c">#  openssl genrsa -aes256 -out ${DOMAIN}.private.pem 4096</span>
+</span><span class='line'><span class="c"># Without a password:</span>
+</span><span class='line'>openssl genrsa -out <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.pem 4096
+</span><span class='line'>openssl rsa -inform pem -in <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.pem -outform pem -out <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.key
+</span><span class='line'>openssl rsa -inform pem -in <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.pem -outform der -out <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.der
+</span><span class='line'>
+</span><span class='line'><span class="c"># Cert request for a X.509 cert, valid for 3 days.</span>
+</span><span class='line'><span class="c"># In interactive mode, you get a few questions asked. In the example here not. ;-)</span>
+</span><span class='line'><span class="c"># Important is &#39;CN (Common Name)&#39;; Write here your &#39;$DOMAIN&#39;.</span>
+</span><span class='line'><span class="c"># If you want use &#39;*.$DOMAIN&#39;, add it in &#39;CN&#39; the field.</span>
+</span><span class='line'><span class="c"># If you want use &#39;*.$DOMAIN.&#39;, add it as well.</span>
+</span><span class='line'>openssl req -new -key <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.pem -out <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.request.csr -days <span class="m">3</span> -subj <span class="s2">&quot;/CN=*.${DOMAIN}/CN=${DOMAIN}/CN=.${DOMAIN}./CN=${DOMAIN}.&quot;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Die nun erstellte Zertifikats-Anfrage läd man auf cacert.org unter Menu -> Server-Zertifikate -> <a href="https://www.cacert.org/account.php?id=10">Neu</a> hoch. Als kommentar empfehle ich, &lsquo;class1&rsquo; oder &lsquo;class3&rsquo; hinein zu schreiben, je nachdem für welche Zertifikats-Klasse man sich entschieden hat.</p>
+
+<p>Nach einer kurzen Zeit bekommt man das Zertifikat angezeigt. Dieses speichert man in einer Datei, z.B.: &lsquo;*.$DOMAIN.crt.pem&rsquo;. Um sich das Zertifikat anzeigen zu lassen ruft man folgendes auf:</p>
+
+<p><figure class='code'><figcaption><span> (ssl-check-cert.sh)</span> <a href='/downloads/code/2014/ssl-check-cert.sh'>download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/usr/bin/env bash</span>
+</span><span class='line'><span class="c"># Download this script directly:</span>
+</span><span class='line'><span class="c"># wget --no-check-certificate https://leitstelle.salzkraftwerk.org/downloads/code/2014/ssl-check-cert.sh</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Check if domain is given as first argument.</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -z <span class="s2">&quot;${1}&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>    <span class="nv">DOMAIN</span><span class="o">=</span><span class="s2">&quot;domain.tld&quot;</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>    <span class="nv">DOMAIN</span><span class="o">=</span><span class="k">${</span><span class="nv">1</span><span class="k">}</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">cd</span> ~/.ssl
+</span><span class='line'>
+</span><span class='line'><span class="c"># KEY</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -f <span class="s2">&quot;${DOMAIN}.private.pem&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>	<span class="nb">echo</span> -e <span class="s2">&quot;\e[93m Check your private key.\e[0m&quot;</span>
+</span><span class='line'>	openssl rsa -in <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.pem -check
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;No private key available.&quot;</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># CSR</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -f <span class="s2">&quot;${DOMAIN}.request.csr&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>	<span class="nb">echo</span> -e <span class="s2">&quot;\e[93m Check your certificate request.\e[0m&quot;</span>
+</span><span class='line'>	openssl req -text -noout -verify -in <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.request.csr
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;No certificate request available.&quot;</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># CRT</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -f <span class="s2">&quot;${DOMAIN}.pem.crt&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>	<span class="nb">echo</span> -e <span class="s2">&quot;\e[93m Check your public certificate.\e[0m&quot;</span>
+</span><span class='line'>	openssl x509 -in <span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.crt.pem -noout -text
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;No public certificate available.&quot;</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Uberspace</span>
+</span><span class='line'><span class="nb">echo</span> -e <span class="s2">&quot;\e[93m Check for uberspace users.\e[0m&quot;</span>
+</span><span class='line'>   <span class="k">if</span> <span class="o">[</span> -f /usr/local/bin/uberspace-prepare-certificate <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>        uberspace-prepare-certificate -k ~/.ssl/<span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.private.pem -c ~/.ssl/<span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span>.crt.pem
+</span><span class='line'>   <span class="k">else</span>
+</span><span class='line'>	<span class="nb">echo</span> <span class="s2">&quot;You are using no uberspace account.&quot;</span>
+</span><span class='line'>   <span class="k">fi</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<!--        openssl x509 -in $DOMAIN.crt.pem -noout -text-->
+
+
+<p>Auf dem Server muss der private Schlüssel in der Regel unverschlüsselt vorliegen, sonst kann der Server z.B. keine SSL-Anfragen beantworten. Falls man beim Erstellen also ein Passwort vergeben hat, ist das nicht schlimm; Man speichert den Schlüssel unverschlüsselt ab.</p>
+
+<p>Den Schlüssel in PEM-ASCII-Format speichert:
+        openssl rsa -inform der -in $DOMAIN.private.der -outform pem -out $DOMAIN.private.pem
+Im DER-Binärformat speichert:
+        openssl rsa -inform pem -in $DOMAIN.private.pem -outform der -out $DOMAIN.private.der</p>
+
+<h3>Client-Zertifikat von CAcert</h3>
+
+<ol>
+<li>Erstelle ein privaten Schlüssel: $FOOBAR.private.pem</li>
+<li>Erstelle eine Zertifikats-Anfrage: $FOOBAR.request.csr</li>
+<li>Lade die Anfrage auf cacert.org hoch.</li>
+<li>Download deines privaten Schlüssels: $FOOBAR.crt.pem</li>
+<li>Erstelle mit dem öffentlichen Schlüssel ein privates Zertifikat: $FOOBAR.privatecert.p12</li>
+</ol>
+
+
+<p>Hier die wichtigsten Auszüge vom <a href="http://wiki.cacert.org/CAcertInShort-de">CAcert-Wiki</a>, wie man sich ein Client-Zertifikat ausstellt:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/bin/bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;FOOBAR<span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span>cacert.org<span class="p">&amp;</span>rdquo<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;RSA-Schlüsselpaar mit <span class="m">4096</span> Bit Schlüssellänge.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;openssl genrsa -aes256 -out <span class="nv">$FOOBAR</span>.private.pem 4096&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Antrag für ein X.509-Zertifikat, welcher <span class="m">3</span> Tage gültig ist.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;openssl req -new -key <span class="nv">$FOOBAR</span>.private.pem -out <span class="nv">$FOOBAR</span>.request.csr -days 3
+</span></code></pre></td></tr></table></div></figure></p>
+
+<ul>
+<li>Rufe die Seite Menu -> Client-Zertifikate -> <a href="https://www.cacert.org/account.php?id=3">Neu</a> auf, um eine neues Zertifikat zu beantragen.</li>
+<li>Wähle &lsquo;Erweiterte Optionen&rsquo; aus und kopiere dort den Inhalt der Datei &lsquo;$FOOBAR.request.csr&rsquo; in das Textfeld ein.</li>
+<li>Nach einem Klick auf &lsquo;Weiter&rsquo; kann man das von CAcert erstellte Zertifikat herunterladen (PEM-Format, wird allerdings als *.crt.pem-Datei abgespeichert).</li>
+<li>Um eine PKCS12-Datei zu erhalten, sind folgende Konsoleneingaben notwendig:</li>
+</ul>
+
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Check content of downloaded cert.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;openssl x509 -in <span class="nv">$FOOBAR</span>.crt.pem -noout -text&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Create PKCS12 file.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;openssl pkcs12 -des3 -export -in <span class="nv">$FOOBAR</span>.crt.pem -inkey <span class="nv">$FOOBAR</span>.private.pem -out <span class="nv">$FOOBAR</span>.privatecert.p12
+</span></code></pre></td></tr></table></div></figure></p>
+
+<!--### Zertifikat nach wiki.ubuntuusers.de-->
+
+
+<!--<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>--&gt;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;!--cd ~--&gt;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;!--DOMAIN<span class="o">=</span><span class="s2">&quot;domain&quot;</span>--&gt;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;!--TLD<span class="o">=</span><span class="s2">&quot;tld&quot;</span>--&gt;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;!--openssl req -new -newkey rsa:4096 -nodes -out <span class="nv">$DOMAIN</span>.<span class="nv">$TLD</span>.csr -keyout <span class="nv">$DOMAIN</span>.<span class="nv">$TLD</span>.key -subj <span class="s2">&quot;/C=DE/ST=BUNDESLAND/L=STADT/O=FIRMA/OU=BEREICH/CN=$DOMAIN.$TLD&quot;</span> --&gt;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;!--
+</span></code></pre></td></tr></table></div></figure>&#8211;>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[RC4 deaktivieren]]></title>
+    <link href="http://leitstelle.github.io/blog/2014/2014-01-02-rc4/"/>
+    <updated>2014-01-02T18:27:00+01:00</updated>
+    <id>http://leitstelle.github.io/blog/2014/rc4</id>
+    <content type="html"><![CDATA[<p>Es gibt harte Vermutungen, dass <a href="http://de.wikipedia.org/wiki/RC4">RC4</a> eine <a href="http://www.heise.de/security/meldung/NSA-entschluesselt-Webserver-Daten-angeblich-in-Echtzeit-2041383.html">Hintertür</a> enthalten kann. Hier wird kurz erläutert, wie man RC4 in seinem Browser deaktivieren kann.</p>
+
+<h2>Firefox</h2>
+
+<ol>
+<li>In die Adressleiste &ldquo;about:config&rdquo; eingeben.</li>
+<li>Dort in die Suchmaske &ldquo;rc4&rdquo; eingeben um sich alle RC4-Treffer anzeigen lassen.</li>
+<li>Alle Einstellungen, die &ldquo;rc4&rdquo; enthalten, durch ein Doppelklick deaktivieren.</li>
+</ol>
+
+
+<h2>Chromium</h2>
+
+<ul>
+<li>Chromium erlaubt keine dauerhafte Änderung über eine Einstellung.</li>
+<li>Parameter können beim Start übergeben werden.</li>
+<li><p>Workaround: In die Verknüpfung einbauen.</p>
+
+<pre><code>  nano /usr/share/applications/chromium.desktop
+</code></pre></li>
+<li><p>Die Stelle <code>Exec=/usr/bin/chromium %U</code> ändert man in:</p>
+
+<pre><code>  Exec=/usr/bin/chromium --cipher-suite-blacklist=0x0001,0x0002,0x0004,0005,0x0017,0x0018,0xc002,0xc007,0xc00c,0xc011,0xc016,0xff80,0xff81,0xff82,0xff83 %U
+</code></pre></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install truecrypt on Linux]]></title>
+    <link href="http://leitstelle.github.io/blog/2013/2013-11-19-install-truecrypt/"/>
+    <updated>2013-11-19T22:00:00+01:00</updated>
+    <id>http://leitstelle.github.io/blog/2013/install-truecrypt</id>
+    <content type="html"><![CDATA[<p>Tested on Debian 8 &ldquo;Jessie&rdquo;.</p>
+
+<h2>32 bit</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>wget -O ~/Downloads/truecrypt-7.1a-linux-x86.tar.gz &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://www.truecrypt.org/download/truecrypt-7.1a-linux-x86.tar.gz&quot;</span>&gt;http://www.truecrypt.org/download/truecrypt-7.1a-linux-x86.tar.gz&lt;/a&gt;
+</span><span class='line'><span class="nb">cd</span> ~/Downloads
+</span><span class='line'>tar xfv truecrypt-7.1a-linux-x86.tar.gz
+</span><span class='line'>./truecrypt-7.1a-setup-x86
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>64 bit</h2>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>wget -O ~/Downloads/truecrypt-7.1a-linux-x64.tar.gz &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://www.truecrypt.org/download/truecrypt-7.1a-linux-x64.tar.gz&quot;</span>&gt;http://www.truecrypt.org/download/truecrypt-7.1a-linux-x64.tar.gz&lt;/a&gt;
+</span><span class='line'><span class="nb">cd</span> ~/Downloads
+</span><span class='line'>tar xfv truecrypt-7.1a-linux-x64.tar.gz
+</span><span class='line'>./truecrypt-7.1a-setup-x64
+</span></code></pre></td></tr></table></div></figure></p>
+]]></content>
+  </entry>
+  
+</feed>

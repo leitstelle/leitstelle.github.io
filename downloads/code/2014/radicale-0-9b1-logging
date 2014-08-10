@@ -1,0 +1,83 @@
+
+################################################################################
+# Here, the logconfig differs from standert in the file handler as time rotated renaming.
+################################################################################
+
+# Loggers, handlers and formatters keys
+
+[loggers]
+# Loggers names, main configuration slots.
+keys = root
+
+[handlers]
+# Logging handlers, defining logging output methods.
+keys = console,file,infofile
+
+[formatters]
+# Logging formatters.
+keys = simple,full
+
+################################################################################
+
+# Loggers
+
+[logger_root]
+# Root logger.
+level = NOTSET
+handlers = console,file,infofile
+
+################################################################################
+
+# Handlers
+
+[handler_console]
+# Console handler.
+level = INFO
+formatter = simple
+class = StreamHandler
+args = (sys.stdout,)
+
+######################################
+
+[handler_file]
+# File handler.
+level = DEBUG
+formatter = full
+#class = FileHandler
+#class = handlers.RotatingFileHandler
+# For arguments see: http://docs.python.org/library/logging.handlers.html
+class = handlers.TimedRotatingFileHandler
+when='midnight'
+interval=1
+backupCount=8
+encoding=None
+delay=0
+utc=False
+args = (os.getenv("HOME")+'/.config/radicale/log/'+os.path.basename(sys.argv[0]).split('.')[0]+'.log',)
+
+######################################
+
+[handler_infofile]
+# Second file handler.
+level = INFO
+formatter = full
+class = handlers.RotatingFileHandler
+mode='a'
+maxBytes=10240
+backupCount=0
+encoding=None
+delay=0
+args = (os.getenv("HOME")+'/.config/radicale/log/'+os.path.basename(sys.argv[0]).split('.')[0]+'.info',)
+
+################################################################################
+
+# Formatters
+
+[formatter_simple]
+# Simple output format
+format = %(message)s
+
+[formatter_full]
+# Full output format
+format = %(asctime)s - %(levelname)s: %(message)s
+

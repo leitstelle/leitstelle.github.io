@@ -1,0 +1,37 @@
+# Debian
+deb http://ftp.de.debian.org/debian/ testing main contrib non-free
+deb-src http://ftp.de.debian.org/debian/ testing main contrib non-free
+
+# Updates
+deb http://ftp.de.debian.org/debian/ testing-updates main contrib non-free
+deb-src http://ftp.de.debian.org/debian/ testing-updates main contrib non-free
+
+# Security
+deb http://security.debian.org/ testing/updates main contrib non-free
+deb-src http://security.debian.org/ testing/updates main contrib non-free
+
+# Backports
+#deb http://ftp.debian.org/debian/ jessie-backports main contrib non-free
+#deb-src http://ftp.debian.org/debian/ jessie-backports main contrib non-free
+
+################################################################################
+
+# Mutlimedia
+#deb http://www.deb-multimedia.org/ testing main non-free
+
+# Mozilla
+#deb http://mozilla.debian.net/ wheezy-backports iceweasel-release
+#deb-src http://mozilla.debian.net/ wheezy-backports iceweasel-release
+
+# VLC
+#deb http://download.videolan.org/pub/debian/stable/ /
+
+# NeuroDebian
+#deb http://neurodebian.ovgu.de/debian/ data main contrib non-free
+#deb-src http://neurodebian.ovgu.de/debian/ data main contrib non-free
+#deb http://neurodebian.ovgu.de/debian/ jessie main contrib non-free
+#deb-src http://neurodebian.ovgu.de/debian/ jessie main contrib non-free
+
+# Google
+#deb http://dl.google.com/linux/deb/ stable main
+#deb http://dl.google.com/linux/musicmanager/deb/ stable main

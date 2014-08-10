@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: safety | Leitstelle]]></title>
+  <link href="http://leitstelle.github.io/blog/categories/safety/atom.xml" rel="self"/>
+  <link href="http://leitstelle.github.io/"/>
+  <updated>2014-08-10T13:10:34+02:00</updated>
+  <id>http://leitstelle.github.io/</id>
+  <author>
+    <name><![CDATA[Frank Zisko]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Sicherheit I - Flughafen]]></title>
+    <link href="http://leitstelle.github.io/blog/2013/2013-11-20-sicherheit-1/"/>
+    <updated>2013-11-20T14:21:00+01:00</updated>
+    <id>http://leitstelle.github.io/blog/2013/sicherheit-1</id>
+    <content type="html"><![CDATA[<p>An Flughäfen haben die Menschen ein erhöhtes Sicherheitsbedürfnis. Ich habe noch nie so recht verstanden warum. Jedenfalls erdulden die Menschen verschieden schwere Eingriffe:</p>
+
+<ul>
+<li>in einen Nacktscanner zu gehen</li>
+<li>von Sicherheitspersonal befummelt zu werden</li>
+<li>Lebensmittel wegzuschmeißen</li>
+<li>und vieles mehr</li>
+</ul>
+
+
+<p>um die Sicherheit zu gewährleisten (erhöhen müsste es eigentlich heißen). Manche vermuten, es gehe darum die Leute an repressalien zu gewöhnen &hellip; Was wirklich helfen würde? Damit beschäftigen sich Forscher schon länger.</p>
+
+<p>Jedenfalls gibt es, dank <a href="http://www.terminalcornucopia.com/">Evan Boot</a> (<a href="http://twitter.com/evanbooth">twitter</a>), ein paar Videos, wie man mit Dingen, welche man nach dem Sicherheitscheck kaufen kann, Waffen baut:</p>
+
+<h3>Morgenstern (Streitflegel)</h3>
+
+<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/viaFXT22i40" allowfullscreen></iframe></div></p>
+
+<h3>Slittergranate</h3>
+
+<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/CH6GpXAXmx8" allowfullscreen></iframe></div></p>
+
+<h3>Blasrohr</h3>
+
+<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/WHcXrpcaoaU" allowfullscreen></iframe></div></p>
+
+<h3>Schleuder</h3>
+
+<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/ro0ZqElkBcQ" allowfullscreen></iframe></div></p>
+
+<h3>Armbrust</h3>
+
+<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/XVouh7tNo4k" allowfullscreen></iframe></div></p>
+
+<h3>Shotgun</h3>
+
+<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/Lsem22DkIjw" allowfullscreen></iframe></div></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Start]]></title>
+    <link href="http://leitstelle.github.io/blog/2013/2013-09-01-start/"/>
+    <updated>2013-09-01T15:50:00+02:00</updated>
+    <id>http://leitstelle.github.io/blog/2013/start</id>
+    <content type="html"><![CDATA[<h2>Heute ist es soweit.</h2>
+
+<p>Mit der Leitstelle startet mein Blog mit den Themen, die mir während meiner Transition vom Pfuscher zum Hacker begegnen. Wenn der Übergang auf die andere Seite vollzogen ist, werde ich hoffentlich nicht aufhören. ;-)</p>
+
+<h2>Themen</h2>
+
+<ul>
+<li><a href="/blog/categories/howto">How To</a> / <a href="/blog/categories/diy">Do It Yourself</a> (DIY)</li>
+<li><a href="/blog/categories/start">Einstieg</a> / <a href="(/blog/categories/install">Installation</a>sanleitungen</li>
+<li><p><a href="/blog/categories/observe">Observe</a>. <a href="/blog/categories/hack">Hack</a>. <a href="/blog/categories/make">Make</a>.</p></li>
+<li><p><a href="/blog/categories/hardware">Hardware</a></p></li>
+<li><a href="/blog/categories/computer">Computer</a> / <a href="/blog/categories/server">Server</a> / <a href="/blog/categories/pc">PC</a> / <a href="/blog/categories/mobile">Mobile</a></li>
+<li><a href="/blog/categories/sync">Sync</a>ronisation / <a href="/blog/categories/pim">PIM</a> / <a href="/blog/categories/communication">Kommunikation</a></li>
+<li><p><a href="/blog/categories/security">Computersicherheit</a> / <a href="/blog/categories/crime">Computerkriminalität</a> / <a href="/blog/categories/safety">Sicherheit</a></p></li>
+<li><p><a href="/blog/categories/linux">Linux</a> / <a href="/blog/categories/software">Software</a></p></li>
+<li><p><a href="/blog/categories/politics">Politik</a> / <a href="/blog/categories/society">Gesellschaft</a></p></li>
+<li>Und natürlich vieles, was dazwischen liegt</li>
+</ul>
+
+
+<h2>Zielgruppe</h2>
+
+<ul>
+<li>Leute die mal was nachschlagen wollen.</li>
+<li>Fortgeschrittenere Nutzer von GNU/Linux, Handwerk, &hellip;</li>
+<li>Ab und an mal Neulinge.</li>
+</ul>
+
+
+<h2>Kritik</h2>
+
+<ul>
+<li>Den rechtlichen Schwierigkeiten, durch Kommentare, auch wenn ich im Ausland für das Ausland (<a href="https://github.com/">github.com</a>, USA) produziere und hoste, setzte ich mich nicht aus. Vielleicht fällt mir noch etwas anderes ein.</li>
+<li>Eine (für mich) anonyme Kontaktmöglichkeit überlege ich mir noch.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

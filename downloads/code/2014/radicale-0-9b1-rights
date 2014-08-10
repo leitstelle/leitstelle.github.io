@@ -1,0 +1,37 @@
+# Default path for this kind of files is ~/.config/radicale/rights
+# Web: https://docs.python.org/howto/regex.html
+# Metacharacters:
+# . ^ $ * + ? { } [ ] \ | ( )
+#
+# https://dav.domain.tld:12345/test/TestCalendar.ics/
+# user/pwd: tester
+################################################################################
+
+### Anonymous user ###
+[anonymous]
+user: ^
+collection: public(/.+)?$
+permission: r
+
+### Owner ###
+# Give write access to owners
+[owner]
+user: .+
+collection: ^%(login)s/.+$
+permission: rw
+
+### Users ###
+
+[bob]
+user: bob
+collection: alice/AliceCalendarShare\.ics
+permission: r
+
+[tester]
+user: tester
+collection: test/Test.*$
+permission: r
+
+################################################################################
+################################################################################
+
