@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Leitstelle]]></title>
-  <link href="http://leitstelle.github.io/atom.xml" rel="self"/>
+  <title><![CDATA[Category: test | Leitstelle]]></title>
+  <link href="http://leitstelle.github.io/blog/categories/test/atom.xml" rel="self"/>
   <link href="http://leitstelle.github.io/"/>
   <updated>2014-08-10T12:16:25+02:00</updated>
   <id>http://leitstelle.github.io/</id>
@@ -92,9 +92,8 @@ Link: <a href="http://foo.bar/">http://foo.bar/</a></p>
 
 <h2>Code</h2>
 
-<p>Embedded code, downloadable:</p>
-
-<figure class='code'><figcaption><span>Haedline is optional. (test.sh)</span> <a href='http://leitstelle.github.io/downloads/code/test.sh'>download</a></figcaption>
+<p>Embedded code, downloadable:
+<figure class='code'><figcaption><span>Haedline is optional. (test.sh)</span> <a href='/downloads/code/test.sh'>download</a></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -103,22 +102,25 @@ Link: <a href="http://foo.bar/">http://foo.bar/</a></p>
 </span><span class='line'>ls -al --color
 </span><span class='line'>id
 </span><span class='line'>ip
-</span></code></pre></td></tr></table></div></figure>
+</span></code></pre></td></tr></table></div></figure></p>
 
-
-<p>Code from codeblock:</p>
-
+<p>Code from codeblock:
 <figure class='code'><figcaption><span>Headline is optional. </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/usr/bin/env bash</span>
-</span><span class='line'>ls -al --color
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/usr/bin/env bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;ls -al <span class="p">&amp;</span>ndash<span class="p">;</span>color
 </span><span class='line'>id
 </span><span class='line'>ip
-</span></code></pre></td></tr></table></div></figure>
-
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>Code via indent:</p>
 
@@ -130,42 +132,29 @@ ip
 
 <h2>Images</h2>
 
-<p><img src="http://leitstelle.github.io/images/avatar.png" title="Optionale Title" alt="optionaler Titel" /></p>
+<p><img src="/images/avatar.png" title="Optionale Title" alt="optionaler Titel" /></p>
 
 <p>You see links to the images can be written below the text, like text links.
-<img src="http://leitstelle.github.io/images/avatar.png" title="Optionale Title" alt="optionaler Titel" />
+<img src="/images/avatar.png" title="Optionale Title" alt="optionaler Titel" />
 But markdown can not change the image size.</p>
 
 <h2>Octopress Images</h2>
 
-<p><img src="http://leitstelle.github.io/images/avatar.png" width="400" height="400"></p>
+<p><img src="/images/avatar.png" width="400" height="400"></p>
 
 <h2>Video Plugin</h2>
 
 <p>Sure, you can use embed video code. But you can use an octopressplugin for common video platforms. This resize automatically, too.</p>
 
-<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/CsGYh8AacgY" allowfullscreen></iframe></div>
+<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/CsGYh8AacgY" allowfullscreen></iframe></div></p>
 
+<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/QFCSXr6qnv4" allowfullscreen></iframe></div></p>
 
+<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/eaCCkfjPm0o" allowfullscreen></iframe></div></p>
 
+<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/wbF9nLhOqLU" allowfullscreen></iframe></div></p>
 
-<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/QFCSXr6qnv4" allowfullscreen></iframe></div>
-
-
-
-
-<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/eaCCkfjPm0o" allowfullscreen></iframe></div>
-
-
-
-
-<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/wbF9nLhOqLU" allowfullscreen></iframe></div>
-
-
-
-
-<div class="embed-video-container"><iframe src="http://player.vimeo.com/video/1785993 "></iframe></div>
-
+<p><div class="embed-video-container"><iframe src="http://player.vimeo.com/video/1785993 "></iframe></div></p>
 ]]></content>
   </entry>
   
