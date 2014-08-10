@@ -38,7 +38,7 @@ alias python2=python2.7
 alias pip=pip-2.7
 __EOF__
 
-# Don't forget bashrc. Because services don't youse a login shell.
+# Don't forget bashrc. Because services don't use a login shell.
 cat << '__EOF__' >> ${HOME}/.bashrc
 
 ### Python ###

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: software | Leitstelle]]></title>
   <link href="http://leitstelle.github.io/blog/categories/software/atom.xml" rel="self"/>
   <link href="http://leitstelle.github.io/"/>
-  <updated>2014-08-10T13:10:34+02:00</updated>
+  <updated>2014-08-10T17:44:50+02:00</updated>
   <id>http://leitstelle.github.io/</id>
   <author>
     <name><![CDATA[Frank Zisko]]></name>
@@ -20,27 +20,27 @@
     <id>http://leitstelle.github.io/blog/2014/gitlab</id>
     <content type="html"><![CDATA[<h2>About</h2>
 
-<p>Installation von GitLab auf einem Uberspace.</p>
+<p>Installation of Gitlab on an Uberspace account.</p>
 
 <h2>tl;dr</h2>
 
-<ul>
-<li>Folgt.</li>
-</ul>
+<pre><code>wget -O ${HOME}/gitlab-install.sh https://leitstelle.github.io/downloads/code/2014/gitlab-install.sh
+cd ${HOME}
+chmod u+x gitlab-install.sh
+gitlab-install.sh
+</code></pre>
 
+<h2>Configuration</h2>
 
-<h2>Konfiguration</h2>
-
-<pre><code>Uberspace-Username -&gt; ${USER}, &lt;ubername&gt; oder user
-Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; oder host
-~/workspace/$projectname # Dort werden die Quellen installiert.
-~/workspace/repositories # Git-Repo-Verzeichnis.
+<pre><code>Uberspace-Username -&gt; ${USER}, &lt;ubername&gt; or user
+Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; or host
+~/workspace/$projectname # Space for projects.
+~/workspace/repositories # Git repo directory.
 </code></pre>
 
 <h2>Installation</h2>
 
-<p>Fire And Forget Script (FAFS):
-<figure class='code'><figcaption><span> (gitlab-install.sh)</span> <a href='/downloads/code/2014/gitlab-install.sh'>download</a></figcaption>
+<!--<figure class='code'><figcaption><span> (gitlab-install.sh)</span> <a href='/downloads/code/2014/gitlab-install.sh'>download</a></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -706,7 +706,7 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; ode
 </span><span class='line'><span class="s">alias pip=pip-2.7</span>
 </span><span class='line'><span class="s">__EOF__</span>
 </span><span class='line'>
-</span><span class='line'><span class="c"># Don&#39;t forget bashrc. Because services don&#39;t youse a login shell.</span>
+</span><span class='line'><span class="c"># Don&#39;t forget bashrc. Because services don&#39;t use a login shell.</span>
 </span><span class='line'>cat <span class="s">&lt;&lt; &#39;__EOF__&#39; &gt;&gt; ${HOME}/.bashrc</span>
 </span><span class='line'>
 </span><span class='line'><span class="s">### Python ###</span>
@@ -1291,7 +1291,1537 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; ode
 </span><span class='line'><span class="c">################################################################################</span>
 </span><span class='line'><span class="c">################################################################################</span>
 </span><span class='line'><span class="c">################################################################################</span>
+</span></code></pre></td></tr></table></div></figure>&#8211;>
+
+
+<p>If you want a fire-and-forget-script, use the script from &lsquo;tl;dr&rsquo; section above.</p>
+
+<p>Now we do it step by step. Open a terminal login into your Uberspace and do &hellip;</p>
+
+<!--########################################-->
+
+
+<h3>VARIABLES and FOLDERS</h3>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Domain <span class="k">for</span> your gitlab.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;DOMAINNAME<span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span>gitlab.<span class="k">${</span><span class="nv">USER</span><span class="k">}</span>.<span class="k">$(</span>hostname -a<span class="k">)</span>.uberspace.de<span class="p">&amp;</span>rdquo<span class="p">;</span>&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;DOMAINNAME<span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span>gitlab.example.com<span class="p">&amp;</span>rdquo<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;The intern service port on the uberspace.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;INTERNPORT<span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span>54321<span class="p">&amp;</span>rdquo<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Check availablebility of the wantet port.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;netstat -tulpen <span class="p">|</span> grep <span class="k">${</span><span class="nv">INTERNPORT</span><span class="k">}</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Install and working directory.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;WORKSPACE<span class="o">=</span><span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/workspace
+</span><span class='line'>mkdir -p <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>
 </span></code></pre></td></tr></table></div></figure></p>
+
+<!--########################################-->
+
+
+<h3>Python</h3>
+
+<p>Check the python: <code>python -V</code>, <code>python2 -V</code>, <code>pip --version</code> and <code>pip-python --version</code>. If every version number is the same and 2.7+, it&rsquo;s fine and you don&rsquo;t have to do the steps below.</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Add aliases to your bash config&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cat <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span> <span class="p">&amp;</span>lsquo<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;<span class="p">&amp;</span>rsquo<span class="p">;</span> &gt;&gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.bash_profile&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h3&gt;Python&lt;/h3&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;alias <span class="nv">python</span><span class="o">=</span>python2.7
+</span><span class='line'><span class="nb">alias </span><span class="nv">python2</span><span class="o">=</span>python2.7
+</span><span class='line'><span class="nb">alias </span><span class="nv">pip</span><span class="o">=</span>pip-2.7
+</span><span class='line'><span class="nb">alias </span>pip-python<span class="o">=</span>pip-2.7
+</span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Don<span class="p">&amp;</span>rsquo<span class="p">;</span>t forget bashrc. Because services don<span class="p">&amp;</span>rsquo<span class="p">;</span>t use a login shell.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cat <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span> <span class="p">&amp;</span>lsquo<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;<span class="p">&amp;</span>rsquo<span class="p">;</span> &gt;&gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.bashrc&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h3&gt;Python&lt;/h3&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;alias <span class="nv">python</span><span class="o">=</span>python2.7
+</span><span class='line'><span class="nb">alias </span><span class="nv">python2</span><span class="o">=</span>python2.7
+</span><span class='line'><span class="nb">alias </span><span class="nv">pip</span><span class="o">=</span>pip-2.7
+</span><span class='line'><span class="nb">alias </span>pip-python<span class="o">=</span>pip-2.7
+</span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;. <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.bash_profile
+</span></code></pre></td></tr></table></div></figure></p>
+
+<!--########################################-->
+
+
+<h3>Toasts</h3>
+
+<p>We need an actual git and redis.</p>
+
+<h4>Git</h4>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>toast arm &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://www.kernel.org/pub/software/scm/git/git-2.0.4.tar.gz&quot;</span>&gt;https://www.kernel.org/pub/software/scm/git/git-2.0.4.tar.gz&lt;/a&gt;
+</span><span class='line'>git config <span class="p">&amp;</span>ndash<span class="p">;</span>global user.name <span class="p">&amp;</span>ldquo<span class="p">;</span>Git<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>git config <span class="p">&amp;</span>ndash<span class="p">;</span>global user.email <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">${</span><span class="nv">USER</span><span class="k">}</span>@localhost<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>git config <span class="p">&amp;</span>ndash<span class="p">;</span>global core.autocrlf input
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h4>Redis</h4>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>toast arm &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://download.redis.io/releases/redis-2.8.13.tar.gz&quot;</span>&gt;http://download.redis.io/releases/redis-2.8.13.tar.gz&lt;/a&gt;
+</span><span class='line'>mkdir -p <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.redis
+</span><span class='line'>cat &gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.redis/conf <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;
+</span><span class='line'>unixsocket <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.redis/sock
+</span><span class='line'>daemonize no&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;For logging in uberspace service.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;logfile stdout&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;For logging in a file.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;logfile <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.redis/log
+</span><span class='line'>port 0
+</span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;
+</span><span class='line'>redis-server <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.redis/conf <span class="p">&amp;</span>amp<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Access: redis-cli -s <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.redis/conf <span class="p">&amp;</span>amp<span class="p">;</span>&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></p>
+
+<!--########################################-->
+
+
+<h3>Ruby</h3>
+
+<p>You can use the Uberspace Ruby or your own installation (e.g. rbenv). But you have to choose.</p>
+
+<h4>Uberspace Ruby</h4>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>cat <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span> <span class="p">&amp;</span>lsquo<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;<span class="p">&amp;</span>rsquo<span class="p">;</span> &gt;&gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.bash_profile&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h3&gt;Ruby&lt;/h3&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;export <span class="nv">PATH</span><span class="o">=</span>/package/host/localhost/ruby-2.1.1/bin:<span class="nv">$PATH</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$HOME</span>/.gem/ruby/2.1.0/bin:<span class="nv">$PATH</span>
+</span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cat <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span> <span class="p">&amp;</span>lsquo<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;<span class="p">&amp;</span>rsquo<span class="p">;</span> &gt;&gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.bashrc&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h3&gt;Ruby&lt;/h3&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;export <span class="nv">PATH</span><span class="o">=</span>/package/host/localhost/ruby-2.1.1/bin:<span class="nv">$PATH</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$HOME</span>/.gem/ruby/2.1.0/bin:<span class="nv">$PATH</span>
+</span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;To install all gems into user account.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;echo <span class="p">&amp;</span>ldquo<span class="p">;</span>gem: <span class="p">&amp;</span>ndash<span class="p">;</span>user-install <span class="p">&amp;</span>ndash<span class="p">;</span>no-rdoc <span class="p">&amp;</span>ndash<span class="p">;</span>no-ri<span class="p">&amp;</span>rdquo<span class="p">;</span> &gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.gemrc&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;. <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.bash_profile
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h4>rbenv Ruby</h4>
+
+<p>We use rbenv to manage different Ruby versions for different projects.</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Git checkout.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;git clone &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://github.com/sstephenson/rbenv.git&quot;</span>&gt;https://github.com/sstephenson/rbenv.git&lt;/a&gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Update.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;cd <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;git pull&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Activate rbenv.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cat <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span> <span class="p">&amp;</span>lsquo<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;<span class="p">&amp;</span>rsquo<span class="p">;</span> &gt;&gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.bash_profile&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h3&gt;rbenv&lt;/h3&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;export <span class="nv">PATH</span><span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span><span class="nv">$HOME</span>/.rbenv/bin:<span class="nv">$PATH</span><span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span><span class="nv">$HOME</span>/.rbenv/shims:<span class="nv">$PATH</span><span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'><span class="nb">eval</span> <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">$(</span>rbenv init -<span class="k">)</span><span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Don<span class="p">&amp;</span>rsquo<span class="p">;</span>t forget bashrc.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cat <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span> <span class="p">&amp;</span>lsquo<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;<span class="p">&amp;</span>rsquo<span class="p">;</span> &gt;&gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.bashrc&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h3&gt;rbenv&lt;/h3&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;export <span class="nv">PATH</span><span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span><span class="nv">$HOME</span>/.rbenv/bin:<span class="nv">$PATH</span><span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span><span class="nv">$HOME</span>/.rbenv/shims:<span class="nv">$PATH</span><span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'><span class="nb">eval</span> <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">$(</span>rbenv init -<span class="k">)</span><span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Activate profile changes&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;. <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.bash_profile&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Check rbenv.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;type rbenv&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Install ruby-build - The &lt;code&gt;rbenv install&lt;/code&gt; command.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;git clone &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://github.com/sstephenson/ruby-build.git&quot;</span>&gt;https://github.com/sstephenson/ruby-build.git&lt;/a&gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv/plugins/ruby-build&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Install rbenv-gem-rehash - The auto &lt;code&gt;rbenv rehash&lt;/code&gt; when installing new gems.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;git clone &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://github.com/sstephenson/rbenv-gem-rehash.git&quot;</span>&gt;https://github.com/sstephenson/rbenv-gem-rehash.git&lt;/a&gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.rbenv/plugins/rbenv-gem-rehash&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;List available installations.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;rbenv install <span class="p">&amp;</span>ndash<span class="p">;</span>list&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Install ruby <span class="o">(</span>need some <span class="nb">time</span><span class="o">)</span>.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;rbenv install 2.1.2
+</span><span class='line'>rbenv install 1.9.3-p547&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Set global ruby version.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;rbenv global 2.1.2&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Rehash rbenv. This write changes into ~/.rbenv/shims.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Important <span class="k">if</span> gems provide some new bins.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Or the environment changes.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;rbenv rehash&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Hooks rbenv into the shell.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Already happend after &lt;code&gt;. ~/.bash_profile&lt;/code&gt;.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Use &lt;code&gt;rbenv init -&lt;/code&gt; to see more informations.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;rbenv init&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Print rbenv used ruby version.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;echo <span class="p">&amp;</span>ldquo<span class="p">;</span>rbenv version:<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>rbenv version&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Install options <span class="k">for</span> gem.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Old: <span class="nb">echo</span> <span class="p">&amp;</span>ldquo<span class="p">;</span>gem: <span class="p">&amp;</span>ndash<span class="p">;</span>user-install <span class="p">&amp;</span>ndash<span class="p">;</span>no-rdoc <span class="p">&amp;</span>ndash<span class="p">;</span>no-ri<span class="p">&amp;</span>rdquo<span class="p">;</span> &gt; ~/.gemrc&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Do not use the &lt;code&gt;--user-install&lt;/code&gt; option! This will install gems into &lt;code&gt;~/.gem&lt;/code&gt; dir and not into the rbenv   version specific folder!&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;echo <span class="p">&amp;</span>ldquo<span class="p">;</span>gem: <span class="p">&amp;</span>ndash<span class="p">;</span>no-rdoc <span class="p">&amp;</span>ndash<span class="p">;</span>no-ri<span class="p">&amp;</span>rdquo<span class="p">;</span> &gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.gemrc&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Install bundler <span class="k">for</span> both installed versions.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;For 1.9.3&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;rbenv shell 1.9.3-p547
+</span><span class='line'>gem install bundler&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;For 2.1.2&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;rbenv shell 2.1.2
+</span><span class='line'>gem install bundler&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Leave rbenv shell&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;rbenv shell <span class="p">&amp;</span>ndash<span class="p">;</span><span class="nb">unset</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<!--########################################-->
+
+
+<h3>Gitlab Shell</h3>
+
+<p>This is a replacement for gitolite.
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://gitlab.com/gitlab-org/gitlab-shell.git&quot;</span>&gt;https://gitlab.com/gitlab-org/gitlab-shell.git&lt;/a&gt; <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-shell
+</span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-shell
+</span><span class='line'>rbenv <span class="nb">local </span>2.1.2
+</span><span class='line'>git fetch origin <span class="p">&amp;</span>amp<span class="p">;&amp;</span>amp<span class="p">;</span> git reset <span class="p">&amp;</span>ndash<span class="p">;</span>hard <span class="k">$(</span>git describe v1.9.6 <span class="o">||</span> git describe origin/v1.9.6<span class="k">)</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h2&gt;cat &gt; <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-shell/config.yml <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;&lt;/h2&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;user: <span class="k">${</span><span class="nv">USER</span><span class="k">}</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;gitlab_url: &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://gitlab.$&quot;</span>&gt;http://gitlab.<span class="nv">$&lt;</span>/a&gt;<span class="o">{</span>USER<span class="o">}</span>.<span class="k">$(</span>hostname -s<span class="k">)</span>.uberspace.de/&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;gitlab_url: &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://$&quot;</span>&gt;http://<span class="nv">$&lt;</span>/a&gt;<span class="o">{</span>DOMAINNAME<span class="o">}</span>/&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;http_settings:&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;user: someone&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;password: somepass&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;ca_file: /etc/ssl/cert.pem&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;ca_path: /etc/pki/tls/certs&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  self_signed_cert: <span class="nb">false</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;repos_path: <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/repositories/<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>auth_file: <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.ssh/authorized_keys<span class="p">&amp;</span>rdquo<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;redis:
+</span><span class='line'>  bin: <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.toast/armed/bin/redis-cli
+</span><span class='line'>  <span class="c"># host: 127.0.0.1</span>
+</span><span class='line'>  <span class="c"># port: 6379</span>
+</span><span class='line'>  socket: <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.redis/sock
+</span><span class='line'>  <span class="c"># socket: /tmp/redis.socket # Only define this if you want to use sockets</span>
+</span><span class='line'>  namespace: resque:gitlab&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Log file.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;log_file: <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-shell/gitlab-shell.log<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>log_level: INFO&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Audit usernames.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;audit_usernames: <span class="nb">false</span>
+</span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;./bin/install
+</span></code></pre></td></tr></table></div></figure></p>
+
+<!--########################################-->
+
+
+<h3>Gitlab</h3>
+
+<h4>Preparation</h4>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https://gitlab.com/gitlab-org/gitlab-ce.git&quot;</span>&gt;https://gitlab.com/gitlab-org/gitlab-ce.git&lt;/a&gt; -b 7-1-stable <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab
+</span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab
+</span><span class='line'>rbenv <span class="nb">local </span>2.1.2&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Some folders&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;mkdir -p log
+</span><span class='line'>mkdir -p tmp/pids
+</span><span class='line'>mkdir -p tmp/sockets
+</span><span class='line'>mkdir -p public/uploads&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Allow access to folders.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;chown -R <span class="k">${</span><span class="nv">USER</span><span class="k">}</span> log/
+</span><span class='line'>chown -R <span class="k">${</span><span class="nv">USER</span><span class="k">}</span> tmp/
+</span><span class='line'>chmod -R u+rwX <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/repositories
+</span><span class='line'>chmod -R u+rwX log/
+</span><span class='line'>chmod -R u+rwX tmp/
+</span><span class='line'>chmod -R u+rwX tmp/pids/
+</span><span class='line'>chmod -R u+rwX tmp/sockets/
+</span><span class='line'>chmod -R u+rwX public/uploads&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;GitLab Satelittes.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;mkdir -p <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-satellites
+</span><span class='line'>chmod u+rwx,g<span class="o">=</span>rx,o-rwx <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-satellites
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h4>Config files</h4>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Configure the application main config file.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cat &gt; config/gitlab.yml <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;# <span class="c"># # # # # # # # # # # # # # #&lt;/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;GitLab application config file&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;# <span class="c"># # # # # # # # # # # # # # #&lt;/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;production: <span class="p">&amp;</span>amp<span class="p">;</span>base
+</span><span class='line'>  <span class="c">#</span>
+</span><span class='line'>  <span class="c"># 1. GitLab app settings</span>
+</span><span class='line'>  <span class="c"># ==========================&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c">## GitLab settings</span>
+</span><span class='line'>  gitlab:
+</span><span class='line'>    <span class="c">## Web server settings (note: host is the FQDN, do not include &lt;a href=&quot;http://&quot;&gt;http://&lt;/a&gt;)</span>
+</span><span class='line'>    host: <span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>
+</span><span class='line'>    port: 80
+</span><span class='line'>    &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;https:&quot;</span>&gt;https:&lt;/a&gt; <span class="nb">true</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;user: <span class="k">${</span><span class="nv">USER</span><span class="k">}</span>
+</span><span class='line'>email_from: hq@<span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">## User settings</span>
+</span><span class='line'>default_projects_limit: 10
+</span><span class='line'><span class="c"># default_can_create_group: false  # default: true</span>
+</span><span class='line'><span class="c"># username_changing_enabled: false # default: true - User can change her username/namespace</span>
+</span><span class='line'><span class="c">## Default theme</span>
+</span><span class='line'><span class="c">##   BASIC  = 1, MARS   = 2, MODERN = 3, GRAY   = 4, COLOR  = 5</span>
+</span><span class='line'>default_theme: <span class="m">2</span> <span class="c"># default: 2</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">## Users management</span>
+</span><span class='line'><span class="c"># default: false - Account passwords are not sent via the email if signup is enabled.</span>
+</span><span class='line'><span class="c"># signup_enabled: true</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># default: true - If set to false, standard login form won&#39;t be shown on the sign-in page</span>
+</span><span class='line'><span class="c"># signin_enabled: false</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Restrict setting visibility levels for non-admin users.</span>
+</span><span class='line'><span class="c"># The default is to allow all levels.</span>
+</span><span class='line'><span class="c">#restricted_visibility_levels: [ &quot;public&quot; ]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">## Automatic issue closing</span>
+</span><span class='line'><span class="c"># If a commit message matches this regular expression, all issues referenced from the matched text will be closed.</span>
+</span><span class='line'><span class="c"># This happens when the commit is pushed or merged into the default branch of a project.</span>
+</span><span class='line'><span class="c"># When not specified the default issue_closing_pattern as specified below will be used.</span>
+</span><span class='line'><span class="c"># issue_closing_pattern: &#39;([Cc]lose[sd]|[Ff]ixe[sd]) #(\d+)&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">## Default project features settings</span>
+</span><span class='line'>default_projects_features:
+</span><span class='line'>  issues: <span class="nb">true</span>
+</span><span class='line'><span class="nb">  </span>merge_requests: <span class="nb">true</span>
+</span><span class='line'><span class="nb">  </span>wiki: <span class="nb">true</span>
+</span><span class='line'><span class="nb">  </span>snippets: <span class="nb">false</span>
+</span><span class='line'><span class="nb">  </span>visibility_level: <span class="s2">&quot;private&quot;</span>  <span class="c"># can be &quot;private&quot; | &quot;internal&quot; | &quot;public&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">## Repository downloads directory</span>
+</span><span class='line'><span class="c"># When a user clicks e.g. &#39;Download zip&#39; on a project, a temporary zip file is created in the following directory.</span>
+</span><span class='line'><span class="c"># The default is &#39;tmp/repositories&#39; relative to the root of the Rails app.</span>
+</span><span class='line'><span class="c"># repository_downloads_path: tmp/repositories</span>
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c">## External issues trackers</span>
+</span><span class='line'>  issues_tracker:&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c">## Gravatar</span>
+</span><span class='line'>  gravatar:
+</span><span class='line'>    enabled: <span class="nb">true</span>                 <span class="c"># Use user avatar image from Gravatar.com (default: true)</span>
+</span><span class='line'>    <span class="c"># gravatar urls: possible placeholders: %{hash} %{size} %{email}</span>
+</span><span class='line'>    <span class="c"># plain_url: &amp;ldquo;&lt;a href=&quot;http://...&quot;&gt;http://&amp;#8230;&lt;/a&gt;&amp;rdquo;     # default: &lt;a href=&quot;http://www.gravatar.com/avatar/%&quot;&gt;http://www.gravatar.com/avatar/%&lt;/a&gt;{hash}?s=%{size}&amp;amp;d=identicon</span>
+</span><span class='line'>    <span class="c"># ssl_url:   &amp;ldquo;&lt;a href=&quot;https://...&quot;&gt;https://&amp;#8230;&lt;/a&gt;&amp;rdquo;    # default: &lt;a href=&quot;https://secure.gravatar.com/avatar/%&quot;&gt;https://secure.gravatar.com/avatar/%&lt;/a&gt;{hash}?s=%{size}&amp;amp;d=identicon&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c">#</span>
+</span><span class='line'>  <span class="c"># 2. Auth settings</span>
+</span><span class='line'>  <span class="c"># ==========================&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c">## LDAP settings</span>
+</span><span class='line'>  ldap:
+</span><span class='line'>    enabled: <span class="nb">false</span>
+</span><span class='line'><span class="nb">    </span>host: <span class="p">&amp;</span>lsquo<span class="p">;</span>&lt;em&gt;your_ldap_server<span class="p">&amp;</span>rsquo<span class="p">;</span>
+</span><span class='line'>    port: 636
+</span><span class='line'>    uid: <span class="p">&amp;</span>lsquo<span class="p">;</span>sAMAccountName<span class="p">&amp;</span>rsquo<span class="p">;</span>
+</span><span class='line'>    method: <span class="p">&amp;</span>lsquo<span class="p">;</span>ssl<span class="p">&amp;</span>rsquo<span class="p">;</span> <span class="c"># &amp;ldquo;tls&amp;rdquo; or &amp;ldquo;ssl&amp;rdquo; or &amp;ldquo;plain&amp;rdquo;</span>
+</span><span class='line'>    bind_dn: <span class="p">&amp;</span>lsquo<span class="p">;</span>&lt;/em&gt;the_full_dn_of_the_user_you_will_bind_with<span class="p">&amp;</span>rsquo<span class="p">;</span>
+</span><span class='line'>    password: <span class="p">&amp;</span>lsquo<span class="p">;</span>_the_password_of_the_bind_user<span class="p">&amp;</span>rsquo<span class="p">;</span>
+</span><span class='line'>    <span class="c"># If you are using &amp;ldquo;uid: &amp;lsquo;userPrincipalName&amp;rsquo;&amp;rdquo; on ActiveDirectory you need to</span>
+</span><span class='line'>    <span class="c"># disable this setting, because the userPrincipalName contains an &amp;lsquo;@&amp;rsquo;.</span>
+</span><span class='line'>    allow_username_or_email_login: <span class="nb">true</span>
+</span><span class='line'><span class="nb">    </span>base: <span class="p">&amp;</span>lsquo<span class="p">;&amp;</span>rsquo<span class="p">;</span>
+</span><span class='line'>    user_filter: <span class="p">&amp;</span>lsquo<span class="p">;&amp;</span>rsquo<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c">## OmniAuth settings</span>
+</span><span class='line'>  omniauth:
+</span><span class='line'>    <span class="c"># Allow login via Twitter, Google, etc. using OmniAuth providers</span>
+</span><span class='line'>    enabled: <span class="nb">false</span>
+</span><span class='line'>    <span class="c"># CAUTION!</span>
+</span><span class='line'>    <span class="c"># This allows users to login without having a user account first (default: false).</span>
+</span><span class='line'>    <span class="c"># User accounts will be created automatically when authentication was successful.</span>
+</span><span class='line'>    allow_single_sign_on: <span class="nb">false</span>
+</span><span class='line'>    <span class="c"># Locks down those users until they have been cleared by the admin (default: true).</span>
+</span><span class='line'>    block_auto_created_users: <span class="nb">true</span>
+</span><span class='line'><span class="nb">    </span>providers:&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c">#</span>
+</span><span class='line'>  <span class="c"># 3. Advanced settings</span>
+</span><span class='line'>  <span class="c"># ==========================&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># GitLab Satellites</span>
+</span><span class='line'>  satellites:
+</span><span class='line'>    <span class="c"># Relative paths are relative to Rails.root (default: tmp/repo_satellites/)</span>
+</span><span class='line'>    path: <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-satellites/&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c">## Backup settings</span>
+</span><span class='line'>  backup:
+</span><span class='line'>    path: <span class="p">&amp;</span>ldquo<span class="p">;</span>tmp/backups<span class="p">&amp;</span>rdquo<span class="p">;</span>   <span class="c"># Relative paths are relative to Rails.root (default: tmp/backups/)</span>
+</span><span class='line'>    <span class="c"># keep_time: 604800   # default: 0 (forever) (in seconds)&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c">## GitLab Shell settings</span>
+</span><span class='line'>  gitlab_shell:
+</span><span class='line'>    path: <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-shell/&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;# REPOS_PATH MUST NOT BE A SYMLINK!!!
+</span><span class='line'>repos_path: <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/repositories/
+</span><span class='line'>hooks_path: <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab-shell/hooks/
+</span><span class='line'>
+</span><span class='line'><span class="c"># Git over HTTP</span>
+</span><span class='line'>upload_pack: <span class="nb">true</span>
+</span><span class='line'>receive_pack: <span class="nb">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># If you use non-standard ssh port you need to specify it</span>
+</span><span class='line'><span class="c"># ssh_port: 22</span>
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c">## Git settings</span>
+</span><span class='line'>  <span class="c"># CAUTION!</span>
+</span><span class='line'>  <span class="c"># Use the default values unless you really know what you are doing</span>
+</span><span class='line'>  git:
+</span><span class='line'>    bin_path: <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.toast/armed/bin/git
+</span><span class='line'>    <span class="c"># The next value is the maximum memory size grit can use</span>
+</span><span class='line'>    <span class="c"># Given in number of bytes per git object (e.g. a commit)</span>
+</span><span class='line'>    <span class="c"># This value can be increased if you have very large commits</span>
+</span><span class='line'>    max_size: <span class="m">5242880</span> <span class="c"># 5.megabytes</span>
+</span><span class='line'>    <span class="c"># Git timeout to read a commit, in seconds</span>
+</span><span class='line'>    timeout: 10&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c">#</span>
+</span><span class='line'>  <span class="c"># 4. Extra customization</span>
+</span><span class='line'>  <span class="c"># ==========================&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  extra:
+</span><span class='line'>    <span class="c">## Google analytics. Uncomment if you want it</span>
+</span><span class='line'>    <span class="c"># google_analytics_id: &amp;lsquo;_your_tracking_id&amp;rsquo;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;## Piwik analytics.
+</span><span class='line'><span class="c"># piwik_url: &#39;_your_piwik_url&#39;</span>
+</span><span class='line'><span class="c"># piwik_site_id: &#39;_your_piwik_site_id&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">## Text under sign-in page (Markdown enabled)</span>
+</span><span class='line'><span class="c"># sign_in_text: |</span>
+</span><span class='line'><span class="c">#   ![Company Logo](http://www.companydomain.com/logo.png)</span>
+</span><span class='line'><span class="c">#   [Learn more about CompanyName](http://www.companydomain.com/)</span>
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;&lt;strong&gt;EOF&lt;/strong&gt;
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Configure Charlie the unicorn. <span class="p">;</span>-<span class="o">)</span>&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cat &gt; config/unicorn.rb <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Sample verbose configuration file <span class="k">for</span> Unicorn <span class="o">(</span>not Rack<span class="o">)</span>&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;worker_processes 2&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;working_directory <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab<span class="p">&amp;</span>rdquo<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;listen <span class="p">&amp;</span>ldquo<span class="p">;</span>/home/hq/workspace/gitlab/tmp/sockets/gitlab.socket<span class="p">&amp;</span>rdquo<span class="p">;</span>, :backlog <span class="o">=</span>&gt; 64
+</span><span class='line'>listen <span class="p">&amp;</span>ldquo<span class="p">;</span>127.0.0.1:<span class="k">${</span><span class="nv">INTERNPORT</span><span class="k">}</span><span class="p">&amp;</span>rdquo<span class="p">;</span>, :tcp_nopush <span class="o">=</span>&gt; <span class="nb">true</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;timeout 30&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;feel free to point this anywhere accessible on the filesystem&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;pid <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab/tmp/pids/unicorn.pid<span class="p">&amp;</span>rdquo<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;stderr_path <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab/log/unicorn.stderr.log<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>stdout_path <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab/log/unicorn.stdout.log<span class="p">&amp;</span>rdquo<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;preload_app <span class="nb">true</span>
+</span><span class='line'>GC.respond_to?<span class="o">(</span>:copy_on_write_friendly<span class="o">=)</span> and
+</span><span class='line'>  GC.copy_on_write_friendly <span class="o">=</span> <span class="nb">true</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;check_client_connection <span class="nb">false</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;before_fork <span class="k">do</span> <span class="p">|</span>server, worker<span class="p">|</span>
+</span><span class='line'>  defined?<span class="o">(</span>ActiveRecord::Base<span class="o">)</span> and
+</span><span class='line'>    ActiveRecord::Base.connection.disconnect!&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="nv">old_pid</span> <span class="o">=</span> <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="c">#{server.config[:pid]}.oldbin&amp;rdquo;</span>
+</span><span class='line'>  <span class="k">if</span> old_pid !<span class="o">=</span> server.pid
+</span><span class='line'>    begin
+</span><span class='line'>      <span class="nv">sig</span> <span class="o">=</span> <span class="o">(</span>worker.nr + 1<span class="o">)</span> &gt;<span class="o">=</span> server.worker_processes ? :QUIT : :TTOU
+</span><span class='line'>      Process.kill<span class="o">(</span>sig, File.read<span class="o">(</span>old_pid<span class="o">)</span>.to_i<span class="o">)</span>
+</span><span class='line'>    rescue Errno::ENOENT, Errno::ESRCH
+</span><span class='line'>    end
+</span><span class='line'>  end
+</span><span class='line'>  <span class="c"># sleep 1</span>
+</span><span class='line'>end&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;after_fork <span class="k">do</span> <span class="p">|</span>server, worker<span class="p">|</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  defined?<span class="o">(</span>ActiveRecord::Base<span class="o">)</span> and
+</span><span class='line'>    ActiveRecord::Base.establish_connection&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;end&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;&lt;strong&gt;EOF&lt;/strong&gt;
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Config Redis connection.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cat &gt; config/resque.yml <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;
+</span><span class='line'>development: redis://localhost:6379
+</span><span class='line'><span class="nb">test</span>: redis://localhost:6379&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;production: redis://redis.example.com:6379&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;production: unix:<span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.redis/sock
+</span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Configure your rack.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cp config/initializers/rack_attack.rb.example config/initializers/rack_attack.rb&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Production environment.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cat &gt; config/environments/production.rb <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;
+</span><span class='line'>Gitlab::Application.configure <span class="k">do</span>
+</span><span class='line'>  <span class="c"># Settings specified here will take precedence over those in config/application.rb&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Code is not reloaded between requests</span>
+</span><span class='line'>  config.cache_classes <span class="o">=</span> <span class="nb">true</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Full error reports are disabled and caching is turned on</span>
+</span><span class='line'>  config.consider_all_requests_local       <span class="o">=</span> <span class="nb">false</span>
+</span><span class='line'><span class="nb">  </span>config.action_controller.perform_caching <span class="o">=</span> <span class="nb">true</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Disable Rails&amp;rsquo;s static asset server (Apache or nginx will already do this)</span>
+</span><span class='line'>  config.serve_static_assets <span class="o">=</span> <span class="nb">true</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Compress JavaScripts and CSS</span>
+</span><span class='line'>  config.assets.compress <span class="o">=</span> <span class="nb">true</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Don&amp;rsquo;t fallback to assets pipeline if a precompiled asset is missed</span>
+</span><span class='line'>  config.assets.compile <span class="o">=</span> <span class="nb">true</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Generate digests for assets URLs</span>
+</span><span class='line'>  config.assets.digest <span class="o">=</span> <span class="nb">true</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Defaults to nil and saved in location specified by config.assets.prefix</span>
+</span><span class='line'>  <span class="c"># config.assets.manifest = YOUR_PATH&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Specifies the header that your server uses for sending files</span>
+</span><span class='line'>  <span class="c"># config.action_dispatch.x_sendfile_header = &amp;ldquo;X-Sendfile&amp;rdquo; # for apache</span>
+</span><span class='line'>  <span class="c"># config.action_dispatch.x_sendfile_header = &amp;lsquo;X-Accel-Redirect&amp;rsquo; # for nginx&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.</span>
+</span><span class='line'>  <span class="c"># config.force_ssl = true&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># See everything in the log (default is :info)</span>
+</span><span class='line'>  <span class="c"># config.log_level = :debug&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Suppress &amp;lsquo;Rendered template &amp;hellip;&amp;rsquo; messages in the log</span>
+</span><span class='line'>  <span class="c"># source: &lt;a href=&quot;http://stackoverflow.com/a/16369363&quot;&gt;http://stackoverflow.com/a/16369363&lt;/a&gt;</span>
+</span><span class='line'>  %w<span class="o">{</span>render_template render_partial render_collection<span class="o">}</span>.each <span class="k">do</span> <span class="p">|</span>event<span class="p">|</span>
+</span><span class='line'>    ActiveSupport::Notifications.unsubscribe <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="c">#{event}.action_view&amp;rdquo;</span>
+</span><span class='line'>  end&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Prepend all log lines with the following tags</span>
+</span><span class='line'>  <span class="c"># config.log_tags = [ :subdomain, :uuid ]&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Use a different logger for distributed setups</span>
+</span><span class='line'>  <span class="c"># config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Use a different cache store in production</span>
+</span><span class='line'>  <span class="nv">config_file</span> <span class="o">=</span> Rails.root.join<span class="o">(</span><span class="p">&amp;</span>lsquo<span class="p">;</span>config<span class="p">&amp;</span>rsquo<span class="p">;</span>, <span class="p">&amp;</span>lsquo<span class="p">;</span>resque.yml<span class="p">&amp;</span>rsquo<span class="p">;</span><span class="o">)</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="nv">resque_url</span> <span class="o">=</span> <span class="k">if</span> File.exists?<span class="o">(</span>config_file<span class="o">)</span>
+</span><span class='line'>                 YAML.load_file<span class="o">(</span>config_file<span class="o">)[</span>Rails.env<span class="o">]</span>
+</span><span class='line'>               <span class="k">else</span>
+</span><span class='line'>                 <span class="p">&amp;</span>ldquo<span class="p">;</span>redis://localhost:6379<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>               end
+</span><span class='line'>  config.cache_store <span class="o">=</span> :redis_store, <span class="o">{</span>:url <span class="o">=</span>&gt; resque_url<span class="o">}</span>, <span class="o">{</span>namespace: <span class="p">&amp;</span>lsquo<span class="p">;</span>cache:gitlab<span class="p">&amp;</span>rsquo<span class="p">;</span><span class="o">}</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Enable serving of images, stylesheets, and JavaScripts from an asset server</span>
+</span><span class='line'>  <span class="c"># config.action_controller.asset_host = &amp;ldquo;&lt;a href=&quot;http://assets.example.com&quot;&gt;http://assets.example.com&lt;/a&gt;&amp;rdquo;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)</span>
+</span><span class='line'>  <span class="c"># config.assets.precompile += %w( search.js )&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Disable delivery errors, bad email addresses will be ignored</span>
+</span><span class='line'>  <span class="c"># config.action_mailer.raise_delivery_errors = false&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Enable threaded mode</span>
+</span><span class='line'>  <span class="c"># config.threadsafe! unless $rails_rake_task&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Enable locale fallbacks for I18n (makes lookups for any locale fall back to</span>
+</span><span class='line'>  <span class="c"># the I18n.default_locale when a translation can not be found)</span>
+</span><span class='line'>  config.i18n.fallbacks <span class="o">=</span> <span class="nb">true</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  <span class="c"># Send deprecation notices to registered listeners</span>
+</span><span class='line'>  config.active_support.deprecation <span class="o">=</span> :notify&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  config.action_mailer.delivery_method <span class="o">=</span> :sendmail
+</span><span class='line'>  <span class="c"># Defaults to:</span>
+</span><span class='line'>  <span class="c"># # config.action_mailer.sendmail_settings = {</span>
+</span><span class='line'>  <span class="c"># #   location: &amp;lsquo;/usr/sbin/sendmail&amp;rsquo;,</span>
+</span><span class='line'>  <span class="c"># #   arguments: &amp;lsquo;-i -t&amp;rsquo;</span>
+</span><span class='line'>  <span class="c"># # }</span>
+</span><span class='line'>  config.action_mailer.perform_deliveries <span class="o">=</span> <span class="nb">true</span>
+</span><span class='line'><span class="nb">  </span>config.action_mailer.raise_delivery_errors <span class="o">=</span> <span class="nb">true</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  config.eager_load <span class="o">=</span> <span class="nb">true</span>
+</span><span class='line'><span class="nb">  </span>config.assets.js_compressor <span class="o">=</span> :uglifier&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;  config.allow_concurrency <span class="o">=</span> <span class="nb">false</span>
+</span><span class='line'>end
+</span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h4>Database configuration</h4>
+
+<p><figure class='code'><figcaption><span>Be carefull with &ldquo;DROP DATABASE&rdquo; commands! </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Be carefull with <span class="p">&amp;</span>ldquo<span class="p">;</span>DROP DATABASE<span class="p">&amp;</span>rdquo<span class="p">;</span> commands!&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;mysql -e <span class="p">&amp;</span>ldquo<span class="p">;</span>DROP DATABASE <span class="k">${</span><span class="nv">USER</span><span class="k">}</span>&lt;em&gt;gitlab<span class="p">;&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>mysql -e <span class="p">&amp;</span>ldquo<span class="p">;</span>CREATE DATABASE <span class="k">${</span><span class="nv">USER</span><span class="k">}</span>&lt;/em&gt;gitlab CHARACTER SET utf8<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>cat &gt; <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab/config/database.yml <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;
+</span><span class='line'>production:
+</span><span class='line'>  adapter: mysql2
+</span><span class='line'>  encoding: utf8
+</span><span class='line'>  reconnect: <span class="nb">false</span>
+</span><span class='line'><span class="nb">  </span>database: <span class="k">${</span><span class="nv">USER</span><span class="k">}</span>_gitlab
+</span><span class='line'>  pool: 10
+</span><span class='line'>  username: <span class="k">${</span><span class="nv">USER</span><span class="k">}</span>
+</span><span class='line'>  password: &lt;code&gt;my_print_defaults client <span class="p">|</span> grep -- --password <span class="p">|</span> awk -F <span class="o">=</span> <span class="s1">&#39;{ print $2 }&#39;</span>&lt;/code&gt;
+</span><span class='line'>  <span class="c"># host: localhost</span>
+</span><span class='line'>  <span class="c"># socket: /tmp/mysql.sock</span>
+</span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;
+</span><span class='line'>chmod o-rwx <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab/config/database.yml
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h4>Installation</h4>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;CentOS 5? cat /etc/*-release&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Then <span class="k">do</span> also: bundle config build.charlock_holmes <span class="p">&amp;</span>ndash<span class="p">;</span>with-icu-dir<span class="o">=</span>/package/host/localhost/icu4c&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;bundle install <span class="p">&amp;</span>ndash<span class="p">;</span>deployment <span class="p">&amp;</span>ndash<span class="p">;</span>without development <span class="nb">test </span>postgres aws&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Be sure, redis is running and a database exists before doing the setup.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;bundle <span class="nb">exec </span>rake gitlab:setup <span class="nv">RAILS_ENV</span><span class="o">=</span>production&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Answer with <span class="p">&amp;</span>lsquo<span class="p">;</span>yes<span class="p">&amp;</span>rsquo<span class="p">;</span> to create db tables.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Ends with:&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;<span class="p">&amp;</span>hellip<span class="p">;</span>&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Administrator account created:&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;login<span class="p">&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;</span>root&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;password<span class="p">&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;</span>5iveL!fe&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h4>Initscript</h4>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Be aware, this starter is not good to use with Uberspace service.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Default variables file.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;mkdir -p <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/etc/default
+</span><span class='line'>cat &gt; <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/etc/default/gitlab.default <span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span>&lt;strong&gt;EOF&lt;/strong&gt;
+</span><span class='line'><span class="nv">RAILS_ENV</span><span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span>production<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'><span class="nv">app_user</span><span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">${</span><span class="nv">USER</span><span class="k">}</span><span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'><span class="nv">app_root</span><span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span><span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'><span class="nv">pid_path</span><span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span><span class="se">\$</span>app_root/tmp/pids<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'><span class="nv">socket_path</span><span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span><span class="se">\$</span>app_root/tmp/sockets<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'><span class="nv">web_server_pid_path</span><span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span><span class="se">\$</span>pid_path/unicorn.pid<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'><span class="nv">sidekiq_pid_path</span><span class="o">=</span><span class="p">&amp;</span>ldquo<span class="p">;</span><span class="se">\$</span>pid_path/sidekiq.pid<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;GitLab starter.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cp -f <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/workspace/gitlab/lib/support/init.d/gitlab <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/bin/gitlab
+</span><span class='line'>chmod +x <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/bin/gitlab&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Change to <span class="p">&amp;</span>lsquo<span class="p">;</span><span class="nb">read</span> <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/etc/default/gitlab.default<span class="p">&amp;</span>rsquo<span class="p">;</span>.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;sed -i -e <span class="p">&amp;</span>rsquo<span class="p">;</span><span class="nv">s</span><span class="o">=</span><span class="se">\/</span>etc<span class="se">\/</span>default<span class="se">\/</span><span class="nv">gitlab</span><span class="o">=</span><span class="k">${</span><span class="nv">HOME</span><span class="k">}</span><span class="se">\/</span>etc<span class="se">\/</span>default<span class="se">\/</span>gitlab.default<span class="o">=</span>g<span class="p">&amp;</span><span class="c">#8217; ${HOME}/bin/gitlab</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h4>Redirection to the service port</h4>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Configure web.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;mkdir -p /var/www/virtual/<span class="k">${</span><span class="nv">USER</span><span class="k">}</span>/<span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>
+</span><span class='line'>cat &gt; /var/www/virtual/<span class="k">${</span><span class="nv">USER</span><span class="k">}</span>/<span class="k">${</span><span class="nv">DOMAINNAME</span><span class="k">}</span>/.htaccess <span class="p">&amp;</span>lt<span class="p">;</span>&lt;__EOF__
+</span><span class='line'>&lt;IfModule mod_rewrite.c&gt;
+</span><span class='line'>  RewriteEngine On
+</span><span class='line'>  RewriteBase /
+</span><span class='line'>  RewriteRule ^<span class="o">(</span>.*<span class="o">)</span><span class="nv">$ </span>&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&quot;http://localhost:$&quot;</span>&gt;http://localhost:<span class="nv">$&lt;</span>/a&gt;<span class="o">{</span>INTERNPORT<span class="o">}</span>/<span class="se">\$</span><span class="m">1</span> <span class="o">[</span>P<span class="o">]</span>
+</span><span class='line'>&lt;/IfModule&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Agains <span class="p">&amp;</span>ldquo<span class="p">;</span>Can<span class="p">&amp;</span>rsquo<span class="p">;</span>t verify CSRF token authenticity<span class="p">&amp;</span>rdquo<span class="p">;</span> error.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;RequestHeader <span class="nb">set </span>X-Forwarded-Proto https
+</span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h4>Check installation</h4>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Last check.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cd <span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/workspace/gitlab
+</span><span class='line'>bundle <span class="nb">exec </span>rake gitlab:env:info <span class="nv">RAILS_ENV</span><span class="o">=</span>production
+</span><span class='line'>bundle <span class="nb">exec </span>rake gitlab:check <span class="nv">RAILS_ENV</span><span class="o">=</span>production&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;If everything was fine, we kann build the assets.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;bundle <span class="nb">exec </span>rake assets:precompile <span class="nv">RAILS_ENV</span><span class="o">=</span>production
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h4>Start</h4>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;This is <span class="k">for</span> what we<span class="p">&amp;</span>rsquo<span class="p">;</span>ve <span class="k">done</span> all this stuff above.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cd
+</span><span class='line'>gitlab start&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;<span class="o">[</span>start, stop, restart, status<span class="o">]</span>&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></p>
+
+<!--########################################-->
+
 
 <h3>Local SSH config</h3>
 
@@ -1348,6 +2878,29 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; ode
 </span><span class='line'>&lt;strong&gt;EOF&lt;/strong&gt;
 </span></code></pre></td></tr></table></div></figure></p>
 
+<h2>Upgrade</h2>
+
+<ul>
+<li>There is a <a href="https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/update/upgrader.md">script</a> for that.</li>
+<li>First shutdown all services:
+
+<ul>
+<li>gitlab</li>
+<li>redis
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">WORKSPACE</span><span class="k">}</span>/gitlab
+</span><span class='line'>bundle <span class="nb">exec </span>ruby bin/upgrade.rb
+</span><span class='line'>gitlab start
+</span><span class='line'>bundle <span class="nb">exec </span>rake gitlab:check <span class="nv">RAILS_ENV</span><span class="o">=</span>production
+</span></code></pre></td></tr></table></div></figure></li>
+</ul>
+</li>
+</ul>
+
+
 <h2>Uninstallation</h2>
 
 <p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -1361,7 +2914,7 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; ode
 <h2>Issues</h2>
 
 <ul>
-<li>Double Emails für every report.</li>
+<li>Get double emails.</li>
 <li>Initial git push errors.
 
 <ul>
@@ -1373,6 +2926,8 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; ode
 <li><code>git remote add origin user@gitlab.example.com:path-to-repositories-dir-relative-from-user-home-dir/gituser/repo.git</code></li>
 </ul>
 </li>
+</ul>
+</li>
 <li>hook error
 
 <ul>
@@ -1382,13 +2937,37 @@ Uberspace-Severname -&gt; $(hostname -a), &lt;uberhost&gt;, &lt;hostname&gt; ode
 </li>
 <li>You are not allowed to access master! remote: error: hook declined to update refs/heads/master</li>
 <li>In gitlab/config/gitlab.yml email_from has to include your uberspace username</li>
-<li>email_from: <a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#x75;&#x73;&#101;&#114;&#x40;&#x67;&#105;&#116;&#x6c;&#97;&#x62;&#x2e;&#x65;&#120;&#x61;&#x6d;&#112;&#108;&#101;&#x2e;&#x63;&#x6f;&#109;">&#x75;&#115;&#101;&#114;&#x40;&#x67;&#105;&#116;&#108;&#x61;&#98;&#x2e;&#101;&#x78;&#x61;&#109;&#x70;&#x6c;&#x65;&#46;&#x63;&#x6f;&#109;</a></li>
+<li>email_from: <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x75;&#x73;&#x65;&#114;&#x40;&#x67;&#105;&#x74;&#x6c;&#x61;&#98;&#46;&#x65;&#120;&#x61;&#109;&#112;&#x6c;&#101;&#46;&#x63;&#x6f;&#x6d;">&#117;&#115;&#x65;&#114;&#x40;&#x67;&#105;&#x74;&#108;&#x61;&#98;&#x2e;&#101;&#120;&#x61;&#x6d;&#x70;&#108;&#101;&#46;&#99;&#111;&#x6d;</a></li>
+<li>LoadError: cannot load such file &ndash; rb-inotify
+
+<ul>
+<li>Add <code>RAILS_ENV=production</code> to your command. E.g.: bundle exec rake cache:clear RAILS_ENV=production</li>
+</ul>
+</li>
+<li>rake aborted! Redis::CannotConnectError: Error connecting to Redis on 127.0.0.1:6379 (ECONNREFUSED)
+
+<ul>
+<li>Stop Gitlab and then start sidekiq first</li>
+<li>gitlab stop</li>
+<li>bundle exec rake sidekiq:start RAILS_ENV=production</li>
+</ul>
+</li>
+<li>bundle exec rake ./bin/upgrade.rb
+
+<ul>
+<li>Maybe during the upgrade process some folder right get wrong</li>
+</ul>
+</li>
+<li>bundle exec rake cache:clear RAILS_ENV=production
+
+<ul>
+<li>Have the tmp folde the correct rights?</li>
 </ul>
 </li>
 </ul>
 
 
-<h3>Sources</h3>
+<h2>Sources</h2>
 
 <ul>
 <li><a href="https://wiki.uberspace.de/cool?s[]=gitlab">wiki.uberspace.de/cool</a></li>
