@@ -1,6 +1,33 @@
 #!/usr/bin/env bash
+################################################################################
+# No warranty! For nothing. Use it at your own risk.
+# Author: Frank Zisko, 2014
+# Version: 1.3
+#
+#
+# Redmine 2.5 installation on uberspace account.
+# Using:
+# Ruby 2.1.2 via rbenv 0.4.0
+# Ruby 2.1.1 via uberspace
+#
+################################################################################
 
+
+# Pause if need some break in your script.
+# Use it: pause 'Press [Enter] key to continue...'
+function pause(){
+   read -p "$*"
+}
+
+#DOMAINNAME="redmine.${USER}.$(hostname -a).uberspace.de"
 DOMAINNAME="redmine.example.com"
+
+# Subfolder or subdomain?
+SUBFOLDER=false
+
+
+################################################################################
+
 
 cd /var/www/virtual/$USER
 svn co http://svn.redmine.org/redmine/branches/2.5-stable redmine
@@ -10,6 +37,8 @@ cd redmine
 echo "gem 'fcgi'" > Gemfile.local
 
 # Create database.
+# Be carefull with DROP DATABASE commands!
+#mysql -e "DROP DATABASE ${USER}_redmine;"
 mysql -e "CREATE DATABASE ${USER}_redmine CHARACTER SET utf8"
 
 # Configure 'Redmine' database.
@@ -27,13 +56,13 @@ __EOF__
 bundle install --path ~/.gem --without development test postgresql sqlite
 
 # Initialize database.
-rake generate_secret_token
+bundle exec rake generate_secret_token
 
 # Redmine create db structure and admin account.
-rake db:migrate RAILS_ENV=production
+bundle exec rake db:migrate RAILS_ENV=production
 
 # Get default config.
-rake redmine:load_default_data RAILS_ENV=production
+bundle exec rake redmine:load_default_data RAILS_ENV=production
 
 # Config to send email.
 cat > config/configuration.yml <<__EOF__

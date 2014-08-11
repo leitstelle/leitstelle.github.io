@@ -1,32 +1,40 @@
 #!/usr/bin/env bash
+################################################################################
+# No warranty! For nothing. Use it at your own risk.
+# Author: Frank Zisko, 2014
+# Version: 3.2
+#
+#
+# GitLab 7.1-stable installation on uberspace account with rbenv.
+# Using:
+# Git 2.0.4
+# Redis 2.8.13
+# Python 2.7
+# Ruby 2.1.2 via rbenv 0.4.0
+# Ruby 2.1.1 via uberspace
+#
+################################################################################
 
-# Init. Use it: pause 'Press [Enter] key to continue...'
+
+# Pause if need some break in your script.
+# Use it: pause 'Press [Enter] key to continue...'
 function pause(){
    read -p "$*"
 }
 
 #DOMAINNAME="gitlab.${USER}.$(hostname -a).uberspace.de"
 DOMAINNAME="gitlab.example.com"
+
+# Port to connect web site call with gitlab.
 INTERNPORT="54321"
 # Check availablebility of port.
+# No answer, if port is unused.
 netstat -tulpen | grep ${INTERNPORT}
-#	No answer, if port is unused.
 
+# Workspace.
 WORKSPACE=${HOME}/workspace
 mkdir -p ${WORKSPACE}
 cd ${WORKSPACE}
-
-
-################################################################################
-
-# GitLab 7.1-stable installation on uberspace account wioth rbenv.
-
-# Using:
-# Git 2.0.4
-# Redis 2.8.13
-# Python 2.7.3
-# Ruby 2.1.2 via rbenv 0.4.0
-# Ruby 2.1.1 via uberspace
 
 
 ### Python ### #################################################################
@@ -615,7 +623,7 @@ cd ${HOME}/workspace/gitlab
 bundle exec rake gitlab:env:info RAILS_ENV=production
 bundle exec rake gitlab:check RAILS_ENV=production
 
-pause 'Press [Enter] key to continue... if your are lucky with the tests above. \nAfterwards it is just starting Gitlab. So it will be not a problem to abort this script.'
+#pause 'Press [Enter] key to continue... if your are lucky with the tests above. \nAfterwards it is just starting Gitlab. So it will be not a problem to abort this script.'
 bundle exec rake assets:precompile RAILS_ENV=production
 
 
