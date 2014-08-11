@@ -103,7 +103,7 @@ git fetch origin && git reset --hard $(git describe v1.9.6 || git describe origi
 cat > ${WORKSPACE}/gitlab-shell/config.yml <<__EOF__
 ---
 user: ${USER}
-#gitlab_url: http://gitlab.${USER}.$(hostname -s).uberspace.de/
+#gitlab_url: http://gitlab.${USER}.$(hostname -a).uberspace.de/
 gitlab_url: http://${DOMAINNAME}/
 
 http_settings:
