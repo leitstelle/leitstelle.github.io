@@ -175,7 +175,7 @@ production: &base
   gitlab:
     ## Web server settings (note: host is the FQDN, do not include http://)
     host: ${DOMAINNAME}
-    port: 80
+    port: 443
     https: true
 
     user: ${USER}
