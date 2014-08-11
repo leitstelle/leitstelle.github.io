@@ -27,12 +27,6 @@
   </url>
   
   <url>
-    <loc>http://leitstelle.github.io/blog/2014/2014-06-13-pipelight/</loc>
-    <lastmod>2014-06-13T11:50:00+02:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
     <loc>http://leitstelle.github.io/blog/2014/2014-06-05-horde/</loc>
     <lastmod>2014-06-05T13:21:00+02:00</lastmod>
     <priority>0.8</priority>
@@ -95,12 +89,6 @@
   <url>
     <loc>http://leitstelle.github.io/blog/2013/2013-12-15-candle-arch/</loc>
     <lastmod>2013-12-15T22:12:00+01:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://leitstelle.github.io/blog/2013/2013-12-15-cnc-ta-userscripts/</loc>
-    <lastmod>2013-12-15T18:50:00+01:00</lastmod>
     <priority>0.8</priority>
   </url>
   
@@ -173,42 +161,42 @@
   
   <url>
     <loc>http://leitstelle.github.io/</loc>
-    <lastmod>2014-08-11T10:32:02+02:00</lastmod>
+    <lastmod>2014-08-11T11:16:11+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.github.io/blog/archives/</loc>
-    <lastmod>2014-08-11T10:32:02+02:00</lastmod>
+    <lastmod>2014-08-11T11:16:11+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.github.io/pages/rijstebrij/</loc>
-    <lastmod>2014-08-11T10:32:02+02:00</lastmod>
+    <lastmod>2014-08-11T11:16:11+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.github.io/pages/infrastructure/</loc>
-    <lastmod>2014-08-11T10:32:02+02:00</lastmod>
+    <lastmod>2014-08-11T11:16:11+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.github.io/pages/disclaimer/</loc>
-    <lastmod>2014-08-11T10:32:02+02:00</lastmod>
+    <lastmod>2014-08-11T11:16:11+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.github.io/pages/hidden/imc/</loc>
-    <lastmod>2014-08-11T10:32:02+02:00</lastmod>
+    <lastmod>2014-08-11T11:16:11+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
