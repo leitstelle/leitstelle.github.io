@@ -28,3 +28,9 @@ else
 	#git pull
 
 
+### Find if version of software is available
+
+
+### Find if software is system wide available or confugred for the user
+
+## Ask bashrc and bash_profile for software version
