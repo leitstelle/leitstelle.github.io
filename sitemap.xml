@@ -3,6 +3,12 @@
   
   
   <url>
+    <loc>http://leitstelle.salzkraftwerk.org/blog/2014/2014-08-20-firefox-sync/</loc>
+    <lastmod>2014-08-20T15:53:44+02:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://leitstelle.salzkraftwerk.org/blog/2014/2014-08-17-nautilus-alternative-nemo/</loc>
     <lastmod>2014-08-17T15:14:02+02:00</lastmod>
     <priority>0.8</priority>
@@ -173,42 +179,42 @@
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/</loc>
-    <lastmod>2014-08-17T16:52:17+02:00</lastmod>
+    <lastmod>2014-08-31T21:59:32+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/blog/archives/</loc>
-    <lastmod>2014-08-17T16:52:17+02:00</lastmod>
+    <lastmod>2014-08-31T21:59:32+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/pages/rijstebrij/</loc>
-    <lastmod>2014-08-17T16:52:17+02:00</lastmod>
+    <lastmod>2014-08-31T21:59:32+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/pages/infrastructure/</loc>
-    <lastmod>2014-08-17T16:52:17+02:00</lastmod>
+    <lastmod>2014-08-31T21:59:32+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/pages/disclaimer/</loc>
-    <lastmod>2014-08-17T16:52:17+02:00</lastmod>
+    <lastmod>2014-08-31T21:59:32+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/pages/hidden/imc/</loc>
-    <lastmod>2014-08-17T16:52:17+02:00</lastmod>
+    <lastmod>2014-08-31T21:59:32+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
