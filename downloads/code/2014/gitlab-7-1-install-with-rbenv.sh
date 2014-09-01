@@ -207,8 +207,9 @@ sed -i -e "s=\/usr\/bin\/env ruby=$(which ruby)=g" ${WORKSPACE}/gitlab-shell/hoo
 
 
 ### GitLab ### #################################################################
-git clone https://gitlab.com/gitlab-org/gitlab-ce.git -b 7-1-stable ${WORKSPACE}/gitlab
+git clone https://gitlab.com/gitlab-org/gitlab-ce.git ${WORKSPACE}/gitlab
 cd ${WORKSPACE}/gitlab
+git checkout v7.1.0
 rbenv local 2.1.2
 
 # Some folders
