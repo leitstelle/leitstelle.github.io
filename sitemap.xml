@@ -3,7 +3,13 @@
   
   
   <url>
-    <loc>http://leitstelle.salzkraftwerk.org/blog/2014/2014-08-17-nautilus-alternative-nemo/</loc>
+    <loc>http://leitstelle.salzkraftwerk.org/blog/2014/2014-09-01-uberspace-daemontools/</loc>
+    <lastmod>2014-09-01T18:32:12+02:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://leitstelle.salzkraftwerk.org/blog/2014/2014-08-17-nemo/</loc>
     <lastmod>2014-08-17T15:14:02+02:00</lastmod>
     <priority>0.8</priority>
   </url>
@@ -173,42 +179,42 @@
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/</loc>
-    <lastmod>2014-08-31T22:25:17+02:00</lastmod>
+    <lastmod>2014-09-01T18:55:27+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/blog/archives/</loc>
-    <lastmod>2014-08-31T22:25:17+02:00</lastmod>
+    <lastmod>2014-09-01T18:55:27+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/pages/rijstebrij/</loc>
-    <lastmod>2014-08-31T22:25:17+02:00</lastmod>
+    <lastmod>2014-09-01T18:55:27+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/pages/infrastructure/</loc>
-    <lastmod>2014-08-31T22:25:17+02:00</lastmod>
+    <lastmod>2014-09-01T18:55:27+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/pages/disclaimer/</loc>
-    <lastmod>2014-08-31T22:25:17+02:00</lastmod>
+    <lastmod>2014-09-01T18:55:27+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/pages/hidden/imc/</loc>
-    <lastmod>2014-08-31T22:25:17+02:00</lastmod>
+    <lastmod>2014-09-01T18:55:27+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
