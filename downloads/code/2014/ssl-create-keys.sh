@@ -25,5 +25,5 @@ openssl rsa -inform pem -in ${DOMAIN}.private.pem -outform der -out ${DOMAIN}.pr
 # Important is 'CN (Common Name)'; Write here your '$DOMAIN'.
 # If you want use '*.$DOMAIN', add it in 'CN' the field.
 # If you want use '*.$DOMAIN.', add it as well.
-openssl req -new -key ${DOMAIN}.private.pem -out ${DOMAIN}.request.csr -days 3 -subj "/CN=*.${DOMAIN}/CN=${DOMAIN}/CN=.${DOMAIN}./CN=${DOMAIN}."
+openssl req -new -key ${DOMAIN}.private.pem -out ${DOMAIN}.request.csr -days 3 -subj "/CN=*.${DOMAIN}/CN=${DOMAIN}/CN=*.${DOMAIN}./CN=${DOMAIN}."
 

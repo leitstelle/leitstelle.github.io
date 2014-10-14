@@ -3,6 +3,18 @@
   
   
   <url>
+    <loc>http://leitstelle.salzkraftwerk.org/blog/2014/2014-10-07-ffmpeg-mp3-to-mp4/</loc>
+    <lastmod>2014-10-07T06:14:00+02:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://leitstelle.salzkraftwerk.org/blog/2014/2014-09-02-gitlab-7-2/</loc>
+    <lastmod>2014-09-02T13:14:00+02:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://leitstelle.salzkraftwerk.org/blog/2014/2014-09-01-uberspace-daemontools/</loc>
     <lastmod>2014-09-01T18:32:12+02:00</lastmod>
     <priority>0.8</priority>
@@ -179,42 +191,42 @@
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/</loc>
-    <lastmod>2014-09-01T19:54:11+02:00</lastmod>
+    <lastmod>2014-10-14T15:43:46+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/blog/archives/</loc>
-    <lastmod>2014-09-01T19:54:11+02:00</lastmod>
+    <lastmod>2014-10-14T15:43:46+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/pages/rijstebrij/</loc>
-    <lastmod>2014-09-01T19:54:11+02:00</lastmod>
+    <lastmod>2014-10-14T15:43:46+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/pages/infrastructure/</loc>
-    <lastmod>2014-09-01T19:54:11+02:00</lastmod>
+    <lastmod>2014-10-14T15:43:46+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/pages/disclaimer/</loc>
-    <lastmod>2014-09-01T19:54:11+02:00</lastmod>
+    <lastmod>2014-10-14T15:43:46+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://leitstelle.salzkraftwerk.org/pages/hidden/imc/</loc>
-    <lastmod>2014-09-01T19:54:11+02:00</lastmod>
+    <lastmod>2014-10-14T15:43:46+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
